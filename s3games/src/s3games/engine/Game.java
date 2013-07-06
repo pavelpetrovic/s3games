@@ -9,6 +9,7 @@ package s3games.engine;
  *
  * @author petrovic16
  */
-public class Game {
+public class Game
+{
 
 }
