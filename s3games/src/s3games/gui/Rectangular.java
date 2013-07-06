@@ -15,7 +15,9 @@ public class Rectangular extends LocationShape
 
     boolean isInside(int x, int y)
     {
-        //todo
+        if ( Math.abs(this.x-x)<a && Math.abs(this.y-y)<b)  {
+          return true; 
+        }
         return false;
     }
 }

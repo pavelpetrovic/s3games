@@ -14,7 +14,6 @@ public class Circular extends LocationShape
     int radius;
     boolean isInside(int x, int y)
     {
-        //todo
-        return false;
+        return ( radius < Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)) );
     }
 }
