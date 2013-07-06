@@ -205,7 +205,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="any game played"/>
+        <Property name="text" type="java.lang.String" value="no game played yet"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
