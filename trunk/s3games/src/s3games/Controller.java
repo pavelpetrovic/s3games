@@ -5,11 +5,19 @@
 
 package s3games;
 
+import s3games.gui.ControllerWindow;
+
 /**
  *
  * @author petrovic16
  */
 public class Controller
 {
-
+    public Controller() {
+        //GameWindow form =  new GameWindow();
+        //form.setVisible(true);
+        ControllerWindow cw  = new ControllerWindow();
+        cw.setVisible(true);
+    
+    }
 }
