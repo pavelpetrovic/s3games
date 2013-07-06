@@ -5,9 +5,9 @@
 
 package s3games.engine;
 
-import io.GameLogger;
+import s3games.io.GameLogger;
 import java.util.*;
-import player.Player;
+import s3games.player.Player;
 import s3games.gui.GameWindow;
 
 /**
