@@ -143,7 +143,7 @@ public class ControllerWindow extends javax.swing.JFrame {
 
         jLabel1.setText("Previous game result:");
 
-        jLabel2.setText("any game played");
+        jLabel2.setText("no game played yet");
 
         jLabel4.setText("Number of games played:");
         jLabel4.setToolTipText("");
@@ -195,7 +195,7 @@ public class ControllerWindow extends javax.swing.JFrame {
              File file = fc.getSelectedFile();    //selected file
              try {
                   BufferedReader r = new BufferedReader(new FileReader(file)); //open for reading
-                  if (controller.readFile(r)) activateItems();
+                  if (controller.readFile(r)) activateItems();  //if parsing was successful..
              } catch(Exception e) {
                 JOptionPane.showMessageDialog(this, "Cannot open for read: "+file.getName());
              }        
