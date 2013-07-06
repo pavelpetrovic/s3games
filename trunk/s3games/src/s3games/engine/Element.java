@@ -16,8 +16,8 @@ public class Element
     Integer index;
 
     String type;
-    String owner;
-    String location;
-    int state;
-    int zindex;
+    String initialOwner;
+    String initialLocation;
+    int initialState;
+    int initialZindex;
 }
