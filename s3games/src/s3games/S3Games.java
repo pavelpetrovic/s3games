@@ -5,7 +5,8 @@
 
 package s3games;
 
-import s3games.gui.WindowController;
+import s3games.gui.ControllerWindow;
+import s3games.gui.GameWindow;
 
 /**
  *
@@ -18,8 +19,10 @@ public class S3Games {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        WindowController form =  new WindowController();
-        form.show();
+        GameWindow form =  new GameWindow();
+        form.setVisible(true);
+        ControllerWindow f  = new ControllerWindow();
+        f.setVisible(true);
     }
 
 }
