@@ -4,19 +4,28 @@
  */
 package s3games.gui;
 
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import s3games.Controller;
+
 /**
  *
  * @author Boris
  */
 public class ControllerWindow extends javax.swing.JFrame {
 
-    /**
+    Controller controller = null;
+     /**
      * Creates new form ControllerWindow
-     */
+     */  
     public ControllerWindow() {
         initComponents();
+    }  
+    public ControllerWindow(Controller c) {
+         initComponents();
+         controller = c;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,6 +45,7 @@ public class ControllerWindow extends javax.swing.JFrame {
         label1 = new java.awt.Label();
         jTextField1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -51,10 +61,12 @@ public class ControllerWindow extends javax.swing.JFrame {
 
         jButton1.setText("PLAY");
         jButton1.setToolTipText("");
+        jButton1.setEnabled(false);
 
         jButton2.setText("LEARN");
         jButton2.setToolTipText("");
         jButton2.setActionCommand("LEARN! ");
+        jButton2.setEnabled(false);
 
         choice1.setName(""); // NOI18N
 
@@ -65,7 +77,14 @@ public class ControllerWindow extends javax.swing.JFrame {
 
         jTextField1.setText("statistic.txt");
 
-        jLabel6.setText("File for game statistic:");
+        jLabel6.setText("Save game statistic to:");
+
+        jButton3.setText("Open a game");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,7 +93,6 @@ public class ControllerWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -86,19 +104,24 @@ public class ControllerWindow extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(choice2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(choice2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(choice1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)))
                 .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addContainerGap()
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(19, 19, 19)
                 .addComponent(choice2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addGap(52, 52, 52)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +164,7 @@ public class ControllerWindow extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,6 +184,29 @@ public class ControllerWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        loadFile();
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+    public void loadFile() {
+         JFileChooser fc = new JFileChooser();
+         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {  
+             File file = fc.getSelectedFile();    //selected file
+             try {
+                  BufferedReader r = new BufferedReader(new FileReader(file)); //open for reading
+                  if (controller.readFile(r)) activateItems();
+             } catch(Exception e) {
+                JOptionPane.showMessageDialog(this, "Cannot open for read: "+file.getName());
+             }        
+         }    
+    }
+    
+    private void activateItems() {
+         jButton1.setEnabled(true);
+         jButton2.setEnabled(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -200,6 +246,7 @@ public class ControllerWindow extends javax.swing.JFrame {
     private java.awt.Choice choice2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
