@@ -6,7 +6,9 @@
 package s3games.engine;
 
 import s3games.gui.ImageWithHotSpot;
-import java.util.Dictionary;
+import java.util.*;
+import java.util.Map;
+import s3games.io.GameSpecificationParser;
 
 /**
  *
@@ -16,11 +18,24 @@ public class GameSpecification
 {
     String boardBackgroundFileName;
 
-    Dictionary<String,ImageWithHotSpot> locationTypes;
-    Dictionary<String,ElementType> elementTypes;
-    Dictionary<String,Element> elements;
-    Dictionary<String,Location> locations;
+    Map<String,ImageWithHotSpot> locationTypes;
+    Map<String,ElementType> elementTypes;
+    Map<String,Element> elements;
+    Map<String,Location> locations;
 
     String playerNames[];
-    
+
+    public GameSpecification()
+    {
+        locationTypes = new HashMap<String, ImageWithHotSpot>();
+        elementTypes = new HashMap<String, ElementType>();
+        elements = new HashMap<String, Element>();
+        locations = new HashMap<String, Location>();
+    }
+
+    public void load(String fileName)
+    {        
+        GameSpecificationParser parser = new GameSpecificationParser();
+        parser.load(fileName, this);
+    }
 }
