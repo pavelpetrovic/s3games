@@ -5,6 +5,8 @@
 
 package s3games;
 
+import s3games.gui.WindowController;
+
 /**
  *
  * @author petrovic16
@@ -16,6 +18,8 @@ public class S3Games {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        WindowController form =  new WindowController();
+        form.show();
     }
 
 }
