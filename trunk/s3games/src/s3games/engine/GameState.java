@@ -13,6 +13,9 @@ import java.util.Dictionary;
  */
 public class GameState
 {
-    Dictionary<String,Integer> zIndexes;
-    Dictionary<String,Integer> states;
+    
+    Dictionary<String,Integer> elementStates;
+    Dictionary<String,String> elementLocations;
+    Dictionary<String,String> elementOwners;
+    String currentPlayer;
 }

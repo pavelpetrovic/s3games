@@ -14,10 +14,14 @@ import s3games.robot.RobotLocation;
  */
 public class Location
 {
+    // static specification
     String fullName;
     String baseName;
     Integer index[];
     String type;
     LocationShape shape;
     RobotLocation robot;
+
+    // dynamic during the game
+    Element content;
 }

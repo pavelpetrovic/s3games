@@ -11,6 +11,7 @@ package s3games.engine;
  */
 public class Element
 {
+    // static - specification
     String fullName;
     String baseName;
     Integer index;
@@ -20,4 +21,8 @@ public class Element
     String initialLocation;
     int initialState;
     int initialZindex;
+
+    // dynamic - during the game play
+    String owner;
+    Location location;
 }
