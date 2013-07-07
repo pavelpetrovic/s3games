@@ -7,6 +7,8 @@ package s3games.gui;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
@@ -38,7 +40,8 @@ public class GameWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Board");
-        setPreferredSize(new java.awt.Dimension(600, 630));
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setPreferredSize(new java.awt.Dimension(600, 600));
         setResizable(false);
 
         canvas1.setBackground(new java.awt.Color(255, 255, 255));
@@ -53,11 +56,13 @@ public class GameWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
+                .addGap(132, 132, 132))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
+            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -102,20 +107,36 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
     }
-    public void setGame(GameSpecification gs) throws IOException {
-        //resize the window + canvas according to image
-        Image bgImage = ImageIO.read(new File(gs.boardBackgroundFileName));
-        this.setSize(bgImage.getWidth(this),bgImage.getHeight(this));
-      //  boardCanvas.setPreferredSize(new java.awt.Dimension(100, 150));
-        boardCanvas.setSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
-     //    
-       
-        boardCanvas.setGame(gs);
+    public void setGame(GameSpecification gs){
+        try {
+            //resize the window + canvas according to image
+            Image bgImage = ImageIO.read(new File(gs.boardBackgroundFileName));
+            this.setSize(bgImage.getWidth(this)+132,bgImage.getHeight(this)+30);  //130 takes panel and 30 because top panel also takes a place and his height is counted to total size of jframe...
+            //boardCanvas.setPreferredSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
+            boardCanvas.setSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
+        } catch (IOException ex) {
+            Logger.getLogger(GameWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         boardCanvas.setGame(gs);
     }
-    public void setState(ExtendedGameState egs) {
-        boardCanvas.setState(egs);  
+    public void setState(ExtendedGameState egs) {         
+        //print outputs, listings... - TODO
+        int currentPlayer = egs.basicGameState.currentPlayer;
+        //g.drawString("On move player " + currentPlayer+" "+gameSpec.playerNames[currentPlayer],10,10); 
+        this.repaint();
+        
+        boardCanvas.setState(egs);
         boardCanvas.repaint();
     }
+    
+    @Override
+    public void paint(Graphics g) {
+      // int currentPlayer = egs.basicGameState.currentPlayer;
+        g.drawString("Dont touch that in ", 627,50);
+        g.drawString("visual designer! sensitive", 627,65);
+        //todo - draw from array of strings - generated in setState
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
     // End of variables declaration//GEN-END:variables

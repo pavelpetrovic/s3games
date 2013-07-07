@@ -33,11 +33,9 @@ public class BoardCanvas extends Canvas {
     }
         
     public void setState(ExtendedGameState egs) {
-        egameState = egs;
-        
+        egameState = egs;    
     }
-    
-    
+     
     @Override
     public void paint(Graphics g) {
         g.clearRect(0, 0, this.getWidth(), this.getHeight());  //clear window
@@ -60,12 +58,7 @@ public class BoardCanvas extends Canvas {
                     Integer actualState = egameState.basicGameState.elementStates.get(elementName);
                     img = elType.images[actualState];
                     g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
-                }   
-               
-               //print outputs, listings... - mozem to dat aj k setState bud priamo do window alebo tu do funkcie kde poslem hned aj panel
-               int currentPlayer = egameState.basicGameState.currentPlayer;
-               g.drawString("On move player " + currentPlayer+" "+gameSpec.playerNames[currentPlayer],10,10);
-               
+                }                
             }
         }
     }
