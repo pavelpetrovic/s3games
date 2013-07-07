@@ -11,7 +11,7 @@ package s3games.robot;
  */
 public class RobotLocation
 {
-    public static final int NUMBER_OF_ROBOT_ANGLES = 4;
+    public static final int NUMBER_OF_ROBOT_ANGLES = 5;
 
     int angles[];
 

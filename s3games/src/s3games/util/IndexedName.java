@@ -25,9 +25,9 @@ public class IndexedName
         }
         else
         {
-            String[] nm = name.split("(", 2);
+            String[] nm = name.split("\\(", 2);
             baseName = nm[0];
-            String[] args = nm[1].substring(1, nm[1].length() - 1).split(",");
+            String[] args = nm[1].substring(0, nm[1].length() - 1).split(",");
             index = new Integer[args.length];
             for (int i = 0; i < index.length; i++)
                 index[i] = Integer.parseInt(args[i].trim());
