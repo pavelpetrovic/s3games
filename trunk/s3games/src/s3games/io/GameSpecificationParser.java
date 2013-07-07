@@ -185,14 +185,14 @@ public class GameSpecificationParser
 
     }
 
-    String situation;
+    Expression situation;
     private void endOfGameSetting(String var, String val)
     {
         var = var.toLowerCase();
         if (var.equals("situation"))
-            situation = val;
+            situation = new Expression(Expression.ANONYMOUS, val);
         else if (var.equals("winner"))
-            specs.terminationConditions.put(situation, val);
+            specs.terminationConditions.put(situation, new Expression(Expression.ANONYMOUS, val));
     }
 
     GameRule rule;

@@ -43,8 +43,8 @@ public class GameSpecification
         elements = new HashMap<String, Element>();
         locations = new HashMap<String, Location>();
         expressions = new HashMap<String, Expression>();
-        terminationConditions = new HashMap<String,String>();
-        scorings = new HashMap<String, String>();
+        terminationConditions = new HashMap<Expression,Expression>();
+        scorings = new HashMap<Expression, Expression>();
         rules = new HashMap<String, GameRule>();
         this.config = config;
     }
