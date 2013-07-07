@@ -9,6 +9,7 @@ import s3games.gui.ControllerWindow;
 import java.util.*;
 import java.io.*;
 import javax.swing.JOptionPane;
+import s3games.gui.GameWindow;
 import s3games.io.*;
 import s3games.player.Player;
 
@@ -19,14 +20,14 @@ import s3games.player.Player;
 public class Controller   
 {
     ControllerWindow cw;
+    GameWindow gw;
     GameLogger logger;
     Config config;
 
     
     public Controller()
     {
-        //GameWindow form =  new GameWindow();
-        //form.setVisible(true);
+        gw =  new GameWindow();
         cw  = new ControllerWindow(this);
         cw.setVisible(true);
         logger = new GameLogger();
@@ -73,6 +74,7 @@ public class Controller
            System.out.print(playerTypes[i]+" ");
            System.out.println(playerStrategies[i]);
          }
+        gw.setVisible(true);
         return 0;
     }
 
@@ -94,7 +96,7 @@ public class Controller
            System.out.println(playerStrategies[i]);
          }
          System.out.println(learnStrategyType+" "+strategyFileName+" "+numberOfRuns);
-        
+        gw.setVisible(true);
         return 0;
     }    
 }
