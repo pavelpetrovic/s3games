@@ -17,7 +17,7 @@ public class GameState
     public Map<String,Integer> elementStates;
     /** for each element name, location name where it currently is placed */
     public Map<String,String> elementLocations;
-    /** for each lement name, the number of player */
+    /** for each element name, the number of player */
     public Map<String,Integer> elementOwners;
     /** the player number on move 1..N */
     public int currentPlayer;
