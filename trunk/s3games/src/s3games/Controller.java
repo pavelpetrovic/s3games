@@ -54,7 +54,7 @@ public class Controller
     //todo
     public int getNumberOfPlayersForGame(String gameName)
     {
-        return 1;
+        return 2;
     }
 
     /** starts a single game
@@ -67,6 +67,12 @@ public class Controller
      */
     public int play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies)
     {
+        System.out.println(gameName);
+        System.out.println(boardType);
+        for (int i=0; i<playerTypes.length ; i++) {
+           System.out.print(playerTypes[i]+" ");
+           System.out.println(playerStrategies[i]);
+         }
         return 0;
     }
 
@@ -81,6 +87,14 @@ public class Controller
      */
     public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String learnStrategyType, String strategyFileName, int numberOfRuns)
     {
+        System.out.println(gameName);
+        System.out.println(boardType);
+        for (int i=0; i<playerTypes.length ; i++) {
+           System.out.print(playerTypes[i]+" ");
+           System.out.println(playerStrategies[i]);
+         }
+         System.out.println(learnStrategyType+" "+strategyFileName+" "+numberOfRuns);
+        
         return 0;
     }    
 }
