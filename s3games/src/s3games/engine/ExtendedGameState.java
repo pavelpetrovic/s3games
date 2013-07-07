@@ -5,7 +5,7 @@
 
 package s3games.engine;
 
-import java.util.Dictionary;
+import java.util.*;
 
 /**
  *
@@ -13,7 +13,7 @@ import java.util.Dictionary;
  */
 public class ExtendedGameState
 {
-    GameState basicGameState;
-    Dictionary<String,Integer> elementzIndexes;
-    Dictionary<String,Integer> playerScores;
+    public GameState basicGameState;
+    public Map<String,Integer> elementzIndexes;
+    public Map<String,Integer> playerScores;
 }

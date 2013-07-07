@@ -18,7 +18,7 @@ import s3games.io.Config;
 public class Game
 {
     ExtendedGameState state;
-    Dictionary<String,Player> players;
+    Map<String,Player> players;
 
     GameSpecification gameSpecification;
     GameWindow window;
