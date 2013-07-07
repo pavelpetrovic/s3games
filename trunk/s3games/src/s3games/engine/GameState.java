@@ -17,5 +17,5 @@ public class GameState
     public Map<String,Integer> elementStates;
     public Map<String,String> elementLocations;
     public Map<String,String> elementOwners;
-    public String currentPlayer;
+    public int currentPlayer;
 }
