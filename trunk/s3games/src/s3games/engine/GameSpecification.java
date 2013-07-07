@@ -8,6 +8,8 @@ package s3games.engine;
 import s3games.gui.ImageWithHotSpot;
 import java.util.*;
 import java.util.Map;
+import s3games.io.Config;
+import s3games.io.GameLogger;
 import s3games.io.GameSpecificationParser;
 
 /**
@@ -16,26 +18,31 @@ import s3games.io.GameSpecificationParser;
  */
 public class GameSpecification
 {
-    String boardBackgroundFileName;
+    public String gameName;
+    public String boardBackgroundFileName;
 
-    Map<String,ImageWithHotSpot> locationTypes;
-    Map<String,ElementType> elementTypes;
-    Map<String,Element> elements;
-    Map<String,Location> locations;
+    public Map<String,ImageWithHotSpot> locationTypes;
+    public Map<String,ElementType> elementTypes;
+    public Map<String,Element> elements;
+    public Map<String,Location> locations;
 
-    String playerNames[];
+    public String playerNames[];
 
-    public GameSpecification()
+    Config config;
+    GameLogger logger;
+
+    public GameSpecification(Config config, GameLogger logger)
     {
         locationTypes = new HashMap<String, ImageWithHotSpot>();
         elementTypes = new HashMap<String, ElementType>();
         elements = new HashMap<String, Element>();
         locations = new HashMap<String, Location>();
+        this.config = config;
     }
 
-    public void load(String fileName)
+    public boolean load(String gameName)
     {        
-        GameSpecificationParser parser = new GameSpecificationParser();
-        parser.load(fileName, this);
+        GameSpecificationParser parser = new GameSpecificationParser(config, logger);
+        return parser.load(gameName, this);
     }
 }

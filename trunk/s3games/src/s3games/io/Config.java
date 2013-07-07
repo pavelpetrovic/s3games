@@ -15,8 +15,11 @@ public class Config implements Serializable
 {
     public static final String configFileName = ".s3games.cfg";
 
-    public static final String defaultPathGameSpecification = ".";
-    String lastPathGameSpecification;
+    public static final String defaultGamesFolder = "games";
+    public String gamesFolder;
+
+    public static final String defaultImagePath = "images";
+    public String imagePath;
 
     GameLogger logger;
 
@@ -43,11 +46,13 @@ public class Config implements Serializable
             ObjectInputStream f = new ObjectInputStream(new FileInputStream(configFileName));
             Config cfg = (Config)f.readObject();
             f.close();
-            lastPathGameSpecification = cfg.lastPathGameSpecification;
+            gamesFolder = cfg.gamesFolder;
+            imagePath = cfg.imagePath;
         } catch (Exception e)
         {
             logger.warning("could not load config file from " + configFileName);
-            lastPathGameSpecification = defaultPathGameSpecification;
+            gamesFolder = defaultGamesFolder;
+            imagePath = defaultImagePath;
             save();
         }
     }

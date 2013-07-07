@@ -13,7 +13,13 @@ import s3games.gui.ImageWithHotSpot;
  */
 public class ElementType
 {
-    String name;
-    int numStates;  // 0..n-1
-    ImageWithHotSpot images[];
+    public String name;
+    public int numStates;
+    public ImageWithHotSpot images[]; // 0..n-1
+
+    public ElementType(String name)
+    {
+        this.name = name;
+        numStates = 0;
+    }
 }

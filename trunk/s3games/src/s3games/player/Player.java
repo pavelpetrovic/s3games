@@ -15,6 +15,6 @@ public abstract class Player
 {
     public enum playerType { HUMAN, COMPUTER };
     public enum boardType { REALWORLD, SIMULATED };
-    
+
     public abstract Move move();
 }
