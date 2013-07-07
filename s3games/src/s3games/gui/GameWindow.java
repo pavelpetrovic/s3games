@@ -4,6 +4,8 @@
  */
 package s3games.gui;
 
+import s3games.engine.GameSpecification;
+
 /**
  *
  * @author Boris
@@ -93,6 +95,10 @@ public class GameWindow extends javax.swing.JFrame {
                 new GameWindow().setVisible(true);
             }
         });
+    }
+    public void setGame(GameSpecification gs) {
+    
+        canvas1.repaint();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
