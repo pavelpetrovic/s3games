@@ -5,7 +5,7 @@
 
 package s3games.engine;
 
-import java.util.Dictionary;
+import java.util.*;
 
 /**
  *
@@ -14,8 +14,8 @@ import java.util.Dictionary;
 public class GameState
 {
     
-    Dictionary<String,Integer> elementStates;
-    Dictionary<String,String> elementLocations;
-    Dictionary<String,String> elementOwners;
+    Map<String,Integer> elementStates;
+    Map<String,String> elementLocations;
+    Map<String,String> elementOwners;
     String currentPlayer;
 }
