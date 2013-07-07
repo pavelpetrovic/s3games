@@ -26,16 +26,22 @@ public class Game
     Config config;
     GameLogger logger;
 
-    public Game(Config config, GameLogger logger)
+    public Game(Config config, GameLogger logger, GameWindow window)
     {
         this.config = config;
         this.logger = logger;
+        this.window = window;
     }
 
     public int play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies)
     {
         gameSpecification = new GameSpecification(config, logger);
         gameSpecification.load(gameName);
+        window.setGame(gameSpecification);
+
+        // create players
+
+        // main game loop
 
         return 0;
     }
