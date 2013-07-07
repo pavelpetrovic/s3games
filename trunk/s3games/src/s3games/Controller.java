@@ -9,6 +9,7 @@ import s3games.gui.ControllerWindow;
 import java.util.*;
 import java.io.*;
 import javax.swing.JOptionPane;
+import s3games.engine.Game;
 import s3games.gui.GameWindow;
 import s3games.io.*;
 import s3games.player.Player;
@@ -75,7 +76,8 @@ public class Controller
            System.out.println(playerStrategies[i]);
          }
         gw.setVisible(true);
-        return 0;
+        Game game = new Game(config, logger, gw);
+        return game.play(gameName, boardType, playerTypes, playerStrategies);
     }
 
         /** starts a single game

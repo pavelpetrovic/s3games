@@ -11,7 +11,7 @@ package s3games.engine;
  */
 public class Move
 {
-    String from;
-    String to;
-    String element;
+    public String from;
+    public String to;
+    public String element;
 }
