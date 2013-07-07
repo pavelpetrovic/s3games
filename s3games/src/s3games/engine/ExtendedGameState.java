@@ -15,5 +15,5 @@ public class ExtendedGameState
 {
     public GameState basicGameState;
     public Map<String,Integer> elementzIndexes;
-    public Map<String,Integer> playerScores;
+    public int[] playerScores;
 }
