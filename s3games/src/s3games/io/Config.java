@@ -21,7 +21,7 @@ public class Config implements Serializable
     public static final String defaultImagePath = "images";
     public String imagePath;
 
-    GameLogger logger;
+    transient GameLogger logger;
 
     public Config(GameLogger logger)
     {
