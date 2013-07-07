@@ -9,6 +9,7 @@ import s3games.gui.ControllerWindow;
 import java.util.*;
 import java.io.*;
 import javax.swing.JOptionPane;
+import s3games.io.*;
 
 /**
  *
@@ -17,15 +18,21 @@ import javax.swing.JOptionPane;
 public class Controller   
 {
     ControllerWindow cw;
+    GameLogger logger;
+    Config config;
     
     public Controller() {
         //GameWindow form =  new GameWindow();
         //form.setVisible(true);
         cw  = new ControllerWindow(this);
-        cw.setVisible(true);  
+        cw.setVisible(true);
+        logger = new GameLogger();
+        config = new Config(logger);
+        config.load();
     }
     
-    public boolean readFile(BufferedReader r) {  //or can return a number of players after parsing...
+    public boolean readFile(BufferedReader r)
+    {  //or can return a number of players after parsing...
         try {
            //todo - use parser 
            Scanner in=new Scanner(r);
