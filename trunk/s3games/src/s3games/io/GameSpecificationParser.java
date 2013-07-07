@@ -122,6 +122,7 @@ public class GameSpecificationParser
         var = var.toLowerCase();
         if (var.equals("name"))
         {
+            System.out.println("location name:'" + val + "'");
             location = new Location(val);
             specs.locations.put(val, location);
         }
@@ -144,6 +145,7 @@ public class GameSpecificationParser
             try { location.robot = new RobotLocation(val); }
             catch (Exception e)
             {
+                e.printStackTrace();
                 logger.error(e.toString());
                 throw e;
             }
