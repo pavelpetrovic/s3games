@@ -4,6 +4,10 @@
  */
 package s3games.gui;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
 
@@ -18,7 +22,7 @@ public class GameWindow extends javax.swing.JFrame {
      */
     public GameWindow() {
         initComponents();
-        boardCanvas = (BoardCanvas) canvas1;
+        boardCanvas = (BoardCanvas) canvas1;     
     }
 
     /**
@@ -31,10 +35,10 @@ public class GameWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         canvas1 = new BoardCanvas();
-        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Board");
+        setPreferredSize(new java.awt.Dimension(600, 630));
         setResizable(false);
 
         canvas1.setBackground(new java.awt.Color(255, 255, 255));
@@ -45,32 +49,15 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 138, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
         );
 
         pack();
@@ -115,7 +102,14 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
     }
-    public void setGame(GameSpecification gs) {
+    public void setGame(GameSpecification gs) throws IOException {
+        //resize the window + canvas according to image
+        Image bgImage = ImageIO.read(new File(gs.boardBackgroundFileName));
+        this.setSize(bgImage.getWidth(this),bgImage.getHeight(this));
+      //  boardCanvas.setPreferredSize(new java.awt.Dimension(100, 150));
+        boardCanvas.setSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
+     //    
+       
         boardCanvas.setGame(gs);
     }
     public void setState(ExtendedGameState egs) {
@@ -124,6 +118,5 @@ public class GameWindow extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
