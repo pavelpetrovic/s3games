@@ -12,14 +12,13 @@ import s3games.engine.GameSpecification;
  * @author Boris
  */
 public class GameWindow extends javax.swing.JFrame {
-
-    GameSpecification gameSpec;
-    ExtendedGameState egameState;
+    BoardCanvas boardCanvas;
     /**
      * Creates new form Form
      */
     public GameWindow() {
         initComponents();
+        boardCanvas = (BoardCanvas) canvas1;
     }
 
     /**
@@ -100,13 +99,11 @@ public class GameWindow extends javax.swing.JFrame {
         });
     }
     public void setGame(GameSpecification gs) {
-        gameSpec = gs;
-        canvas1.repaint();
+        boardCanvas.setGame(gs);
     }
     public void setState(ExtendedGameState egs) {
-      
-        egameState = egs;
-        canvas1.repaint();
+        boardCanvas.setState(egs);  
+        boardCanvas.repaint();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
