@@ -50,7 +50,7 @@ public class Config implements Serializable
             imagePath = cfg.imagePath;
         } catch (Exception e)
         {
-            logger.warning("could not load config file from " + configFileName);
+            logger.warning("could not load config file from '" + configFileName + "'");
             gamesFolder = defaultGamesFolder;
             imagePath = defaultImagePath;
             save();

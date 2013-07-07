@@ -32,15 +32,15 @@ public class GameSpecificationParser
     {
         sectionName=sectionName.toUpperCase();
         if (sectionName.equals("BOARD")) return sections.BOARD;
-        if (sectionName.equals("ELEMENT_TYPES")) return sections.ELEMENT_TYPES;
-        if (sectionName.equals("LOCATION_TYPES")) return sections.LOCATION_TYPES;
+        if (sectionName.equals("ELEMENT TYPES")) return sections.ELEMENT_TYPES;
+        if (sectionName.equals("LOCATION TYPES")) return sections.LOCATION_TYPES;
         if (sectionName.equals("LOCATIONS")) return sections.LOCATIONS;
-        if (sectionName.equals("PLAYER_NAMES")) return sections.PLAYER_NAMES;
-        if (sectionName.equals("MOVABLE_ELEMENTS")) return sections.MOVABLE_ELEMENTS;
+        if (sectionName.equals("PLAYER NAMES")) return sections.PLAYER_NAMES;
+        if (sectionName.equals("MOVABLE ELEMENTS")) return sections.MOVABLE_ELEMENTS;
         if (sectionName.equals("EXPRESSIONS")) return sections.EXPRESSIONS;
         if (sectionName.equals("SCORINGS")) return sections.SCORINGS;
-        if (sectionName.equals("END_OF_GAME")) return sections.END_OF_GAME;
-        if (sectionName.equals("GAME_RULES")) return sections.GAME_RULES;
+        if (sectionName.equals("END OF GAME")) return sections.END_OF_GAME;
+        if (sectionName.equals("GAME RULES")) return sections.GAME_RULES;
         logger.error("unrecognized section name '" + sectionName + "'");
         throw new Exception("unrecognized section name");
     }
@@ -87,6 +87,7 @@ public class GameSpecificationParser
                 et.images[state] = new ImageWithHotSpot(config.imagePath + "/" + imageName, Integer.parseInt(hotspot[0]), Integer.parseInt(hotspot[1]));
             } catch (Exception e)
             {
+                e.printStackTrace();
                 logger.error("could not load image from file '" + imageName + "': " + e);
             }
             state++;
@@ -230,7 +231,7 @@ public class GameSpecificationParser
     {
         this.specs = specs;
         specs.playerNames = new String[0];
-        String fileName = config.gamesFolder + "/" + gameName;
+        String fileName = gameName; //config.gamesFolder + "/" + gameName;
         try {
             BufferedReader r = new BufferedReader(new FileReader (fileName));
             sections section = sections.BOARD;
@@ -260,6 +261,8 @@ public class GameSpecificationParser
 
         } catch (Exception e)
         {
+            System.out.println("f:'" + fileName + "':" + e);
+            e.printStackTrace();
             logger.error("could not load game specification from file " + fileName);
             return false;
         }
