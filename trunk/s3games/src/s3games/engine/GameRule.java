@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class GameRule
 {
     public String name;
-    public String element;
-    public String from;
-    public String to;
+    public Expression element;
+    public Expression from;
+    public Expression to;
     public Expression condition;
     public Expression scores;
     public ArrayList<String> actions;

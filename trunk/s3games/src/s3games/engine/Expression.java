@@ -11,5 +11,9 @@ package s3games.engine;
  */
 public class Expression
 {
-    
+    public static final String ANONYMOUS = "ANONYMOUS";
+    public Expression(String name, String expression)
+    {
+        
+    }
 }
