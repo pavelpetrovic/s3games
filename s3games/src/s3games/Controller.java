@@ -23,7 +23,8 @@ public class Controller
     Config config;
 
     
-    public Controller() {
+    public Controller()
+    {
         //GameWindow form =  new GameWindow();
         //form.setVisible(true);
         cw  = new ControllerWindow(this);
@@ -81,22 +82,5 @@ public class Controller
     public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String learnStrategyType, String strategyFileName, int numberOfRuns)
     {
         return 0;
-    }
-
-    
-    public boolean readFile(BufferedReader r)
-    {  //or can return a number of players after parsing...
-        try {
-           //todo - use parser 
-           Scanner in=new Scanner(r);
-           while (in.hasNext()) {
-                System.out.println(in.next());
-           }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(cw, "bad file format");
-            return false;
-        }
-       return true;
-    }
-    
+    }    
 }
