@@ -27,8 +27,8 @@ public class GameSpecification
     public Map<String,Location> locations;
 
     public Map<String,Expression> expressions;
-    public Map<String,String> terminationConditions;
-    public Map<String,String> scorings;
+    public Map<Expression,Expression> terminationConditions;
+    public Map<Expression,Expression> scorings;
     public Map<String,GameRule> rules;
 
     public String playerNames[];

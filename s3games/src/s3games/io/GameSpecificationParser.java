@@ -205,11 +205,11 @@ public class GameSpecificationParser
             specs.rules.put(val, rule);
         }
         else if (var.equals("element"))
-            rule.element = val;
+            rule.element = new Expression(Expression.ANONYMOUS, val);
         else if (var.equals("from"))
-            rule.from = val;
+            rule.from = new Expression(Expression.ANONYMOUS, val);
         else if (var.equals("to"))
-            rule.to = val;
+            rule.to = new Expression(Expression.ANONYMOUS, val);
         //todo...
     }
 
