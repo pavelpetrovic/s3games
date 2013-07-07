@@ -14,8 +14,8 @@ import java.util.*;
 public class GameState
 {
     
-    Map<String,Integer> elementStates;
-    Map<String,String> elementLocations;
-    Map<String,String> elementOwners;
-    String currentPlayer;
+    public Map<String,Integer> elementStates;
+    public Map<String,String> elementLocations;
+    public Map<String,String> elementOwners;
+    public String currentPlayer;
 }
