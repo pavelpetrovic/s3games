@@ -26,7 +26,7 @@ public class GameSpecificationParser
 
     enum sections { BOARD, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
                         PLAYER_NAMES, MOVABLE_ELEMENTS, EXPRESSIONS,
-                        SCORINGS, GAME_RULES };
+                        SCORINGS, END_OF_GAME, GAME_RULES };
 
     sections getSection(String sectionName) throws Exception
     {
@@ -39,6 +39,7 @@ public class GameSpecificationParser
         if (sectionName.equals("MOVABLE_ELEMENTS")) return sections.MOVABLE_ELEMENTS;
         if (sectionName.equals("EXPRESSIONS")) return sections.EXPRESSIONS;
         if (sectionName.equals("SCORINGS")) return sections.SCORINGS;
+        if (sectionName.equals("END_OF_GAME")) return sections.END_OF_GAME;
         if (sectionName.equals("GAME_RULES")) return sections.GAME_RULES;
         logger.error("unrecognized section name '" + sectionName + "'");
         throw new Exception("unrecognized section name");
@@ -47,6 +48,7 @@ public class GameSpecificationParser
     public GameSpecificationParser(Config config, GameLogger logger)
     {
         this.config = config;
+        this.logger = logger;
     }
 
     private void addExpressionLine(String ln)
@@ -56,7 +58,7 @@ public class GameSpecificationParser
 
     private void boardSetting(String var, String val)
     {
-        if (var.equals("image")) specs.boardBackgroundFileName = val;
+        if (var.equals("image")) specs.boardBackgroundFileName = config.imagePath + "/" + val;
     }
 
     ElementType et;
@@ -157,9 +159,22 @@ public class GameSpecificationParser
         specs.playerNames = newNames;
     }
 
+    Element el;
     private void movableElementSetting(String var, String val)
     {
-        
+        var = var.toLowerCase();
+        if (var.equals("name"))
+        {
+            el = new Element(val);
+            specs.elements.put(val, el);
+        }
+        else if (var.equals("type"))
+            el.type = val;
+        else if (var.equals("player"))
+            el.initialOwner = val;
+        else if (var.equals("location"))
+            el.initialLocation = val;
+        //todo...
     }
 
     private void scoringsSetting(String var, String val)
@@ -167,9 +182,32 @@ public class GameSpecificationParser
 
     }
 
+    String situation;
+    private void endOfGameSetting(String var, String val)
+    {
+        var = var.toLowerCase();
+        if (var.equals("situation"))
+            situation = val;
+        else if (var.equals("winner"))
+            specs.terminationConditions.put(situation, val);
+    }
+
+    GameRule rule;
     private void rulesSetting(String var, String val)
     {
-
+        var = var.toLowerCase();
+        if (var.equals("name"))
+        {
+            rule = new GameRule(val);
+            specs.rules.put(val, rule);
+        }
+        else if (var.equals("element"))
+            rule.element = val;
+        else if (var.equals("from"))
+            rule.from = val;
+        else if (var.equals("to"))
+            rule.to = val;
+        //todo...
     }
 
     private void storeSetting(sections section, String var, String val) throws Exception
@@ -183,6 +221,7 @@ public class GameSpecificationParser
             case PLAYER_NAMES: playerNameSetting(var, val); break;
             case MOVABLE_ELEMENTS: movableElementSetting(var, val); break;
             case SCORINGS: scoringsSetting(var, val); break;
+            case END_OF_GAME: endOfGameSetting(var, val); break;
             case GAME_RULES: rulesSetting(var, val); break;
         }
     }

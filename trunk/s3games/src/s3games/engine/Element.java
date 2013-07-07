@@ -5,6 +5,8 @@
 
 package s3games.engine;
 
+import s3games.util.IndexedName;
+
 /**
  *
  * @author petrovic16
@@ -12,17 +14,20 @@ package s3games.engine;
 public class Element
 {
     // static - specification
-    String fullName;
-    String baseName;
-    Integer index;
+    public IndexedName name;
 
-    String type;
-    String initialOwner;
-    String initialLocation;
-    int initialState;
-    int initialZindex;
+    public String type;
+    public String initialOwner;
+    public String initialLocation;
+    public int initialState;
+    public int initialZindex;
 
     // dynamic - during the game play
-    String owner;
-    Location location;
+    public String owner;
+    public Location location;
+
+    public Element(String name)
+    {
+
+    }
 }
