@@ -31,4 +31,10 @@ public class GameLogger
     {
         appendToLog(generalLogFile, "warn: " + message);
     }
+
+    public void error(String message)
+    {
+        appendToLog(generalLogFile, "err: " + message);
+    }
+
 }
