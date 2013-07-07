@@ -62,7 +62,7 @@ public class BoardCanvas extends Canvas {
                     g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
                 }   
                
-               //print outputs, listings...
+               //print outputs, listings... - mozem to dat aj k setState bud priamo do window alebo tu do funkcie kde poslem hned aj panel
                int currentPlayer = egameState.basicGameState.currentPlayer;
                g.drawString("On move player " + currentPlayer+" "+gameSpec.playerNames[currentPlayer],10,10);
                
