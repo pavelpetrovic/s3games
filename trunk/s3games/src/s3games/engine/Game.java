@@ -26,6 +26,8 @@ public class Game
     Config config;
     GameLogger logger;
 
+    Variables vars;
+
     public Game(Config config, GameLogger logger, GameWindow window)
     {
         this.config = config;
@@ -37,6 +39,7 @@ public class Game
     {
         gameSpecification = new GameSpecification(config, logger);
         gameSpecification.load(gameName);
+        vars = new Variables();
         window.setGame(gameSpecification);
 
         // create players

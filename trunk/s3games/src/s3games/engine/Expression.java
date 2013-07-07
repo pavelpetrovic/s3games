@@ -6,6 +6,7 @@
 package s3games.engine;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -18,8 +19,31 @@ public class Expression
     public String name;
     public ArrayList<Expr> lines;
 
-    public Expression(String name, String expression)
+    public Expression(String name)
     {
+        this.name = name;
+        lines = new ArrayList<Expr>();
+    }
+
+    public Expression(String name, String singleLine)
+    {
+        this(name);
+        addLine(singleLine);
+    }
+
+    public final void addLine(String ln)
+    {
+        lines.add(parseExpr(ln));
+    }
+
+    static final String allSeparators = "=!<=>+-*/% \t(),";
+
+    Expr parseExpr(String ln)
+    {
+        StringTokenizer st = new StringTokenizer(ln, allSeparators);
+        String first = st.nextToken();
+        Expr.internalFunction fn = Expr.getInternalFunction(first);
         
+        return null;
     }
 }
