@@ -4,6 +4,7 @@
  */
 package s3games.gui;
 
+import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
 
 /**
@@ -12,6 +13,8 @@ import s3games.engine.GameSpecification;
  */
 public class GameWindow extends javax.swing.JFrame {
 
+    GameSpecification gameSpec;
+    ExtendedGameState egameState;
     /**
      * Creates new form Form
      */
@@ -97,7 +100,12 @@ public class GameWindow extends javax.swing.JFrame {
         });
     }
     public void setGame(GameSpecification gs) {
-    
+        gameSpec = gs;
+        canvas1.repaint();
+    }
+    public void setState(ExtendedGameState egs) {
+      
+        egameState = egs;
         canvas1.repaint();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
