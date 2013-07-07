@@ -33,6 +33,11 @@ public class Controller
         config.load();
     }
 
+    public String[] getGameNames()
+    {
+        return new String[] { "Nim", "Frogs", "TicTacToe" };
+    }
+    
     //todo
     public String[] getStrategiesForGame(String gameName)
     {

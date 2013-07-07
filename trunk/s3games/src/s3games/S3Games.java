@@ -10,9 +10,8 @@ package s3games;
  *
  * @author petrovic16
  */
-public class S3Games {
-    
-
+public class S3Games
+{
     /**
      * @param args the command line arguments
      */
