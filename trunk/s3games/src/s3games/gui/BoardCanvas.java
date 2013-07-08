@@ -17,7 +17,7 @@ import s3games.engine.Location;
  * @author Boris
  */
 public class BoardCanvas extends Canvas {
-    GameSpecification gameSpec = null;
+    public GameSpecification gameSpec = null;
     ExtendedGameState egameState = null;
     Image bgImage;
     ImageWithHotSpot img;
