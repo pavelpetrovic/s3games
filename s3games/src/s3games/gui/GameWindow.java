@@ -7,6 +7,7 @@ package s3games.gui;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -19,6 +20,8 @@ import s3games.engine.GameSpecification;
  */
 public class GameWindow extends javax.swing.JFrame {
     BoardCanvas boardCanvas;
+    ArrayList<String> outputTexts = null;
+    int offsetY;  //for drawing of text = distance of right gap from left side
     /**
      * Creates new form Form
      */
@@ -112,17 +115,25 @@ public class GameWindow extends javax.swing.JFrame {
             //resize the window + canvas according to image
             Image bgImage = ImageIO.read(new File(gs.boardBackgroundFileName));
             this.setSize(bgImage.getWidth(this)+132,bgImage.getHeight(this)+30);  //130 takes panel and 30 because top panel also takes a place and his height is counted to total size of jframe...
+            offsetY=bgImage.getWidth(this)+4;
             //boardCanvas.setPreferredSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
             boardCanvas.setSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
         } catch (IOException ex) {
             Logger.getLogger(GameWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-         boardCanvas.setGame(gs);
+        boardCanvas.setGame(gs);
     }
     public void setState(ExtendedGameState egs) {         
-        //print outputs, listings... - TODO
+        //generate array of strings for output text
         int currentPlayer = egs.basicGameState.currentPlayer;
-        //g.drawString("On move player " + currentPlayer+" "+gameSpec.playerNames[currentPlayer],10,10); 
+        outputTexts = new ArrayList<String>();
+        outputTexts.add("Player on move " + currentPlayer+" "+boardCanvas.gameSpec.playerNames[currentPlayer]);
+        outputTexts.add("Scores: ");
+        for(int i=0; i< boardCanvas.gameSpec.playerNames.length; i++) {
+            String name = boardCanvas.gameSpec.playerNames[i];
+            int score = egs.playerScores[i];
+            outputTexts.add(i+" "+name+": "+score);
+        }
         this.repaint();
         
         boardCanvas.setState(egs);
@@ -131,10 +142,16 @@ public class GameWindow extends javax.swing.JFrame {
     
     @Override
     public void paint(Graphics g) {
-      // int currentPlayer = egs.basicGameState.currentPlayer;
-        g.drawString("Dont touch that in ", 627,50);
-        g.drawString("visual designer! sensitive", 627,65);
-        //todo - draw from array of strings - generated in setState
+        g.drawString("Dont touch that in ", offsetY,50);
+        g.drawString("visual designer! sensitive", offsetY,65);
+        //draw output texts from array of strings - generated in setState
+        if (outputTexts != null) {
+           int x = 100;
+           for(String s :outputTexts) {  //foreach item
+               x += 17;
+               g.drawString(s,offsetY,x);
+           }
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
