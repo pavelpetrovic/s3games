@@ -22,6 +22,7 @@ public class GameWindow extends javax.swing.JFrame {
     BoardCanvas boardCanvas;
     ArrayList<String> outputTexts = null;
     int offsetY;  //for drawing of text = distance of right gap from left side
+    boolean repaint = true;
     /**
      * Creates new form Form
      */
@@ -46,12 +47,22 @@ public class GameWindow extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setPreferredSize(new java.awt.Dimension(600, 600));
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         canvas1.setBackground(new java.awt.Color(255, 255, 255));
         canvas1.setPreferredSize(new java.awt.Dimension(600, 600));
         canvas1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 canvas1MousePressed(evt);
+            }
+        });
+        canvas1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                canvas1KeyPressed(evt);
             }
         });
 
@@ -75,6 +86,17 @@ public class GameWindow extends javax.swing.JFrame {
 
         System.out.println(evt.getX() +" "+ evt.getY());
     }//GEN-LAST:event_canvas1MousePressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+       if (Character.toLowerCase(evt.getKeyChar()) == 'r') {
+           repaint = !repaint;
+           this.repaint();
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void canvas1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_canvas1KeyPressed
+        this.formKeyPressed(evt);   //added because of varied focus on window components...
+    }//GEN-LAST:event_canvas1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -134,16 +156,17 @@ public class GameWindow extends javax.swing.JFrame {
             int score = egs.playerScores[i];
             outputTexts.add(i+" "+name+": "+score);
         }
-        this.repaint();
+        this.repaint();             //teraz rozmyslam ci toto nevyvola dako automaticky aj prekreslenie obashujuceho canvasu ale to zistim asi az potom....
         
-        boardCanvas.setState(egs);
-        boardCanvas.repaint();
+        if (repaint) {
+            boardCanvas.setState(egs);
+            boardCanvas.repaint();
+        }
     }
     
     @Override
     public void paint(Graphics g) {
-        g.drawString("Dont touch that in ", offsetY,50);
-        g.drawString("visual designer! sensitive", offsetY,65);
+        g.clearRect(offsetY, 0, this.getWidth(), this.getHeight());  //clear last text
         //draw output texts from array of strings - generated in setState
         if (outputTexts != null) {
            int x = 100;
@@ -152,7 +175,12 @@ public class GameWindow extends javax.swing.JFrame {
                g.drawString(s,offsetY,x);
            }
         }
+        Font font = new Font("Arial", Font.PLAIN, 10);
+        g.setFont(font);
+        g.drawString("Canvas redrawing: "+((repaint)?"ON":"OFF"), offsetY+3, this.getHeight() - 30 );
+        g.drawString("-press key R to change", offsetY+5, this.getHeight() - 19 );
     }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
