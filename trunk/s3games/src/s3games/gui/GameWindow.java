@@ -149,7 +149,7 @@ public class GameWindow extends javax.swing.JFrame {
         //generate array of strings for output text
         int currentPlayer = egs.basicGameState.currentPlayer;
         outputTexts = new ArrayList<String>();
-        outputTexts.add("Player on move " + currentPlayer+" "+boardCanvas.gameSpec.playerNames[currentPlayer]);
+        outputTexts.add("Player on move " + currentPlayer+" "+boardCanvas.gameSpec.playerNames[currentPlayer-1]);
         outputTexts.add("Scores: ");
         for(int i=0; i< boardCanvas.gameSpec.playerNames.length; i++) {
             String name = boardCanvas.gameSpec.playerNames[i];
