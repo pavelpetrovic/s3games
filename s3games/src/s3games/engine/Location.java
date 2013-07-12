@@ -24,7 +24,7 @@ public class Location
     public RobotLocation robot;
 
     // dynamic during the game
-    Element content;
+    public Element content;
 
     public Location(String name)
     {

@@ -14,4 +14,11 @@ public class Move
     public String from;
     public String to;
     public String element;
+    
+    public Move(String from, String to, String element)
+    {
+        this.from = from;
+        this.to = to;
+        this.element = element;
+    }
 }

@@ -8,11 +8,12 @@ package s3games.io;
 import java.awt.Point;
 import java.io.*;
 import s3games.engine.*;
+import s3games.engine.expr.*;
 import s3games.gui.Circular;
 import s3games.gui.ImageWithHotSpot;
 import s3games.gui.Rectangular;
 import s3games.robot.RobotLocation;
-import s3games.util.IndexedName;
+import s3games.util.*;
 
 /**
  *
@@ -51,9 +52,21 @@ public class GameSpecificationParser
         this.logger = logger;
     }
 
-    private void addExpressionLine(String ln)
+    boolean inExpression;
+    Expression expression;
+    
+    private void addExpressionLine(String ln) throws Exception
     {
-
+        if (!inExpression)
+        {
+            NameWithArgs exprHeader = new NameWithArgs(ln);                   
+            expression = new Expression(exprHeader.args);
+            specs.expressions.put(exprHeader.baseName, expression);
+            inExpression = true;
+        }
+        else if (ln.toUpperCase().equals("END"))        
+            inExpression = false;
+        else expression.addLine(ln);
     }
 
     private void boardSetting(String var, String val)
@@ -163,7 +176,7 @@ public class GameSpecificationParser
     }
 
     Element el;
-    private void movableElementSetting(String var, String val)
+    private void movableElementSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
         if (var.equals("name"))
@@ -174,29 +187,53 @@ public class GameSpecificationParser
         else if (var.equals("type"))
             el.type = val;
         else if (var.equals("player"))
-            el.initialOwner = val;
+        {
+            el.initialOwner = 0;
+            for (int i = 0; i < specs.playerNames.length; i++)
+                if (specs.playerNames[i].equals(val))
+                {       
+                    el.initialOwner = i + 1;
+                    break;
+                }
+            if (el.initialOwner == 0) throw new Exception("unknown player name " + val);
+        }
         else if (var.equals("location"))
             el.initialLocation = val;
-        //todo...
+        else if (var.equals("state"))
+            el.initialState = Integer.parseInt(val);
+        else if (var.equals("zindex"))
+            el.initialZindex = Integer.parseInt(val);
     }
 
-    private void scoringsSetting(String var, String val)
-    {
-
-    }
-
-    Expression situation;
-    private void endOfGameSetting(String var, String val)
+    GameScoring scoring;
+    private void scoringsSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
         if (var.equals("situation"))
-            situation = new Expression(Expression.ANONYMOUS, val);
-        else if (var.equals("winner"))
-            specs.terminationConditions.put(situation, new Expression(Expression.ANONYMOUS, val));
+            scoring = new GameScoring(Expr.parseExpr(val));
+        else if (var.equals("player"))
+            scoring.players.add(Expr.parseExpr(val));
+        else if (var.equals("score"))
+            scoring.amounts.add(Expr.parseExpr(val));
     }
 
+    Expr situation;
+    private void endOfGameSetting(String var, String val) throws Exception
+    {
+        var = var.toLowerCase();
+        if (var.equals("situation"))
+            situation = Expr.parseExpr(val);
+        else if (var.equals("winner"))
+            specs.terminationConditions.put(situation, Expr.parseExpr(val));
+    }
+
+    private String stringify(String str)
+    {
+        return "\"" + str + "\"";
+    }
+    
     GameRule rule;
-    private void rulesSetting(String var, String val)
+    private void rulesSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
         if (var.equals("name"))
@@ -205,12 +242,21 @@ public class GameSpecificationParser
             specs.rules.put(val, rule);
         }
         else if (var.equals("element"))
-            rule.element = new Expression(Expression.ANONYMOUS, val);
+            rule.element = Expr.parseExpr(stringify(val));
+        else if (var.equals("state"))
+            rule.state = Expr.parseExpr(stringify(val));
         else if (var.equals("from"))
-            rule.from = new Expression(Expression.ANONYMOUS, val);
+            rule.from = Expr.parseExpr(stringify(val));
         else if (var.equals("to"))
-            rule.to = new Expression(Expression.ANONYMOUS, val);
-        //todo...
+            rule.to = Expr.parseExpr(stringify(val));
+        else if (var.equals("condition"))
+            rule.condition = Expr.parseExpr(val);
+        else if (var.equals("player"))
+            rule.scorePlayer.add(Expr.parseExpr(val));
+        else if (var.equals("score"))
+            rule.scoreAmount.add(Expr.parseExpr(val));
+        else if (var.equals("followup"))
+            rule.actions.add(val);
     }
 
     private void storeSetting(sections section, String var, String val) throws Exception
@@ -229,11 +275,19 @@ public class GameSpecificationParser
         }
     }
 
+    private void checkRules() throws Exception
+    {
+        for (GameRule r:specs.rules.values())        
+            if (r.scoreAmount.size() != r.scorePlayer.size())            
+                throw new Exception("'player=N' and 'score=X' in game rule " + r.name + " specification is not paired");        
+    }
+    
     public boolean load(String gameName, GameSpecification specs)
     {
         this.specs = specs;
         specs.playerNames = new String[0];
         String fileName = gameName; //config.gamesFolder + "/" + gameName;
+        inExpression = false;
         try {
             BufferedReader r = new BufferedReader(new FileReader (fileName));
             sections section = sections.BOARD;
@@ -260,7 +314,7 @@ public class GameSpecificationParser
                 }
             }
             r.close();
-
+            checkRules();
         } catch (Exception e)
         {
             System.out.println("f:'" + fileName + "':" + e);
