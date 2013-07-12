@@ -50,7 +50,7 @@ public class BoardCanvas extends Canvas {
                     
                     //first - paint location because it represents a part of gameboard
                     Location loc = gameSpec.locations.get(actualLocName);
-                    img = gameSpec.locationTypes.get(loc.name.fullName);
+                    img = gameSpec.locationTypes.get(loc.type);
                     g.drawImage(img.image,loc.point.x-img.hotSpot.x, loc.point.y-img.hotSpot.y,this);
 
                     //second - paint stone
