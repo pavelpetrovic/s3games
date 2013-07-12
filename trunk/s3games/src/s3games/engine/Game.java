@@ -87,6 +87,10 @@ public class Game
      * executes all conditions of tested rules with all the consequences */
     public boolean moveAllowed(Move move)
     {
+        if (!state.basicGameState.elementLocations.get(move.element).equals(move.from))
+            return false;
+        if (gameSpecification.locations.get(move.to).content != null)
+            return false;
         return true;
     }
     
