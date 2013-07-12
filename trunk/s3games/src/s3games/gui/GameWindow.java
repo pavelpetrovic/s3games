@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
+import s3games.engine.Move;
 
 /**
  *
@@ -23,12 +24,18 @@ public class GameWindow extends javax.swing.JFrame {
     ArrayList<String> outputTexts = null;
     int offsetY;  //for drawing of text = distance of right gap from left side
     boolean repaint = true;
+    
+    public Move lastMove;
+    public Object lastMoveReady;
+    public boolean waitingForMove;
+    
     /**
      * Creates new form Form
      */
     public GameWindow() {
         initComponents();
-        boardCanvas = (BoardCanvas) canvas1;     
+        boardCanvas = (BoardCanvas) canvas1;
+        lastMoveReady = new Object();
     }
 
     /**

@@ -4,6 +4,8 @@
  */
 package s3games.player;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
@@ -27,8 +29,10 @@ public class MousePlayer extends Player
     @Override
     public Move move(GameState state) 
     {
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+        win.waitingForMove = true;
+        try { win.lastMoveReady.wait(); } catch (InterruptedException ex) {}
+        win.waitingForMove = false;
+        return win.lastMove;
     }
 
     @Override

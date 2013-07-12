@@ -65,7 +65,8 @@ public class Game
                 return (state.basicGameState.currentPlayer % numberOfPlayers) + 1;
     
             performMove(nextMove);                   
-            
+    
+            playerOnMove.moveApproved(state.basicGameState);
             for (int p = 0; p < numberOfPlayers; p++)
                 players[p].otherMoved(nextMove, state.basicGameState);
             
