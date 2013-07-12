@@ -10,8 +10,6 @@ import s3games.engine.expr.Context;
 import s3games.gui.GameWindow;
 import s3games.io.Config;
 import s3games.io.GameLogger;
-import s3games.player.CameraPlayer;
-import s3games.player.MousePlayer;
 import s3games.player.Player;
 
 /**
@@ -50,23 +48,16 @@ public class Game
         {
             window.setState(state);
             Player playerOnMove = players[state.basicGameState.currentPlayer - 1];        
-            boolean retryMove;
-            boolean approved;
+            ArrayList<Move> allowedMoves = possibleMoves(state.basicGameState);            
             Move nextMove;
-            do 
-            {
-                retryMove = false;
-                nextMove = playerOnMove.move(state.basicGameState);
-                approved = moveAllowed(nextMove);                
-                if (!approved) retryMove = playerOnMove.retryMoveNotAllowed();
-            } while (retryMove);
             
+            nextMove = playerOnMove.move(state.basicGameState, allowedMoves);
+            boolean approved = moveAllowed(nextMove);                
             if (!approved) 
                 return (state.basicGameState.currentPlayer % numberOfPlayers) + 1;
     
-            performMove(nextMove);                   
-    
-            playerOnMove.moveApproved(state.basicGameState);
+            performMove(nextMove);   
+            
             for (int p = 0; p < numberOfPlayers; p++)
                 players[p].otherMoved(nextMove, state.basicGameState);
             
@@ -76,6 +67,11 @@ public class Game
         return whoWon;
     }
     
+    public ArrayList<Move> possibleMoves(GameState state)
+    {
+        return new ArrayList<Move>();
+    }
+
     /** verifies all game over conditions
      * @return the number of player who won 1..N, or 0 if end of game with draw, or -1 if not end of game */
     public int gameOver()

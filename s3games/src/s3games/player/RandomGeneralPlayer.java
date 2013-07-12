@@ -4,6 +4,7 @@
  */
 package s3games.player;
 
+import java.util.ArrayList;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
@@ -22,7 +23,7 @@ public class RandomGeneralPlayer extends Player
     }        
     
     @Override
-    public Move move(GameState state) 
+    public Move move(GameState state, ArrayList<Move> allowedMoves) 
     {
         
         throw new UnsupportedOperationException("Not supported yet.");
