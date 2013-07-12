@@ -50,16 +50,16 @@ public class BoardCanvas extends Canvas {
                     img = gameSpec.locationTypes.get(loc.type);
                     g.drawImage(img.image,loc.point.x-img.hotSpot.x, loc.point.y-img.hotSpot.y,this);
                }
-
+               
                //paint stones
                for (Map.Entry<String, String> entry : elements.entrySet()) 
                {
-                    String elementName=entry.getKey();
+                    String elementName=entry.getKey();                    
                     Element element = gameSpec.elements.get(elementName);
                     ElementType elType = gameSpec.elementTypes.get(element.type);                    
                     Integer actualState = egameState.basicGameState.elementStates.get(elementName);
                     img = elType.images[actualState];
-                    String elementLoc = egameState.basicGameState.elementLocations.get(elementName);
+                    String elementLoc = entry.getValue();
                     Location loc = gameSpec.locations.get(elementLoc);
                     g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
                 }                
