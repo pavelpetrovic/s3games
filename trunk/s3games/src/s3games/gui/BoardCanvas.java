@@ -43,21 +43,27 @@ public class BoardCanvas extends Canvas {
             g.drawImage(bgImage,0,0,this.getWidth(),this.getHeight(),this); //background
             if (egameState!=null) {
                Map<String,String> elements = egameState.basicGameState.elementLocations;
-               for (Map.Entry<String, String> entry : elements.entrySet()) {
+
+               for (Map.Entry<String, Location> location: gameSpec.locations.entrySet())
+               {
+                    Location loc = location.getValue();
+                    img = gameSpec.locationTypes.get(loc.type);
+                    g.drawImage(img.image,loc.point.x-img.hotSpot.x, loc.point.y-img.hotSpot.y,this);
+               }
+
+               for (Map.Entry<String, String> entry : elements.entrySet()) 
+               {
                     String elementName=entry.getKey();
                     String actualLocName = entry.getValue(); //location name where it is currently placed
                //     System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    
-                    //first - paint location because it represents a part of gameboard
-                    Location loc = gameSpec.locations.get(actualLocName);
-                    img = gameSpec.locationTypes.get(loc.type);
-                    g.drawImage(img.image,loc.point.x-img.hotSpot.x, loc.point.y-img.hotSpot.y,this);
-
+                   
                     //second - paint stone
                     Element element = gameSpec.elements.get(elementName);
                     ElementType elType = gameSpec.elementTypes.get(element.type);                    
                     Integer actualState = egameState.basicGameState.elementStates.get(elementName);
                     img = elType.images[actualState];
+                    String elementLoc = egameState.basicGameState.elementLocations.get(elementName);
+                    Location loc = gameSpec.locations.get(elementLoc);
                     g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
                 }                
             }
