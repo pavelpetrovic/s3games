@@ -26,5 +26,10 @@ public abstract class Player
         return false;  //default behaviour - player will lose the game
     }
     
+    /** notifies the player that the move returned by move() was correct */
+    public void moveApproved(GameState state)
+    {        
+    }
+    
     public abstract void otherMoved(Move move, GameState newState);
 }
