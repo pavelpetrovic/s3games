@@ -9,9 +9,13 @@ import s3games.gui.ControllerWindow;
 import java.util.*;
 import java.io.*;
 import javax.swing.JOptionPane;
+import s3games.ai.Strategy;
 import s3games.engine.Game;
+import s3games.engine.GameSpecification;
 import s3games.gui.GameWindow;
 import s3games.io.*;
+import s3games.player.CameraPlayer;
+import s3games.player.MousePlayer;
 import s3games.player.Player;
 
 /**
@@ -44,13 +48,20 @@ public class Controller
     //todo
     public String[] getStrategiesForGame(String gameName)
     {
-        return new String[] { "Random", "Intelligent123" };
+        return Strategy.availableStrategies(gameName);
+        //return new String[] { "Random", "Intelligent123" };
     }
 
     //todo
     public String[] getLearnableStrategyTypesForGame(String gameName)
     {
-        return new String[] { "NN 7", "RL 5" };
+        ArrayList<String> learnable = new ArrayList<String>();
+        for(String s:getStrategiesForGame(gameName))
+            if (Strategy.learnable(s))
+                learnable.add(s);
+        
+        String[] result = new String[learnable.size()];
+        return learnable.toArray(result);
     }
 
     //todo
@@ -77,7 +88,27 @@ public class Controller
          }
         gw.setVisible(true);
         Game game = new Game(config, logger, gw);
-        return game.play(gameName, boardType, playerTypes, playerStrategies);
+        
+        GameSpecification gameSpecification = new GameSpecification(config, logger);
+        gameSpecification.load(gameName);        
+        
+        ArrayList<Player> players = new ArrayList<Player>();                
+        for(int player = 0; player < gameSpecification.playerNames.length; player++)
+        {
+            Player p;
+            if (playerTypes[player] == Player.playerType.HUMAN)
+            {
+                if (boardType == Player.boardType.REALWORLD)
+                    p = new CameraPlayer(gameSpecification);
+                else p = new MousePlayer(gameSpecification, gw);
+            }
+            else p = Strategy.getStrategy(playerStrategies[player]).getPlayer(gameSpecification);
+            
+            players.add(p);
+        }
+        
+        Player[] pls = new Player[players.size()];
+        return game.play(gameSpecification, players.toArray(pls));
     }
 
         /** starts a single game

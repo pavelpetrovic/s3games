@@ -6,7 +6,9 @@
 package s3games.ai;
 
 import s3games.engine.Game;
+import s3games.engine.GameSpecification;
 import s3games.engine.Move;
+import s3games.player.Player;
 
 /**
  *
@@ -14,7 +16,23 @@ import s3games.engine.Move;
  */
 public abstract class Strategy
 {
-    public abstract void play(Game game);
+    public abstract Player getPlayer(GameSpecification specs);
     public abstract void learn(Game game);
-    public abstract Move move();
+
+    public static String[] availableStrategies(String gameName)
+    {
+        return new String[] {"Random"};
+    }
+    
+    public static boolean learnable(String strategyName)
+    {
+        return true;
+    }
+    
+    public static Strategy getStrategy(String name)
+    {
+        if (name.equals("Random"))
+            return new RandomGeneralStrategy();
+        return null;
+    }
 }

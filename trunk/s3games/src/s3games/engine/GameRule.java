@@ -6,6 +6,7 @@
 package s3games.engine;
 
 import java.util.ArrayList;
+import s3games.engine.expr.Expr;
 
 /**
  *
@@ -14,16 +15,21 @@ import java.util.ArrayList;
 public class GameRule
 {
     public String name;
-    public Expression element;
-    public Expression from;
-    public Expression to;
-    public Expression condition;
-    public Expression scores;
+    public Expr element;
+    public Expr state;
+    public Expr from;
+    public Expr to;
+    public Expr condition;
+    public ArrayList<Expr> scorePlayer;
+    public ArrayList<Expr> scoreAmount;
     public ArrayList<String> actions;
 
     public GameRule(String name)
     {
         this.name = name;
+        scorePlayer = new ArrayList<Expr>();
+        scoreAmount = new ArrayList<Expr>();
+        actions = new ArrayList<String>();
     }
 
 }

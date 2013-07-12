@@ -11,6 +11,8 @@ import java.util.Map;
 import s3games.io.Config;
 import s3games.io.GameLogger;
 import s3games.io.GameSpecificationParser;
+import s3games.engine.expr.Expr;
+import s3games.engine.expr.Expression;
 
 /**
  *
@@ -27,8 +29,8 @@ public class GameSpecification
     public Map<String,Location> locations;
 
     public Map<String,Expression> expressions;
-    public Map<Expression,Expression> terminationConditions;
-    public Map<Expression,Expression> scorings;
+    public Map<Expr,Expr> terminationConditions;
+    public ArrayList<GameScoring> scorings;
     public Map<String,GameRule> rules;
 
     public String playerNames[];
@@ -43,8 +45,8 @@ public class GameSpecification
         elements = new HashMap<String, Element>();
         locations = new HashMap<String, Location>();
         expressions = new HashMap<String, Expression>();
-        terminationConditions = new HashMap<Expression,Expression>();
-        scorings = new HashMap<Expression, Expression>();
+        terminationConditions = new HashMap<Expr,Expr>();
+        scorings = new ArrayList<GameScoring>();
         rules = new HashMap<String, GameRule>();
         this.config = config;
     }

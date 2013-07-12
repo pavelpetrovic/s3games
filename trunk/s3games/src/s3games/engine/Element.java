@@ -17,17 +17,13 @@ public class Element
     public IndexedName name;
 
     public String type;
-    public String initialOwner;
+    public int initialOwner;
     public String initialLocation;
     public int initialState;
     public int initialZindex;
 
-    // dynamic - during the game play
-    public String owner;
-    public Location location;
-
     public Element(String name)
     {
-
+        this.name = new IndexedName(name);
     }
 }
