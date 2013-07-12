@@ -48,6 +48,7 @@ public class Game
         
         do 
         {
+            window.setState(state);
             Player playerOnMove = players[state.basicGameState.currentPlayer - 1];        
             boolean retryMove;
             boolean approved;
