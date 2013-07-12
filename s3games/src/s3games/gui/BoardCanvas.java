@@ -54,7 +54,8 @@ public class BoardCanvas extends Canvas {
                     g.drawImage(img.image,loc.point.x-img.hotSpot.x, loc.point.y-img.hotSpot.y,this);
 
                     //second - paint stone
-                    ElementType elType = gameSpec.elementTypes.get(elementName);
+                    Element element = gameSpec.elements.get(elementName);
+                    ElementType elType = gameSpec.elementTypes.get(element.type);                    
                     Integer actualState = egameState.basicGameState.elementStates.get(elementName);
                     img = elType.images[actualState];
                     g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
