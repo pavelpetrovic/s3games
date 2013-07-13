@@ -6,6 +6,7 @@
 package s3games.engine.expr;
 
 import java.util.*;
+import s3games.util.IndexedName;
 
 /**
  *
@@ -134,7 +135,7 @@ public abstract class Expr
                                                 ((StringWithReferencesLexeme)lex).vars);
         if (lex instanceof ParenthesesLexeme)
             return parseExpr(((ParenthesesLexeme)lex).lexs);
-        throw new Exception("unexpected lexeme" + lex);        
+        throw new Exception("unexpected lexeme" + lex);     
     }
     
     public static operatorType getOperatorType(String op)
@@ -186,6 +187,46 @@ public abstract class Expr
         else return internalFunction.UNKNOWN;
     }
 
+    public static Expr numExpr(int num)
+    {
+        return new Expr_NUM_CONSTANT(num);
+    }
+    
+    public static Expr strExpr(String str)
+    {
+        return new Expr_STR_CONSTANT(str);
+    }
+    
+    public static Expr booleanExpr(boolean b)
+    {
+        return new Expr_LOG_CONSTANT(b);
+    }
+    
+    public int getInt()
+    {
+        return ((Expr_NUM_CONSTANT)this).num;
+    }
+    
+    public String getStr()
+    {
+        return ((Expr_STR_CONSTANT)this).str;
+    }
+        
+    public boolean matches(String s, Context context)
+    {
+        return false;
+    }
+    
+    public boolean matches(int i, Context context)
+    {
+        return false;
+    }
+    
+    public boolean matches(IndexedName name, Context context)
+    {
+        return false;
+    }
+    
     public abstract Expr eval(Context context) throws Exception;
     public boolean equals(Expr other, Context context) throws Exception
     {
