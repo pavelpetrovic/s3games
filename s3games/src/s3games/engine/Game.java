@@ -88,7 +88,9 @@ public class Game
             return false;
         if (gameSpecification.locations.get(move.to).content != null)
             return false;
-        return true;
+        for (GameRule rule: gameSpecification.rules.values())        
+            if (rule.matches(state, gameSpecification, context)) return true;        
+        return false;
     }
     
     /* performs a move after it has been verified, executes all follow-up actions
