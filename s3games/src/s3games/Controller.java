@@ -76,9 +76,8 @@ public class Controller
      * @param boardType real or simulated
      * @param playerTypes for each player whether it is a human or a computer
      * @param playerStrategies only for computer players, name of strategy to use
-     * @return the number of player who won, 0 for draw/nobody, -1 if game was interrupted
      */
-    public int play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies)
+    public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies) 
     {
         System.out.println(gameName);
         System.out.println(boardType);
@@ -108,7 +107,8 @@ public class Controller
         }
         
         Player[] pls = new Player[players.size()];
-        return game.play(gameSpecification, players.toArray(pls));
+        game.setGameAndPlayers(gameSpecification, players.toArray(pls));
+        game.start();
     }
 
         /** starts a single game

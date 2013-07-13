@@ -31,8 +31,8 @@ public class GameWindow extends javax.swing.JFrame {
     String selectedElementName;
     
     public Move lastMove;
-    public Object lastMoveReady;
-    public boolean waitingForMove = true;  //true for testing only
+    public final Object lastMoveReady;
+    public boolean waitingForMove;
     
     /**
      * Creates new form Form
@@ -41,8 +41,15 @@ public class GameWindow extends javax.swing.JFrame {
         initComponents();
         boardCanvas = (BoardCanvas) canvas1;
         lastMoveReady = new Object();
+        waitingForMove = false;
     }
 
+    public void showException(Exception e)
+    {
+        e.printStackTrace();
+        //TODO report exception to user
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,17 +131,20 @@ public class GameWindow extends javax.swing.JFrame {
                        Location loc = entry.getValue();
                        
                        if (loc.shape.isInside(x, y)  && loc.content == null) { 
-                           isSelectedElement = false;
-                           boardCanvas.setSelectedElement(null);
+                            isSelectedElement = false;
+                            boardCanvas.setSelectedElement(null);
                            
-                           String fromLoc= egs.basicGameState.elementLocations.get(selectedElementName);
+                            String fromLoc= egs.basicGameState.elementLocations.get(selectedElementName);
                  
-                           lastMove = new Move(fromLoc,entry.getKey(),selectedElementName);
-                           System.out.println(fromLoc+" "+entry.getKey()+" "+selectedElementName);
-                           lastMoveReady.notify();
-                           waitingForMove = false;
-                           return;                         
-                       }   
+                            lastMove = new Move(fromLoc,entry.getKey(),selectedElementName);
+                            System.out.println(fromLoc+" "+entry.getKey()+" "+selectedElementName);
+                            synchronized(lastMoveReady)
+                            {
+                                lastMoveReady.notify();
+                                waitingForMove = false;
+                            }
+                            return;                         
+                        }   
                     }
                 }
             }

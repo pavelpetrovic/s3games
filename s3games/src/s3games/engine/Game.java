@@ -7,6 +7,7 @@ package s3games.engine;
 
 import java.util.*;
 import s3games.engine.expr.Context;
+import s3games.engine.expr.Expr;
 import s3games.gui.GameWindow;
 import s3games.io.Config;
 import s3games.io.GameLogger;
@@ -16,7 +17,7 @@ import s3games.player.Player;
  *
  * @author petrovic16
  */
-public class Game
+public class Game extends Thread
 {
     public ExtendedGameState state;
     
@@ -27,6 +28,9 @@ public class Game
     public GameLogger logger;
 
     public Context context;
+    
+    public Player[] players;
+    private int winner;
 
     public Game(Config config, GameLogger logger, GameWindow window)
     {
@@ -35,9 +39,15 @@ public class Game
         this.window = window;
     }
 
-    public int play(GameSpecification gameSpecification, Player[] players)
+    public void setGameAndPlayers(GameSpecification gameSpecification, Player[] players)
     {        
         this.gameSpecification = gameSpecification;
+        this.players = players;
+    }
+    
+    public void run()  
+    {
+        try { 
         window.setGame(gameSpecification);
         context = new Context(this);
         state = new ExtendedGameState(gameSpecification);
@@ -54,7 +64,10 @@ public class Game
             nextMove = playerOnMove.move(state.basicGameState, allowedMoves);
             boolean approved = moveAllowed(nextMove);                
             if (!approved) 
-                return (state.basicGameState.currentPlayer % numberOfPlayers) + 1;
+            {
+                whoWon = (state.basicGameState.currentPlayer % numberOfPlayers) + 1;
+                break;
+            }
     
             performMove(nextMove);   
             
@@ -64,7 +77,16 @@ public class Game
             whoWon = gameOver();
         } while (whoWon == -1);
 
-        return whoWon;
+        winner = whoWon;
+        } catch (Exception e)
+        {
+            window.showException(e);
+        }
+    }
+    
+    public int whoWon()
+    {
+        return winner;
     }
     
     public ArrayList<Move> possibleMoves(GameState state)
@@ -74,22 +96,25 @@ public class Game
 
     /** verifies all game over conditions
      * @return the number of player who won 1..N, or 0 if end of game with draw, or -1 if not end of game */
-    public int gameOver()
+    public int gameOver() throws Exception
     {
+        for (Map.Entry<Expr,Expr> cond: gameSpecification.terminationConditions.entrySet())
+            if (cond.getKey().eval(context).isTrue())
+                return cond.getValue().eval(context).getInt();
         return -1;
     }
     
     /** verifies all rules, returns true, if the move is allowed, or false if not,
      * does not modify the game state, does not make any followup actions, however
      * executes all conditions of tested rules with all the consequences */
-    public boolean moveAllowed(Move move)
+    public boolean moveAllowed(Move move) throws Exception
     {
         if (!state.basicGameState.elementLocations.get(move.element).equals(move.from))
             return false;
         if (gameSpecification.locations.get(move.to).content != null)
             return false;
         for (GameRule rule: gameSpecification.rules.values())        
-            if (rule.matches(state, gameSpecification, context)) return true;        
+            if (rule.matches(move, state, gameSpecification, context)) return true;        
         return false;
     }
     
