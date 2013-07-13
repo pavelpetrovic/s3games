@@ -5,6 +5,9 @@
 
 package s3games.gui;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  *
  * @author petrovic16
@@ -26,5 +29,13 @@ public class Rectangular extends LocationShape
           return true; 
         }
         return false;
+    }
+    
+    @Override 
+    void paintShape(Graphics g) {
+        g.setColor(Color.red);
+        g.drawRect(x-a/2, y-b/2, a, b);  //xy upper left corner - offset necessary
+        g.setColor(Color.yellow);
+        g.drawRect(x-a/2-2, y-b/2-2, a-4, b-4); 
     }
 }

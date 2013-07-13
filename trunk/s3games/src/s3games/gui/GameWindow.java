@@ -103,19 +103,26 @@ public class GameWindow extends javax.swing.JFrame {
             int x = evt.getX();
             int y = evt.getY();
  
-            if (!isSelectedElement) {     //iterate through each movable element...
+            if (!isSelectedElement) {     //iterate through each movable element... 
                   for (Map.Entry<String, String> entry : elements.entrySet()) {
                        String elementLoc = entry.getValue();
                        Location loc = gs.locations.get(elementLoc);
                        if (loc.shape.isInside(x, y)) {
                           isSelectedElement = true;
                           selectedElementName = entry.getKey();
+                          boardCanvas.setSelectedElement(selectedElementName);
                           System.out.println(selectedElementName);
                           return;
                        }
                   } 
-            } else {                     //iterate through each location...
-     
+            } else {                      //deselect or identify new location  
+                String elementLoc = egs.basicGameState.elementLocations.get(selectedElementName);
+                if (gs.locations.get(elementLoc).shape.isInside(x, y)) {                          //if was selected actually selected again, selection will be canceled
+                    isSelectedElement = false;
+                    boardCanvas.setSelectedElement(null);
+                } else {       //iterate through each location...  
+                
+                }
             }
           //isSelectedElement = false;
           //lastMove = new Move(...);
