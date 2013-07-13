@@ -18,8 +18,10 @@ public class Circular extends LocationShape
         this.radius = radius;
     }
     
+    @Override
     boolean isInside(int x, int y)
     {
-        return ( radius < Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)) );
+        System.out.println(this.x+" "+this.y+" "+x+" "+y+" "+radius+" "+Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)));
+        return ( radius > Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)) );
     }
 }

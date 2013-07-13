@@ -15,4 +15,9 @@ public abstract class LocationShape
     int y;
 
     abstract boolean isInside(int x, int y);
+    
+    public void setCenterPoint(int x, int y) {
+       this.x =x;
+       this.y =y;
+    }
 }
