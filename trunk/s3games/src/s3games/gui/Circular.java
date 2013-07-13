@@ -30,7 +30,6 @@ public class Circular extends LocationShape
     
     @Override 
     void paintShape(Graphics g) {
-        g.drawRect(1, 1, 20, 20);
         g.setColor(Color.red);
         g.drawOval(x-radius, y-radius, radius*2, radius*2);
         g.setColor(Color.YELLOW);
