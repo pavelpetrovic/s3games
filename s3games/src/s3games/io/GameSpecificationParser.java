@@ -153,6 +153,8 @@ public class GameSpecificationParser
                 location.shape = new Circular(shapeName.index[0]);
             else if (shapeName.baseName.equals("rectangualr"))
                 location.shape = new Rectangular(shapeName.index[0], shapeName.index[1]);
+            
+            location.shape.setCenterPoint(location.point.x/*-img.hotspot*/, location.point.y);          
         }
         else if (var.equals("angles"))
             try { location.robot = new RobotLocation(val); }
