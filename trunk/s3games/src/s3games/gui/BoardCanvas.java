@@ -50,7 +50,9 @@ public class BoardCanvas extends Canvas {
                {
                     Location loc = location.getValue();
                     img = gameSpec.locationTypes.get(loc.type);
-                    g.drawImage(img.image,loc.point.x-img.hotSpot.x, loc.point.y-img.hotSpot.y,this);
+                    int xCorner = loc.point.x-img.hotSpot.x-img.image.getWidth(this)/2;
+                    int yCorner = loc.point.y-img.hotSpot.y-img.image.getHeight(this)/2;
+                    g.drawImage(img.image,xCorner, yCorner,this);   //drawing from upper left corner, not center => offset according to widht and height and hotspot
                }
                
                //paint stones
@@ -63,7 +65,9 @@ public class BoardCanvas extends Canvas {
                     img = elType.images[actualState];
                     String elementLoc = entry.getValue();
                     Location loc = gameSpec.locations.get(elementLoc);
-                    g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
+                    int xCorner = loc.point.x-img.hotSpot.x-img.image.getWidth(this)/2;
+                    int yCorner = loc.point.y-img.hotSpot.y-img.image.getHeight(this)/2;
+                    g.drawImage(img.image,xCorner,yCorner,this );
                 }                
             }
             highlightSelected(g);
