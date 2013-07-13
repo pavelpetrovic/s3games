@@ -211,6 +211,11 @@ public abstract class Expr
     {
         return ((Expr_STR_CONSTANT)this).str;
     }
+    
+    public boolean isTrue()
+    {
+        return false;
+    }
         
     public boolean matches(String s, Context context)
     {
@@ -251,6 +256,12 @@ class Expr_NUM_CONSTANT extends Expr
     }
     
     @Override
+    public boolean matches(int i, Context context)
+    {
+        return num == i;
+    }
+    
+    @Override
     public boolean equals(Expr other, Context context) throws Exception
     {
         other = other.eval(context);
@@ -273,6 +284,11 @@ class Expr_STR_CONSTANT extends Expr
     public Expr eval(Context context)
     {
         return this;
+    }
+    
+    public boolean matches(String str, Context context)
+    {
+        return this.str.equals(str);
     }
     
     @Override
@@ -298,6 +314,12 @@ class Expr_LOG_CONSTANT extends Expr
     public Expr eval(Context context)
     {
         return this;
+    }
+    
+    @Override
+    public boolean isTrue()
+    {
+        return b;
     }
     
     @Override
@@ -364,6 +386,21 @@ class Expr_VARIABLE extends Expr
         if (val == null) throw new Exception("evaluating unbound variable " + varName);
         return val;
     }
+    
+    @Override
+    public boolean matches(String str, Context context)
+    {
+        context.vars.put(varName, new Expr_STR_CONSTANT(str));
+        return true;
+    }
+    
+    @Override
+    public boolean matches(int i, Context context)
+    {
+        context.vars.put(varName, new Expr_NUM_CONSTANT(i));
+        return true;
+    }
+        
 }
 
 class Expr_STRING_WITH_VAR_REF extends Expr
@@ -389,6 +426,31 @@ class Expr_STRING_WITH_VAR_REF extends Expr
             pos = var.getKey();
         }
         return new Expr_STR_CONSTANT(s.toString());
+    }
+    
+    @Override
+    public boolean matches(String s, Context context)
+    {
+        String[] base = s.split("[0-9]");
+        String[] numbers = s.split("[^0-9]");
+        StringBuilder glued = new StringBuilder();
+        if (numbers.length != varRefs.size()) return false;
+        for(String b:base) glued.append(b);
+        if (!glued.equals(str)) return false;
+        int pos = 0;
+        int[] positions = new int[numbers.length];
+        for(int i = 0; i < numbers.length; i++)
+        {
+            pos += base[i].length();
+            positions[i] = pos;
+        }
+        int i = 0;
+        for (Integer p: varRefs.keySet())
+            if (p != positions[i++]) return false;
+        i = 0;
+        for (String v: varRefs.values())
+            context.vars.put(v, new Expr_NUM_CONSTANT(Integer.parseInt(numbers[i++])));
+        return true;
     }
 }
 

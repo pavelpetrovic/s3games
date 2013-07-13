@@ -33,15 +33,13 @@ public class GameRule
         actions = new ArrayList<String>();
     }
 
-    public boolean matches(ExtendedGameState st, GameSpecification specs, Context context)
-    {
-        for(Element elem:specs.elements.values())        
-            if (element.matches(elem.name, context))
-                if (state.matches(st.basicGameState.elementStates.get(elem.name.fullName), context))
-                    if (from.matches(st.basicGameState.elementLocations.get(elem.name.fullName), context))                    
-                        for (Location toLoc:specs.locations.values())                        
-                            if (to.matches(toLoc.name, context))
-                                return true;
+    public boolean matches(Move move, ExtendedGameState st, GameSpecification specs, Context context) throws Exception
+    {        
+        if (element.matches(move.element, context))
+            if ((state == null) || (state.matches(st.basicGameState.elementStates.get(move.element), context)))
+                if (from.matches(move.from, context))
+                    if (to.matches(move.to, context))                    
+                        return condition.eval(context).isTrue();                    
         return false;
     }
 }

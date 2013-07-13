@@ -329,11 +329,11 @@ public class ControllerWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
         controller.play((String)jComboBox5.getSelectedItem(), 
                          ((jComboBox1.getSelectedIndex()==0)?Player.boardType.SIMULATED:Player.boardType.REALWORLD),        // 0 simulated game, 1 real game
                          playerTypes, 
-                         playerStrategies); 
+                         playerStrategies);                 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed

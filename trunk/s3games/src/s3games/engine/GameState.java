@@ -28,10 +28,12 @@ public class GameState
         elementLocations = new TreeMap<String, String>();
         elementOwners = new TreeMap<String, Integer>();
         currentPlayer = 1;
+        
         for (Map.Entry<String, Element> element: specs.elements.entrySet())
         {
             elementStates.put(element.getKey(), element.getValue().initialState);
             elementLocations.put(element.getKey(), element.getValue().initialLocation);
+            specs.locations.get(element.getValue().initialLocation).content = element.getValue();
             elementOwners.put(element.getKey(), element.getValue().initialOwner);
         }        
     }

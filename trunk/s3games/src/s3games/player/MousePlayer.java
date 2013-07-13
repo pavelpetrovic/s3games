@@ -5,8 +5,6 @@
 package s3games.player;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
@@ -30,8 +28,13 @@ public class MousePlayer extends Player
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) 
     {
-        win.waitingForMove = true;
-        try { win.lastMoveReady.wait(); } catch (InterruptedException ex) {}
+        try { 
+            synchronized(win.lastMoveReady)
+            {
+                win.waitingForMove = true;
+                win.lastMoveReady.wait();
+            } 
+        } catch (InterruptedException ex) {}
         return win.lastMove;
     }
 
