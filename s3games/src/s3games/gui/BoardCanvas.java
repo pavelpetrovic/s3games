@@ -22,6 +22,8 @@ public class BoardCanvas extends Canvas {
     Image bgImage;
     ImageWithHotSpot img;
     
+    String selectedElementName = null;
+    
     public BoardCanvas() {
       
     }
@@ -64,6 +66,19 @@ public class BoardCanvas extends Canvas {
                     g.drawImage(img.image,loc.point.x - img.hotSpot.x, loc.point.y - img.hotSpot.y,this );
                 }                
             }
+            highlightSelected(g);
         }
+    }
+    
+    private void highlightSelected(Graphics g) {
+        if (selectedElementName != null) {
+            String elementLoc = egameState.basicGameState.elementLocations.get(selectedElementName);
+            gameSpec.locations.get(elementLoc).shape.paintShape(g);
+        }
+    }
+    
+    public void setSelectedElement(String name) {
+        selectedElementName = name;
+        this.repaint();
     }
 }
