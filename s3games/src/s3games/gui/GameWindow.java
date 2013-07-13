@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import s3games.engine.Element;
 import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
@@ -111,7 +112,6 @@ public class GameWindow extends javax.swing.JFrame {
                           isSelectedElement = true;
                           selectedElementName = entry.getKey();
                           boardCanvas.setSelectedElement(selectedElementName);
-                          System.out.println(selectedElementName);
                           return;
                        }
                   } 
@@ -121,13 +121,24 @@ public class GameWindow extends javax.swing.JFrame {
                     isSelectedElement = false;
                     boardCanvas.setSelectedElement(null);
                 } else {       //iterate through each location...  
-                
+                    for (Map.Entry<String, Location> entry : gs.locations.entrySet()) {
+                       Location loc = entry.getValue();
+                       
+                       if (loc.shape.isInside(x, y)  && loc.content == null) { 
+                           isSelectedElement = false;
+                           boardCanvas.setSelectedElement(null);
+                           
+                           String fromLoc= egs.basicGameState.elementLocations.get(selectedElementName);
+                 
+                           lastMove = new Move(fromLoc,entry.getKey(),selectedElementName);
+                           System.out.println(fromLoc+" "+entry.getKey()+" "+selectedElementName);
+                           lastMoveReady.notify();
+                           waitingForMove = false;
+                           return;                         
+                       }   
+                    }
                 }
             }
-          //isSelectedElement = false;
-          //lastMove = new Move(...);
-          //lastMoveReady.Notify();
-          //waitingForMove = false;
         }
     }//GEN-LAST:event_canvas1MousePressed
 
