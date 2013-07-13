@@ -20,44 +20,44 @@ point=1,1
 [LOCATIONS]
 name=s(1)
 type=stone
-point=100,100
-shape=circle(20)
+point=10,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 name=s(2)
 type=stone
-point=130,100
-shape=circle(20)
+point=100,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 name=s(3)
 type=stone
-point=160,100
-shape=circle(20)
+point=190,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 name=s(4)
 type=stone
-point=190,100
-shape=circle(20)
+point=280,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 name=s(5)
 type=stone
-point=210,100
-shape=circle(20)
+point=370,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 name=s(6)
 type=stone
-point=240,100
-shape=circle(20)
+point=460,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 name=s(7)
 type=stone
-point=270,100
-shape=circle(20)
+point=550,250
+shape=circle(30)
 angles=10,20,30,40,50
 
 [PLAYER NAMES]

@@ -7,12 +7,13 @@ package s3games.gui;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
+import s3games.engine.Location;
 import s3games.engine.Move;
 
 /**
@@ -24,6 +25,9 @@ public class GameWindow extends javax.swing.JFrame {
     ArrayList<String> outputTexts = null;
     int offsetY;  //for drawing of text = distance of right gap from left side
     boolean repaint = true;
+    
+    boolean isSelectedElement = false;
+    String selectedElementName;
     
     public Move lastMove;
     public Object lastMoveReady;
@@ -90,8 +94,34 @@ public class GameWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void canvas1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvas1MousePressed
-
-        System.out.println(evt.getX() +" "+ evt.getY());
+        if (true/*waitingForMove*/) {
+           //kam klikol? je to policko prazdne? ma daco oznacene? alebo oznacit?
+            GameSpecification gs = boardCanvas.gameSpec;
+            ExtendedGameState egs = boardCanvas.egameState;
+            Map<String,String> elements = egs.basicGameState.elementLocations;
+            
+            int x = evt.getX();
+            int y = evt.getY();
+ 
+            if (!isSelectedElement) {     //iterate through each movable element...
+                  for (Map.Entry<String, String> entry : elements.entrySet()) {
+                       String elementLoc = entry.getValue();
+                       Location loc = gs.locations.get(elementLoc);
+                       if (loc.shape.isInside(x, y)) {
+                          isSelectedElement = true;
+                          selectedElementName = entry.getKey();
+                          System.out.println(selectedElementName);
+                          return;
+                       }
+                  } 
+            } else {                     //iterate through each location...
+     
+            }
+          //isSelectedElement = false;
+          //lastMove = new Move(...);
+          //lastMoveReady.Notify();
+          //waitingForMove = false;
+        }
     }//GEN-LAST:event_canvas1MousePressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -161,7 +191,7 @@ public class GameWindow extends javax.swing.JFrame {
         for(int i=0; i< boardCanvas.gameSpec.playerNames.length; i++) {
             String name = boardCanvas.gameSpec.playerNames[i];
             int score = egs.playerScores[i];
-            outputTexts.add(i+" "+name+": "+score);
+            outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
         }
         this.repaint();             //teraz rozmyslam ci toto nevyvola dako automaticky aj prekreslenie obashujuceho canvasu ale to zistim asi az potom....
         
@@ -176,7 +206,7 @@ public class GameWindow extends javax.swing.JFrame {
         g.clearRect(offsetY, 0, this.getWidth(), this.getHeight());  //clear last text
         //draw output texts from array of strings - generated in setState
         if (outputTexts != null) {
-           int x = 100;
+           int x = 50;
            for(String s :outputTexts) {  //foreach item
                x += 17;
                g.drawString(s,offsetY,x);
