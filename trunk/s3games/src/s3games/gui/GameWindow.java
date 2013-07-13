@@ -32,7 +32,7 @@ public class GameWindow extends javax.swing.JFrame {
     
     public Move lastMove;
     public Object lastMoveReady;
-    public boolean waitingForMove;
+    public boolean waitingForMove = true;  //true for testing only
     
     /**
      * Creates new form Form
@@ -95,8 +95,7 @@ public class GameWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void canvas1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvas1MousePressed
-        if (true/*waitingForMove*/) {
-           //kam klikol? je to policko prazdne? ma daco oznacene? alebo oznacit?
+        if (waitingForMove) {
             GameSpecification gs = boardCanvas.gameSpec;
             ExtendedGameState egs = boardCanvas.egameState;
             Map<String,String> elements = egs.basicGameState.elementLocations;
