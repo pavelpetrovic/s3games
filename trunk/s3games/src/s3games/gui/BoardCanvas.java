@@ -5,6 +5,7 @@
 package s3games.gui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import s3games.engine.Element;
 import s3games.engine.ElementType;
@@ -22,6 +23,8 @@ public class BoardCanvas extends Canvas {
     Image bgImage;
     ImageWithHotSpot img;
     
+    private BufferedImage buffImg;
+    
     String selectedElementName = null;
     
     public BoardCanvas() {
@@ -32,6 +35,7 @@ public class BoardCanvas extends Canvas {
         gameSpec = gs;
         bgImage = Toolkit.getDefaultToolkit().getImage(gs.boardBackgroundFileName);
         egameState = null;
+        buffImg = new BufferedImage(this.getWidth(), this.getWidth(), BufferedImage.TYPE_INT_ARGB);
     }
         
     public void setState(ExtendedGameState egs) {
@@ -40,9 +44,10 @@ public class BoardCanvas extends Canvas {
      
     @Override
     public void paint(Graphics g) {
-        g.clearRect(0, 0, this.getWidth(), this.getHeight());  //clear window
         if (gameSpec!=null) {
-            g.drawImage(bgImage,0,0,this.getWidth(),this.getHeight(),this); //background
+            Graphics bg = buffImg.getGraphics();
+            bg.clearRect(0, 0, this.getWidth(), this.getHeight());  //clear window
+            bg.drawImage(bgImage,0,0,this.getWidth(),this.getHeight(),this); //background
             if (egameState!=null) {
                Map<String,String> elements = egameState.basicGameState.elementLocations;
                //paint of board
@@ -52,7 +57,7 @@ public class BoardCanvas extends Canvas {
                     img = gameSpec.locationTypes.get(loc.type);
                     int xCorner = loc.point.x-img.hotSpot.x-img.image.getWidth(this)/2;
                     int yCorner = loc.point.y-img.hotSpot.y-img.image.getHeight(this)/2;
-                    g.drawImage(img.image,xCorner, yCorner,this);   //drawing from upper left corner, not center => offset according to widht and height and hotspot
+                    bg.drawImage(img.image,xCorner, yCorner,this);   //drawing from upper left corner, not center => offset according to widht and height and hotspot
                }
                
                //paint stones
@@ -67,10 +72,11 @@ public class BoardCanvas extends Canvas {
                     Location loc = gameSpec.locations.get(elementLoc);
                     int xCorner = loc.point.x-img.hotSpot.x-img.image.getWidth(this)/2;
                     int yCorner = loc.point.y-img.hotSpot.y-img.image.getHeight(this)/2;
-                    g.drawImage(img.image,xCorner,yCorner,this );
+                    bg.drawImage(img.image,xCorner,yCorner,this );
                 }                
             }
-            highlightSelected(g);
+            highlightSelected(bg);
+            g.drawImage(buffImg, 0, 0, this);
         }
     }
     
