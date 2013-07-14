@@ -228,9 +228,8 @@ public class GameWindow extends javax.swing.JFrame {
             int score = egs.playerScores[i];
             outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
         }
-        String winner = ((egs.basicGameState.gameFinished)?"nejaky":"");                  //if someone won
+        winner = ((egs.basicGameState.gameFinished)?"niekto":"");                  //if someone won
         this.repaint();             
-        
         if (repaint) {
             boardCanvas.setState(egs);
             boardCanvas.repaint();
@@ -255,7 +254,7 @@ public class GameWindow extends javax.swing.JFrame {
         
         if (!winner.equals("")) { 
              g.setFont(new Font("Arial",Font.BOLD,12));
-             g.drawString("Player "+winner+"wins!",offsetY,55);
+             g.drawString("Player "+winner+" wins!",offsetY,55);
         }
     }
     
