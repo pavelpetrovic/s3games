@@ -17,8 +17,7 @@ class LexemeParser
     private LinkedList<Character> stack;
 
     ArrayList<Lexeme> parseLine(String line) throws Exception
-    {
-        System.out.println("parseLine(" + line + ")");
+    {        
         StringTokenizer st = new StringTokenizer(line, allSeparators, true);
         ln = new ArrayList<String>();
         while (st.hasMoreElements()) 
