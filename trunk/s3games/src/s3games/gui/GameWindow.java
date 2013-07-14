@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import s3games.engine.Element;
 import s3games.engine.ExtendedGameState;
 import s3games.engine.GameSpecification;
@@ -23,11 +24,13 @@ import s3games.engine.Move;
  */
 public class GameWindow extends javax.swing.JFrame {
     BoardCanvas boardCanvas;
-    ArrayList<String> outputTexts = null;
+    boolean repaint;
+
+    ArrayList<String> outputTexts;
+    String winner;
     int offsetY;  //for drawing of text = distance of right gap from left side
-    boolean repaint = true;
     
-    boolean isSelectedElement = false;
+    boolean isSelectedElement;
     String selectedElementName;
     
     public Move lastMove;
@@ -42,12 +45,17 @@ public class GameWindow extends javax.swing.JFrame {
         boardCanvas = (BoardCanvas) canvas1;
         lastMoveReady = new Object();
         waitingForMove = false;
+        
+        outputTexts = null;
+        winner = "";
+        repaint = true; 
+        isSelectedElement = false;
     }
 
     public void showException(Exception e)
     {
-        e.printStackTrace();
         //TODO report exception to user
+         JOptionPane.showMessageDialog(this, e.toString(),"Exception occured", JOptionPane.ERROR_MESSAGE);
     }
     
     /**
@@ -220,7 +228,8 @@ public class GameWindow extends javax.swing.JFrame {
             int score = egs.playerScores[i];
             outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
         }
-        this.repaint();             //teraz rozmyslam ci toto nevyvola dako automaticky aj prekreslenie obashujuceho canvasu ale to zistim asi az potom....
+        String winner = ((egs.basicGameState.gameFinished)?"nejaky":"");                  //if someone won
+        this.repaint();             
         
         if (repaint) {
             boardCanvas.setState(egs);
@@ -233,7 +242,7 @@ public class GameWindow extends javax.swing.JFrame {
         g.clearRect(offsetY, 0, this.getWidth(), this.getHeight());  //clear last text
         //draw output texts from array of strings - generated in setState
         if (outputTexts != null) {
-           int x = 50;
+           int x = 70;
            for(String s :outputTexts) {  //foreach item
                x += 17;
                g.drawString(s,offsetY,x);
@@ -243,6 +252,11 @@ public class GameWindow extends javax.swing.JFrame {
         g.setFont(font);
         g.drawString("Canvas redrawing: "+((repaint)?"ON":"OFF"), offsetY+3, this.getHeight() - 30 );
         g.drawString("-press key R to change", offsetY+5, this.getHeight() - 19 );
+        
+        if (!winner.equals("")) { 
+             g.setFont(new Font("Arial",Font.BOLD,12));
+             g.drawString("Player "+winner+"wins!",offsetY,55);
+        }
     }
     
     
