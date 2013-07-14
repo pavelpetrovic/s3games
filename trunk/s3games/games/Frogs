@@ -98,8 +98,14 @@ location=s(7)
 [EXPRESSIONS]
 
 FrogsAtHome
-  FORALL($J,1,3,TYPE(CONTENT(“s($J)”)) == “redFrog”)  
-  FORALL($J,5,7,TYPE(CONTENT(“s($J)”)) == “greenFrog”)
+  FORALL($J,1,3,ELTYPE(CONTENT("s($J)")) == "redFrog")  
+  FORALL($J,5,7,ELTYPE(CONTENT("s($J)")) == "greenFrog")
+END
+
+StoneOccupied($POS)
+  $POS > 0
+  $POS <= 7
+  NOT EMPTY("s($POS)")
 END
 
 [SCORINGS]
@@ -120,7 +126,7 @@ name=greenJump
 element=gf($J)
 from=s($K)
 to=s($L)
-condition=(NOT EMPTY(“s($K+1)”)) AND ($L==$K+2)
+condition=StoneOccupied($K+1) AND ($L==$K+2)
 
 name=redStep
 element=rf($J)
@@ -132,4 +138,4 @@ name=redJump
 element=rf($J)
 from=s($K)
 to=s($L)
-condition=(NOT EMPTY(“s($K-1)”)) AND ($L==$K-2)
+condition=StoneOccupied($K-1) AND ($L==$K-2)

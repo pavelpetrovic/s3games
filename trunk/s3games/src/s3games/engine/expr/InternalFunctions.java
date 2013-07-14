@@ -59,8 +59,8 @@ public class InternalFunctions
                 throw new Exception("LOCTYPE requires string");
             String locationName = ((Expr_STR_CONSTANT)locName).str;
             Location location = context.specs.locations.get(locationName);
-            if (location == null) throw new Exception("LOCTYPE(): unknown location " + locationName);
-            return new Expr_STR_CONSTANT(location.type);
+            if (location == null) return Expr.strExpr("");
+            return Expr.strExpr(location.type);
         }
         
         if (fn == Expr.internalFunction.ELTYPE)
@@ -70,8 +70,8 @@ public class InternalFunctions
                 throw new Exception("ELTYPE requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
             Element element = context.specs.elements.get(elementName);
-            if (element == null) throw new Exception("ELTYPE(): unknown element " + elementName);
-            return new Expr_STR_CONSTANT(element.type);
+            if (element == null) return Expr.strExpr("");
+            return Expr.strExpr(element.type);
         }
         
         if (fn == Expr.internalFunction.STATE)
@@ -81,8 +81,8 @@ public class InternalFunctions
                 throw new Exception("STATE requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
             Integer state = context.gameState.basicGameState.elementStates.get(elementName);
-            if (state == null) throw new Exception("STATE(): unknown element " + elementName);
-            return new Expr_NUM_CONSTANT(state);            
+            if (state == null) return Expr.numExpr(-1);
+            return Expr.numExpr(state);
         }
         
         if (fn == Expr.internalFunction.LOCATION)
@@ -92,8 +92,8 @@ public class InternalFunctions
                 throw new Exception("LOCATION requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
             String location = context.gameState.basicGameState.elementLocations.get(elementName);
-            if (location == null) throw new Exception("STATE(): unknown element " + elementName);
-            return new Expr_STR_CONSTANT(location);        
+            if (location == null) return Expr.strExpr("");
+            return Expr.strExpr(location);
         }
         
         if (fn == Expr.internalFunction.CONTENT)
@@ -103,8 +103,9 @@ public class InternalFunctions
                 throw new Exception("CONTENT requires string");
             String locationName = ((Expr_STR_CONSTANT)locName).str;            
             Location location = context.specs.locations.get(locationName);
-            if (location == null) throw new Exception("CONTENT(): unknown location " + locationName);
-            return new Expr_STR_CONSTANT(location.content.name.fullName);
+            if (location == null) return Expr.strExpr("");
+            if (location.content == null) return Expr.strExpr("");
+            return Expr.strExpr(location.content.name.fullName);
         }
         
         if (fn == Expr.internalFunction.EMPTY)
@@ -114,8 +115,8 @@ public class InternalFunctions
                 throw new Exception("CONTENT requires string");
             String locationName = ((Expr_STR_CONSTANT)locName).str;
             Location location = context.specs.locations.get(locationName);
-            if (location == null) throw new Exception("CONTENT(): unknown location " + locationName);
-            return new Expr_LOG_CONSTANT(location.content == null);
+            if (location == null) return Expr.booleanExpr(false);  
+            return Expr.booleanExpr(location.content == null);
         }
         
         if (fn == Expr.internalFunction.INDEX)
@@ -160,8 +161,8 @@ public class InternalFunctions
                 throw new Exception("OWNER requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
             Integer owner = context.gameState.basicGameState.elementOwners.get(elementName);
-            if (owner == null) throw new Exception("OWNER(): unknown element " + elementName);            
-            return new Expr_NUM_CONSTANT(owner);            
+            if (owner == null) return Expr.numExpr(-1);
+            return Expr.numExpr(owner);            
         }
         
         if (fn == Expr.internalFunction.PLAYER)        

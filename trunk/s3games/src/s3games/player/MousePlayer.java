@@ -39,8 +39,9 @@ public class MousePlayer extends Player
     }
 
     @Override
-    public void otherMoved(Move move, GameState newState) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void otherMoved(Move move, GameState newState) 
+    {    
+        move.equals(" ");
     }
     
 }

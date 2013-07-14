@@ -49,8 +49,8 @@ public class Game extends Thread
     {
         try { 
         window.setGame(gameSpecification);
-        context = new Context(this);
         state = new ExtendedGameState(gameSpecification);
+        context = new Context(this);
         int numberOfPlayers = gameSpecification.playerNames.length;
         int whoWon;
         
@@ -72,12 +72,16 @@ public class Game extends Thread
             performMove(nextMove);   
             
             for (int p = 0; p < numberOfPlayers; p++)
-                players[p].otherMoved(nextMove, state.basicGameState);
+                if (playerOnMove != players[p])
+                    players[p].otherMoved(nextMove, state.basicGameState);
             
             whoWon = gameOver();
         } while (whoWon == -1);
 
         winner = whoWon;
+        state.basicGameState.gameFinished = true;
+        window.setState(state);
+        
         } catch (Exception e)
         {
             window.showException(e);
@@ -100,7 +104,10 @@ public class Game extends Thread
     {
         for (Map.Entry<Expr,Expr> cond: gameSpecification.terminationConditions.entrySet())
             if (cond.getKey().eval(context).isTrue())
-                return cond.getValue().eval(context).getInt();
+            {
+                Expr ee = cond.getValue().eval(context);            
+                return ee.getInt();
+            }
         return -1;
     }
     

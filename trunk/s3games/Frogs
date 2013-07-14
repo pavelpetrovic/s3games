@@ -67,46 +67,52 @@ angles=10,20,30,40,50
 
 name=gf(1)
 type=greenFrog
-player=p1
+player=1
 location=s(1)
 
 name=gf(2)
 type=greenFrog
-player=p1
+player=1
 location=s(2)
 
 name=gf(3)
 type=greenFrog
-player=p1
+player=1
 location=s(3)
 
 name=rf(1)
 type=redFrog
-player=p1
+player=1
 location=s(5)
 
 name=rf(2)
 type=redFrog
-player=p1
+player=1
 location=s(6)
 
 name=rf(3)
 type=redFrog
-player=p1
+player=1
 location=s(7)
 
 [EXPRESSIONS]
 
 FrogsAtHome
-  FORALL($J,1,3,TYPE(CONTENT(“s($J)”)) == “redFrog”)  
-  FORALL($J,5,7,TYPE(CONTENT(“s($J)”)) == “greenFrog”)
+  FORALL($J,1,3,ELTYPE(CONTENT("s($J)")) == "redFrog")  
+  FORALL($J,5,7,ELTYPE(CONTENT("s($J)")) == "greenFrog")
+END
+
+StoneOccupied($POS)
+  $POS > 0
+  $POS <= 7
+  NOT EMPTY("s($POS)")
 END
 
 [SCORINGS]
 
 [END OF GAME]
 situation=FrogsAtHome
-winner=p1
+winner=1
 
 [GAME RULES]
 
@@ -120,7 +126,7 @@ name=greenJump
 element=gf($J)
 from=s($K)
 to=s($L)
-condition=(NOT EMPTY(“s($K+1)”)) AND ($L==$K+2)
+condition=StoneOccupied($K+1) AND ($L==$K+2)
 
 name=redStep
 element=rf($J)
@@ -132,4 +138,4 @@ name=redJump
 element=rf($J)
 from=s($K)
 to=s($L)
-condition=(NOT EMPTY(“s($K-1)”)) AND ($L==$K-2)
+condition=StoneOccupied($K-1) AND ($L==$K-2)

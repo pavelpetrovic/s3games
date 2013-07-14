@@ -51,7 +51,7 @@ public abstract class Expr
         {
             if (i > 0) oneArg.clear();
             oneArg.add(argLexs.get(i));
-            listOfArgs[i++] = parseExpr(oneArg);
+            listOfArgs[i] = parseExpr(oneArg);
         }
         return listOfArgs;
     }
@@ -91,9 +91,9 @@ public abstract class Expr
 
             if ( ((lex instanceof WordLexeme) || (lex instanceof InternalFunctionLexeme)) &&
                  (lex2 instanceof ParenthesesLexeme) && (lex3 instanceof OperatorLexeme) )
-            {
+            {                
                 lexs.remove(0);
-                lexs.remove(1);
+                lexs.remove(0);
                 ArrayList<Lexeme> first = new ArrayList<Lexeme>();
                 first.add(lex);
                 first.add(lex2);
@@ -202,14 +202,14 @@ public abstract class Expr
         return new Expr_LOG_CONSTANT(b);
     }
     
-    public int getInt()
+    public int getInt() throws Exception
     {
-        return ((Expr_NUM_CONSTANT)this).num;
+        throw new Exception("expected numeric expression, but it's " + this + " here");
     }
     
-    public String getStr()
+    public String getStr() throws Exception
     {
-        return ((Expr_STR_CONSTANT)this).str;
+        throw new Exception("expected string expression, but it's " + this + " here");        
     }
     
     public boolean isTrue()
@@ -262,6 +262,12 @@ class Expr_NUM_CONSTANT extends Expr
     }
     
     @Override
+    public int getInt()
+    {
+        return num;
+    }
+    
+    @Override
     public boolean equals(Expr other, Context context) throws Exception
     {
         other = other.eval(context);
@@ -286,9 +292,16 @@ class Expr_STR_CONSTANT extends Expr
         return this;
     }
     
+    @Override
     public boolean matches(String str, Context context)
     {
         return this.str.equals(str);
+    }
+    
+    @Override
+    public String getStr()
+    {
+        return str;
     }
     
     @Override
@@ -415,31 +428,32 @@ class Expr_STRING_WITH_VAR_REF extends Expr
     }
 
     @Override
-    public Expr eval(Context context)
+    public Expr eval(Context context) throws Exception
     {
-        StringBuilder s = new StringBuilder(str);
+        StringBuilder s = new StringBuilder("");
         int pos = 0;
         for(Map.Entry<Integer, String> var: varRefs.entrySet())
         {
             s.append(str.substring(pos, var.getKey()));
-            s.append(context.getVar(var.getValue()));
+            s.append(context.getVar(var.getValue()).getInt());
             pos = var.getKey();
         }
+        s.append(str.substring(pos));
         return new Expr_STR_CONSTANT(s.toString());
     }
     
     @Override
     public boolean matches(String s, Context context)
     {
-        String[] base = s.split("[0-9]");
-        String[] numbers = s.split("[^0-9]");
+        String[] base = s.split("[0-9]+");
+        String[] numbers = s.split("[^0-9]+");
         StringBuilder glued = new StringBuilder();
-        if (numbers.length != varRefs.size()) return false;
-        for(String b:base) glued.append(b);
-        if (!glued.equals(str)) return false;
+        if (numbers.length - 1 != varRefs.size()) return false;
+        for(String b:base) glued.append(b);        
+        if (!glued.toString().equals(str)) return false;
         int pos = 0;
-        int[] positions = new int[numbers.length];
-        for(int i = 0; i < numbers.length; i++)
+        int[] positions = new int[numbers.length - 1];
+        for(int i = 0; i < numbers.length - 1; i++)
         {
             pos += base[i].length();
             positions[i] = pos;
@@ -449,7 +463,7 @@ class Expr_STRING_WITH_VAR_REF extends Expr
             if (p != positions[i++]) return false;
         i = 0;
         for (String v: varRefs.values())
-            context.vars.put(v, new Expr_NUM_CONSTANT(Integer.parseInt(numbers[i++])));
+            context.vars.put(v, new Expr_NUM_CONSTANT(Integer.parseInt(numbers[++i])));
         return true;
     }
 }
@@ -480,6 +494,7 @@ class Expr_EXPRESSION_CALL extends Expr
     public Expr eval(Context context) throws Exception
     {
         Expression expr = context.getExpr(exprName);
+        if (expr == null) throw new Exception("Attempt to call a non-existing function " + exprName);
         evalArgs(context, expr.argNames);
         return expr.expr.eval(context);
     }
@@ -541,7 +556,10 @@ class Expr_LIST extends Expr
     {
         Expr result = null;
         for(Expr expr: exprs)
+        {
             result = expr.eval(context);
+            if (!result.isTrue()) return new Expr_LOG_CONSTANT(false);
+        }
         return result;
     }
 }
