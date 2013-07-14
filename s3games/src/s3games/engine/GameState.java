@@ -40,4 +40,27 @@ public class GameState
             elementOwners.put(element.getKey(), element.getValue().initialOwner);
         }        
     }
+        
+    public boolean equals(GameState other)
+    {
+        if (!elementStates.equals(other.elementStates)) return false;
+        if (!elementLocations.equals(other.elementLocations)) return false;
+        if (!elementOwners.equals(other.elementOwners)) return false;
+        if (currentPlayer != other.currentPlayer) return false;        
+        return true;
+    }
+    
+    /** compares this state with newState, and returns a move that leads from this state to a new state */
+    public Move findMove(GameState newState)
+    {
+        Move move = null;
+        for(Map.Entry<String,String> eLoc: elementLocations.entrySet())
+            if (!eLoc.getValue().equals(newState.elementLocations.get(eLoc.getKey())))
+            {
+                if (move != null) return null;
+                else move = new Move(eLoc.getValue(), newState.elementLocations.get(eLoc.getKey()), eLoc.getKey());
+            }
+        return move;
+    }
+
 }

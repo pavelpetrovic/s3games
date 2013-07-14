@@ -49,7 +49,7 @@ public class InternalFunctions
                 if (!((Expr_LOG_CONSTANT)val).b)
                     return new Expr_LOG_CONSTANT(false);                
             }
-            return new Expr_LOG_CONSTANT(true);
+            return Expr.booleanExpr(true);
         }
         
         if (fn == Expr.internalFunction.LOCTYPE)
@@ -127,7 +127,7 @@ public class InternalFunctions
             IndexedName istr = new IndexedName(((Expr_STR_CONSTANT)str).str);
             if (istr.index.length < 1)
                 throw new Exception("INDEX needs a string with at least one index");
-            return new Expr_NUM_CONSTANT(istr.index[0]);
+            return Expr.numExpr(istr.index[0]);
         }
         
         if (fn == Expr.internalFunction.INDEXA)
@@ -142,7 +142,7 @@ public class InternalFunctions
             IndexedName istr = new IndexedName(((Expr_STR_CONSTANT)str).str);
             if (istr.index.length < index)
                 throw new Exception("INDEXA needs a string with " + index + " indexes");
-            return new Expr_NUM_CONSTANT(istr.index[index - 1]);        
+            return Expr.numExpr(istr.index[index - 1]);        
         }
         
         if (fn == Expr.internalFunction.UNINDEX)
@@ -151,7 +151,7 @@ public class InternalFunctions
             if (!(str instanceof Expr_STR_CONSTANT))
                 throw new Exception("UNINDEX requires string");
             IndexedName istr = new IndexedName(((Expr_STR_CONSTANT)str).str);
-            return new Expr_STR_CONSTANT(istr.baseName);        
+            return Expr.strExpr(istr.baseName);        
         }
         
         if (fn == Expr.internalFunction.OWNER)
@@ -166,7 +166,7 @@ public class InternalFunctions
         }
         
         if (fn == Expr.internalFunction.PLAYER)        
-            return new Expr_NUM_CONSTANT(context.gameState.basicGameState.currentPlayer);
+            return Expr.numExpr(context.gameState.basicGameState.currentPlayer);
         
         if (fn == Expr.internalFunction.SCORE)
         {
@@ -176,7 +176,7 @@ public class InternalFunctions
             int p = ((Expr_NUM_CONSTANT)player).num;
             if ((p < 1 ) || (p > context.gameState.playerScores.length))
                 throw new Exception("unknown player " + p);
-            return new Expr_NUM_CONSTANT(context.gameState.playerScores[p-1]);
+            return Expr.numExpr(context.gameState.playerScores[p-1]);
         }
         
         if (fn == Expr.internalFunction.ZINDEX)
@@ -187,7 +187,7 @@ public class InternalFunctions
             String elementName = ((Expr_STR_CONSTANT)elName).str;
             Integer zindex = context.gameState.elementzIndexes.get(elementName);            
             if (zindex == null) throw new Exception("ZINDEX(): unknown element " + elementName);
-            return new Expr_NUM_CONSTANT(zindex);                    
+            return Expr.numExpr(zindex);
         }
         
         if (fn == Expr.internalFunction.MOVE)
@@ -218,7 +218,7 @@ public class InternalFunctions
             if (location2 == null) throw new Exception("MOVE(): unknown location " + locationName2);
         
             context.game.moveElement(new Move(locationName1, locationName2, elementName));
-            return new Expr_LOG_CONSTANT(true);        
+            return Expr.booleanExpr(true);
         }
         
         if (fn == Expr.internalFunction.SETOWNER)
@@ -236,7 +236,7 @@ public class InternalFunctions
             if ((own < 0 ) || (own > context.gameState.playerScores.length))
                 throw new Exception("SETOWNER requires existing player number or 0");
             context.gameState.basicGameState.elementOwners.put(elementName, own);
-            return new Expr_LOG_CONSTANT(true);        
+            return Expr.booleanExpr(true);
         }
         
         if (fn == Expr.internalFunction.SETSTATE)
@@ -255,7 +255,7 @@ public class InternalFunctions
             if ((state < 1 ) || (state > context.specs.elementTypes.get(element.type).numStates))
                 throw new Exception("SETSTATE on element " + elementName + " with state " + state + " is out of range");
             context.gameState.basicGameState.elementStates.put(elementName, state);
-            return new Expr_LOG_CONSTANT(true);
+            return Expr.booleanExpr(true);
         }
         
         if (fn == Expr.internalFunction.SETZINDEX)
@@ -271,7 +271,13 @@ public class InternalFunctions
                 throw new Exception("SETZINDEX requires number as second argument");
             zindex = new Integer(((Expr_NUM_CONSTANT)zi).num);
             context.gameState.elementzIndexes.put(elementName, zindex);            
-            return new Expr_LOG_CONSTANT(true);
+            return Expr.booleanExpr(true);
+        }
+        
+        if (fn == Expr.internalFunction.NEXTPLAYER)
+        {
+            context.gameState.basicGameState.currentPlayer = (context.gameState.basicGameState.currentPlayer % context.specs.playerNames.length) + 1;
+            return Expr.booleanExpr(true);
         }
         
         throw new Exception("unknown internal function");
