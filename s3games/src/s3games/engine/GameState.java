@@ -21,6 +21,8 @@ public class GameState
     public Map<String,Integer> elementOwners;
     /** the player number on move 1..N */
     public int currentPlayer;    
+    /** the game has finished */
+    public boolean gameFinished;
     
     public GameState(GameSpecification specs)
     {
@@ -28,6 +30,7 @@ public class GameState
         elementLocations = new TreeMap<String, String>();
         elementOwners = new TreeMap<String, Integer>();
         currentPlayer = 1;
+        gameFinished = false;
         
         for (Map.Entry<String, Element> element: specs.elements.entrySet())
         {

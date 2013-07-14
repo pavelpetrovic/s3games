@@ -12,7 +12,7 @@ import java.util.*;
  */
 class LexemeParser 
 {
-    private static final String allSeparators = "=!<=>+-*/% \t(),\"";    
+    private static final String allSeparators = "=!<=>+-*/% \t(),\"$";    
     private ArrayList<String> ln;
     private LinkedList<Character> stack;
 
@@ -49,7 +49,7 @@ class LexemeParser
             if (token.equals("$")) 
             {
                 if (ln.isEmpty()) throw new Exception("$ without name");
-                String varName = ln.get(1);
+                String varName = ln.get(0);
                 ln.remove(0);
                 acc.add(new VariableLexeme(varName));
                 continue;
@@ -96,6 +96,7 @@ class LexemeParser
                     {                        
                         if (ln.isEmpty()) throw new Exception("parsing expression: malformed var ref. inside string");
                         vars.put(sb.length(), ln.get(0));
+                        ln.remove(0);
                     }
                     else sb.append(token);                    
                 } while (true);

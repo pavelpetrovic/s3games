@@ -177,6 +177,14 @@ public class GameSpecificationParser
         specs.playerNames = newNames;
     }
 
+    private int getPlayerNumber(String playerName)
+    {        
+        for (int i = 0; i < specs.playerNames.length; i++)
+            if (specs.playerNames[i].equals(playerName))                
+                return i + 1;
+        return 0;
+    }
+    
     Element el;
     private void movableElementSetting(String var, String val) throws Exception
     {
@@ -188,17 +196,8 @@ public class GameSpecificationParser
         }
         else if (var.equals("type"))
             el.type = val;
-        else if (var.equals("player"))
-        {
-            el.initialOwner = 0;
-            for (int i = 0; i < specs.playerNames.length; i++)
-                if (specs.playerNames[i].equals(val))
-                {       
-                    el.initialOwner = i + 1;
-                    break;
-                }
-            if (el.initialOwner == 0) throw new Exception("unknown player name " + val);
-        }
+        else if (var.equals("player"))        
+            el.initialOwner = Integer.parseInt(val);
         else if (var.equals("location"))
             el.initialLocation = val;
         else if (var.equals("state"))
