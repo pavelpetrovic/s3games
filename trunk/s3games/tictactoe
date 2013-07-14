@@ -82,61 +82,61 @@ angles=10,20,30,40,50
 
 name=qo(1)
 type=stacko
-point=90,50
+point=135,540
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qo(2)
 type=stacko
-point=190,50
+point=235,540
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qo(3)
 type=stacko
-point=290,50
+point=335,540
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qo(4)
 type=stacko
-point=390,50
+point=435,540
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qx(1)
 type=stackx
-point=90,540
+point=90,60
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qx(2)
 type=stackx
-point=190,540
+point=190,60
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qx(3)
 type=stackx
-point=290,540
+point=290,60
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qx(4)
 type=stackx
-point=390,540
+point=390,60
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 name=qx(5)
 type=stackx
-point=490,540
+point=490,60
 shape=rectangular(88,88)
 angles=10,20,30,40,50
 
 [PLAYER NAMES]
-1=p1
-2=p2
+1=cross
+2=circle
 
 [MOVABLE ELEMENTS]
 
