@@ -25,7 +25,7 @@ public class Rectangular extends LocationShape
     @Override
     boolean isInside(int x, int y)
     {
-        if ( Math.abs(this.x-x)<a && Math.abs(this.y-y)<b)  {
+        if ( Math.abs(this.x-x)<a/2 && Math.abs(this.y-y)<b/2)  {
           return true; 
         }
         return false;
@@ -36,6 +36,6 @@ public class Rectangular extends LocationShape
         g.setColor(Color.red);
         g.drawRect(x-a/2, y-b/2, a, b);  //xy upper left corner - offset necessary
         g.setColor(Color.yellow);
-        g.drawRect(x-a/2-2, y-b/2-2, a-4, b-4); 
+        g.drawRect(x-a/2+2, y-b/2+2, a-4, b-4); 
     }
 }

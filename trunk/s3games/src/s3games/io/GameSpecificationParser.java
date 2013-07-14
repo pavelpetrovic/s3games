@@ -151,7 +151,7 @@ public class GameSpecificationParser
             IndexedName shapeName = new IndexedName(val);
             if (shapeName.baseName.equals("circle"))
                 location.shape = new Circular(shapeName.index[0]);
-            else if (shapeName.baseName.equals("rectangualr"))
+            else if (shapeName.baseName.equals("rectangular"))
                 location.shape = new Rectangular(shapeName.index[0], shapeName.index[1]);
             
             location.shape.setCenterPoint(location.point.x, location.point.y);          
