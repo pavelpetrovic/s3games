@@ -41,7 +41,6 @@ public class MousePlayer extends Player
     @Override
     public void otherMoved(Move move, GameState newState) 
     {    
-        move.equals(" ");
     }
     
 }
