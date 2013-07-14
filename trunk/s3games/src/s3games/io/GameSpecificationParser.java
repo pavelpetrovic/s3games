@@ -245,19 +245,21 @@ public class GameSpecificationParser
         else if (var.equals("element"))
             rule.element = Expr.parseExpr(stringify(val));
         else if (var.equals("state"))
-            rule.state = Expr.parseExpr(stringify(val));
+            rule.state = Expr.parseExpr(val);
+        else if (var.equals("player"))
+            rule.currentPlayer = Expr.parseExpr(val);
         else if (var.equals("from"))
             rule.from = Expr.parseExpr(stringify(val));
         else if (var.equals("to"))
             rule.to = Expr.parseExpr(stringify(val));
         else if (var.equals("condition"))
             rule.condition = Expr.parseExpr(val);
-        else if (var.equals("player"))
+        else if (var.equals("awardPlayer"))
             rule.scorePlayer.add(Expr.parseExpr(val));
-        else if (var.equals("score"))
+        else if (var.equals("withScore"))
             rule.scoreAmount.add(Expr.parseExpr(val));
         else if (var.equals("followup"))
-            rule.actions.add(val);
+            rule.action = Expr.parseExpr(val);
     }
 
     private void storeSetting(sections section, String var, String val) throws Exception

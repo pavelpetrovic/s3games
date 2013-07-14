@@ -45,6 +45,7 @@ public class Game extends Thread
         this.players = players;
     }
     
+    @Override
     public void run()  
     {
         try { 
@@ -122,7 +123,7 @@ public class Game extends Thread
     {
         for (Map.Entry<Expr,Expr> cond: gameSpecification.terminationConditions.entrySet())
             if (cond.getKey().eval(context).isTrue())
-                cond.getValue().eval(context).getInt();
+                return cond.getValue().eval(context).getInt();
         return -1;
     }
     
@@ -139,12 +140,36 @@ public class Game extends Thread
             if (rule.matches(move, state, context)) return true;        
         return false;
     }
-    
-    /* performs a move after it has been verified, executes all follow-up actions
-     * of the rule that maximizes the score */
-    private void performMove(Move move)
+
+    private GameRule findBestRule(Move move) throws Exception
     {
+        int maximumScoreGained = Integer.MIN_VALUE;
+        GameRule bestRule = null;
+        for (GameRule rule: gameSpecification.rules.values())        
+            if (rule.matches(move, state, context))
+            {
+                if (bestRule == null) bestRule = rule;            
+                for(int i = 0; i < rule.scorePlayer.size(); i++)
+                    if (rule.scorePlayer.get(i).eval(context).getInt() == state.basicGameState.currentPlayer)
+                    {
+                        int score = rule.scoreAmount.get(i).eval(context).getInt();
+                        if (score > maximumScoreGained)
+                        {
+                            maximumScoreGained = score;
+                            bestRule = rule;
+                        }
+                    }                  
+            }
+        return bestRule;
+    }
+    /* performs a move after it has been verified, executes follow-up action
+     * of the rule that maximizes the score, adds the score */
+    private void performMove(Move move) throws Exception
+    {
+        GameRule bestRule = findBestRule(move);
+        bestRule.addScores(context, state);
         moveElement(move);
+        bestRule.performAction(context);        
     }
     
     /** only updates the game state by moving element between two locations, does not test anything, does not apply any rules */

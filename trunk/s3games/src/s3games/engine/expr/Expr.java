@@ -20,7 +20,7 @@ public abstract class Expr
 
     public enum internalFunction { IF, FORALL, LOCTYPE, ELTYPE, STATE, LOCATION,
                              CONTENT, EMPTY, INDEX, INDEXA, UNINDEX, OWNER, PLAYER,
-                             SCORE, ZINDEX, MOVE, SETOWNER, SETSTATE, SETZINDEX, UNKNOWN }
+                             SCORE, ZINDEX, MOVE, SETOWNER, SETSTATE, SETZINDEX, NEXTPLAYER, UNKNOWN }
 
     public Expr append(Expr expr)
     {
@@ -82,6 +82,7 @@ public abstract class Expr
         else if (fn.equals("SETOWNER")) return internalFunction.SETOWNER;
         else if (fn.equals("SETSTATE")) return internalFunction.SETSTATE;
         else if (fn.equals("SETZINDEX")) return internalFunction.SETZINDEX;
+        else if (fn.equals("NEXTPLAYER")) return internalFunction.NEXTPLAYER;
         else return internalFunction.UNKNOWN;
     }
 

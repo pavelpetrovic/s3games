@@ -18,19 +18,20 @@ public class GameRule
     public String name;
     public Expr element;
     public Expr state;
+    public Expr currentPlayer;
     public Expr from;
     public Expr to;
     public Expr condition;
     public ArrayList<Expr> scorePlayer;
     public ArrayList<Expr> scoreAmount;
-    public ArrayList<String> actions;
+    public Expr action;
 
     public GameRule(String name)
     {
         this.name = name;
         scorePlayer = new ArrayList<Expr>();
-        scoreAmount = new ArrayList<Expr>();
-        actions = new ArrayList<String>();
+        scoreAmount = new ArrayList<Expr>();        
+        condition = Expr.booleanExpr(true);
         
         moves = new ArrayList<Move>();
     }
@@ -39,9 +40,10 @@ public class GameRule
     {        
         if (element.matches(move.element, context))
             if ((state == null) || (state.matches(st.basicGameState.elementStates.get(move.element), context)))
-                if (from.matches(move.from, context))
-                    if (to.matches(move.to, context))                    
-                        return condition.eval(context).isTrue();                    
+                if ((currentPlayer == null) || (currentPlayer.matches(st.basicGameState.currentPlayer, context)))
+                    if (from.matches(move.from, context))
+                        if (to.matches(move.to, context))                    
+                            return condition.eval(context).isTrue();                    
         return false;
     }
     
@@ -53,16 +55,32 @@ public class GameRule
         moves.clear();
         if (element.matches(el.name.fullName, context))
             if ((state == null) || (state.matches(st.basicGameState.elementStates.get(el.name.fullName), context)))
-            {
-                String tryFrom = st.basicGameState.elementLocations.get(el.name.fullName);
-                if (from.matches(tryFrom, context))
-                    for (Location tryTo:specs.locations.values())
-                        if (tryTo.content == null)
-                            if (to.matches(tryTo.name.fullName, context))
-                                if (condition.eval(context).isTrue())
-                                    moves.add(new Move(tryFrom, tryTo.name.fullName, el.name.fullName));
-            }
+                if ((currentPlayer == null) || (currentPlayer.matches(st.basicGameState.currentPlayer, context)))
+                {
+                    String tryFrom = st.basicGameState.elementLocations.get(el.name.fullName);
+                    if (from.matches(tryFrom, context))
+                        for (Location tryTo:specs.locations.values())
+                            if (tryTo.content == null)
+                                if (to.matches(tryTo.name.fullName, context))
+                                    if (condition.eval(context).isTrue())
+                                        moves.add(new Move(tryFrom, tryTo.name.fullName, el.name.fullName));
+                }
         if (moves.size() > 0) return moves;
         return null;
+    }
+    
+    public void addScores(Context context, ExtendedGameState state) throws Exception
+    {
+        for(int i = 0; i < scorePlayer.size(); i++)
+        {
+            int player = scorePlayer.get(i).eval(context).getInt();
+            int amount = scoreAmount.get(i).eval(context).getInt();
+            state.playerScores[player-1] += amount;
+        }
+    }
+    
+    public void performAction(Context context) throws Exception
+    {
+        action.eval(context);
     }
 }
