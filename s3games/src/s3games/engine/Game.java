@@ -58,8 +58,18 @@ public class Game extends Thread
         {
             window.setState(state);
             Player playerOnMove = players[state.basicGameState.currentPlayer - 1];        
-            ArrayList<Move> allowedMoves = possibleMoves(state.basicGameState);            
+            ArrayList<Move> allowedMoves = possibleMoves();            
             Move nextMove;
+            
+            //dbg
+            System.out.println("Possible moves:");
+            System.out.println(allowedMoves);
+            
+            if (allowedMoves.isEmpty())
+            {
+                whoWon = 0;
+                break;
+            }
             
             nextMove = playerOnMove.move(state.basicGameState, allowedMoves);
             boolean approved = moveAllowed(nextMove);                
@@ -93,9 +103,17 @@ public class Game extends Thread
         return winner;
     }
     
-    public ArrayList<Move> possibleMoves(GameState state)
+    public ArrayList<Move> possibleMoves() throws Exception
     {
-        return new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<Move>();
+        
+        for (GameRule rule: gameSpecification.rules.values())        
+            for (Element element: gameSpecification.elements.values())
+            {
+                ArrayList<Move> moreMoves = rule.getMatchingMoves(element, state, gameSpecification, context);
+                if (moreMoves != null) moves.addAll(moreMoves);
+            }        
+        return moves;
     }
 
     /** verifies all game over conditions
@@ -104,10 +122,7 @@ public class Game extends Thread
     {
         for (Map.Entry<Expr,Expr> cond: gameSpecification.terminationConditions.entrySet())
             if (cond.getKey().eval(context).isTrue())
-            {
-                Expr ee = cond.getValue().eval(context);            
-                return ee.getInt();
-            }
+                cond.getValue().eval(context).getInt();
         return -1;
     }
     
@@ -121,7 +136,7 @@ public class Game extends Thread
         if (gameSpecification.locations.get(move.to).content != null)
             return false;
         for (GameRule rule: gameSpecification.rules.values())        
-            if (rule.matches(move, state, gameSpecification, context)) return true;        
+            if (rule.matches(move, state, context)) return true;        
         return false;
     }
     

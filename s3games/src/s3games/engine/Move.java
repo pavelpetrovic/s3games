@@ -21,4 +21,10 @@ public class Move
         this.to = to;
         this.element = element;
     }
+    
+    @Override
+    public String toString()
+    {
+        return from + "->" + to + ":" + element;
+    }
 }
