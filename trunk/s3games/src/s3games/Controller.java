@@ -46,10 +46,11 @@ public class Controller implements SwitchListener
         config.load();
     }
     
+    @Override
     public void switchChanged(boolean newState)
     {
         if (newState == false)
-            cw.gameFinished(game.whoWon(), game.state.playerScores);
+            cw.gameFinished(game.state.basicGameState.winner, game.state.playerScores);
     }
 
     public String[] getGameNames()

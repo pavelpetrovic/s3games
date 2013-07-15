@@ -224,7 +224,7 @@ public class InternalFunctions
             Location location2 = context.specs.locations.get(locationName2);
             if (location2 == null) throw new Exception("MOVE(): unknown location " + locationName2);
         
-            context.game.moveElement(context.gameState, new Move(locationName1, locationName2, elementName));
+            context.gameState.moveElement(new Move(locationName1, locationName2, elementName), context.specs);
             return Expr.booleanExpr(true);
         }
         
