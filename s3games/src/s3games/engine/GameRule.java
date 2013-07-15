@@ -81,6 +81,6 @@ public class GameRule
     
     public void performAction(Context context) throws Exception
     {
-        action.eval(context);
+        if (action != null) action.eval(context);
     }
 }
