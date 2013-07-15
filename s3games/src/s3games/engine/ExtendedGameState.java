@@ -21,6 +21,19 @@ public class ExtendedGameState
     
     private Context context;
     
+    public ExtendedGameState getCopy()
+    {
+        ExtendedGameState state = new ExtendedGameState();
+        state.basicGameState = basicGameState.getCopy();
+        state.elementzIndexes = new TreeMap<String,Integer>(elementzIndexes);
+        System.arraycopy(playerScores, 0, state.playerScores, 0, playerScores.length);
+        return state;
+    }    
+    
+    public ExtendedGameState()
+    {        
+    }
+    
     public ExtendedGameState(GameSpecification specs)
     {
         elementzIndexes = new TreeMap<String, Integer>();
