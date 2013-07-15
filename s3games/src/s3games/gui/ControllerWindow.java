@@ -4,8 +4,6 @@
  */
 package s3games.gui;
 
-import java.io.*;
-import java.util.*;
 import javax.swing.*;
 import s3games.Controller;
 import s3games.player.Player;
@@ -13,23 +11,36 @@ import s3games.player.Player;
  *
  * @author Boris
  */
-public class ControllerWindow extends javax.swing.JFrame {
-
+public class ControllerWindow extends javax.swing.JFrame 
+{
     Controller controller = null;
     Player.playerType[] playerTypes;
     String[] playerStrategies;
      /**
      * Creates new form ControllerWindow
      */  
-    public ControllerWindow() {
+    public ControllerWindow() 
+    {
         initComponents();
     }  
-    public ControllerWindow(Controller c) {
+    
+    public ControllerWindow(Controller c) 
+    {
          initComponents();
          controller = c;
          jComboBox5.setModel(new DefaultComboBoxModel(c.getGameNames()));
          setItems();
     }
+    
+    public void gameFinished(int winner, int[] playerScores)
+    {
+        //remove this
+        System.out.print("game finished, winner = " + winner + ", score: " );
+        for (int p = 0; p < playerScores.length; p++)
+            System.out.print(playerScores[p] + " ");
+        System.out.println();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
