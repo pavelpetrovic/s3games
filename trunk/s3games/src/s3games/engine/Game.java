@@ -12,6 +12,7 @@ import s3games.gui.GameWindow;
 import s3games.io.Config;
 import s3games.io.GameLogger;
 import s3games.player.Player;
+import s3games.util.Switch;
 
 /**
  *
@@ -31,12 +32,15 @@ public class Game extends Thread
     
     public Player[] players;
     private int winner;
+    
+    private Switch gameRuns;
 
-    public Game(Config config, GameLogger logger, GameWindow window)
+    public Game(Config config, GameLogger logger, GameWindow window, Switch gameRuns)
     {
         this.config = config;
         this.logger = logger;
         this.window = window;
+        this.gameRuns = gameRuns;
     }
 
     public void setGameAndPlayers(GameSpecification gameSpecification, Player[] players)
@@ -95,9 +99,10 @@ public class Game extends Thread
         window.setState(state);
         
         } catch (Exception e)
-        {
+        {            
             window.showException(e);
         }
+        finally { gameRuns.off(); }
     }
     
     public int whoWon()

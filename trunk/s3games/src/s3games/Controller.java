@@ -17,6 +17,7 @@ import s3games.io.*;
 import s3games.player.CameraPlayer;
 import s3games.player.MousePlayer;
 import s3games.player.Player;
+import s3games.util.Switch;
 
 /**
  *
@@ -29,9 +30,12 @@ public class Controller
     GameLogger logger;
     Config config;
 
+    Switch gameRunning;
     
     public Controller()
     {
+        gameRunning = new Switch();
+        
         gw =  new GameWindow();
         cw  = new ControllerWindow(this);
         cw.setVisible(true);
@@ -78,7 +82,10 @@ public class Controller
      * @param playerStrategies only for computer players, name of strategy to use
      */
     public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies) 
-    {
+    {   
+        if (gameRunning.isOn()) return;
+        gameRunning.on();
+        
         System.out.println(gameName);
         System.out.println(boardType);
         for (int i=0; i<playerTypes.length ; i++) {
@@ -86,7 +93,7 @@ public class Controller
            System.out.println(playerStrategies[i]);
          }
         gw.setVisible(true);
-        Game game = new Game(config, logger, gw);
+        Game game = new Game(config, logger, gw, gameRunning);
         
         GameSpecification gameSpecification = new GameSpecification(config, logger);
         try {
@@ -110,7 +117,7 @@ public class Controller
         
         Player[] pls = new Player[players.size()];
         game.setGameAndPlayers(gameSpecification, players.toArray(pls));
-        game.start();
+        game.start();        
     }
 
         /** starts a single game
