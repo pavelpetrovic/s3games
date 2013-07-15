@@ -50,6 +50,12 @@ public class GameState
         return true;
     }
     
+    public GameState getCopy()
+    {
+       //todo
+        return this;
+    }
+    
     /** compares this state with newState, and returns a move that leads from this state to a new state */
     public Move findMove(GameState newState)
     {
