@@ -126,7 +126,7 @@ public class GameWindow extends javax.swing.JFrame {
                   for (Map.Entry<String, String> entry : elements.entrySet()) {
                        String elementLoc = entry.getValue();
                        Location loc = gs.locations.get(elementLoc);
-                       if (loc.shape.isInside(x, y)) {
+                       if (loc.shape.isInside(x, y) && isElementAllowed(entry.getKey())) {
                           isSelectedElement = true;
                           selectedElementName = entry.getKey();
                           boardCanvas.setSelectedElement(selectedElementName);
@@ -142,7 +142,7 @@ public class GameWindow extends javax.swing.JFrame {
                     for (Map.Entry<String, Location> entry : gs.locations.entrySet()) {
                        Location loc = entry.getValue();
                        
-                       if (loc.shape.isInside(x, y)  && loc.content == null) { 
+                       if (loc.shape.isInside(x, y)  && isMoveAllowed(selectedElementName, entry.getKey())) { 
                             isSelectedElement = false;
                             boardCanvas.setSelectedElement(null);
                            
@@ -163,6 +163,19 @@ public class GameWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_canvas1MousePressed
 
+    private boolean isElementAllowed(String element) {
+        for (Move move: allowedMoves) {
+            if (element.equals(move.element)) return true;
+        }    
+        return false;
+    }  
+    private boolean isMoveAllowed(String element, String toLocation) {
+        for (Move move: allowedMoves) {
+            if (element.equals(move.element) && toLocation.equals(move.to)) return true;
+        }
+        return false;
+    }
+    
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
        if (Character.toLowerCase(evt.getKeyChar()) == 'r') {
            repaint = !repaint;
@@ -227,7 +240,8 @@ public class GameWindow extends javax.swing.JFrame {
         //generate array of strings for output text
         int currentPlayer = egs.basicGameState.currentPlayer;
         outputTexts = new ArrayList<String>();
-        outputTexts.add("Player on move: " +boardCanvas.gameSpec.playerNames[currentPlayer-1]);
+        outputTexts.add("Player on move:"); 
+        outputTexts.add("  "+boardCanvas.gameSpec.playerNames[currentPlayer-1]);
         outputTexts.add("Scores: ");
         for(int i=0; i< boardCanvas.gameSpec.playerNames.length; i++) {
             String name = boardCanvas.gameSpec.playerNames[i];
