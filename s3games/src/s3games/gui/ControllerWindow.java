@@ -33,12 +33,13 @@ public class ControllerWindow extends javax.swing.JFrame
     }
     
     public void gameFinished(int winner, int[] playerScores)
-    {
-        //remove this
-        System.out.print("game finished, winner = " + winner + ", score: " );
+    {    
+        String info = "<html>";
+        info = info + "Winner player: "+winner+" <br> Scores: <br>";
         for (int p = 0; p < playerScores.length; p++)
-            System.out.print(playerScores[p] + " ");
-        System.out.println();
+            info = info+"Player "+(p+1)+": "+playerScores[p] + "<br>";
+        info += "</html>";       
+        jLabel2.setText(info);       
     }
     
     /**
