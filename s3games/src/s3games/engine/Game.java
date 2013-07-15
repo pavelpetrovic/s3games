@@ -58,7 +58,7 @@ public class Game extends Thread
         context = new Context(this);
         int numberOfPlayers = gameSpecification.playerNames.length;
         int whoWon;
-        window.setGame(gameSpecification);
+        window.setGame(this);
         
         do 
         {
