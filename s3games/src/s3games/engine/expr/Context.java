@@ -16,15 +16,23 @@ public class Context
 {
     Map<String, Expr> vars;
     ExtendedGameState gameState;
-    GameSpecification specs;
-    Game game;
+    public GameSpecification specs;
     
-    public Context(Game game)
+    public Context(ExtendedGameState state, GameSpecification specs)
     {
-        this.game = game;
-        this.gameState = game.state;
-        this.specs = game.gameSpecification;
+        this.gameState = state;
+        this.specs = specs;
         vars = new TreeMap<String, Expr>();        
+    }
+    
+    public void setState(ExtendedGameState state)
+    {
+        gameState = state;
+    }
+    
+    public ExtendedGameState getState()
+    {
+        return gameState;
     }
     
     public void setVar(String var, Expr val)

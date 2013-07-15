@@ -21,17 +21,27 @@ public class GameState
     public Map<String,Integer> elementOwners;
     /** the player number on move 1..N */
     public int currentPlayer;    
-    /** the game has finished */
-    public boolean gameFinished;
+    /** -1 until the game has finished, then 0 for draw, or 1..N player number who won */
+    public int winner;
     
-    public GameState(GameSpecification specs)
+    public GameState()
+    {
+        init();
+    }
+
+    private void init()
     {
         elementStates = new TreeMap<String, Integer>();
         elementLocations = new TreeMap<String, String>();
         elementOwners = new TreeMap<String, Integer>();
         currentPlayer = 1;
-        gameFinished = false;
-        
+        winner = -1;
+
+    }
+
+    public GameState(GameSpecification specs)
+    {
+        init();
         for (Map.Entry<String, Element> element: specs.elements.entrySet())
         {
             elementStates.put(element.getKey(), element.getValue().initialState);
@@ -52,8 +62,13 @@ public class GameState
     
     public GameState getCopy()
     {
-       //todo
-        return this;
+        GameState s = new GameState();
+        s.elementStates = new TreeMap<String,Integer>(elementStates);
+        s.elementLocations = new TreeMap<String,String>(elementLocations);
+        s.elementOwners = new TreeMap<String,Integer>(elementOwners);
+        s.currentPlayer = currentPlayer;
+        s.winner = winner;       
+        return s;
     }
     
     /** compares this state with newState, and returns a move that leads from this state to a new state */

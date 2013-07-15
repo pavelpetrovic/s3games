@@ -249,8 +249,8 @@ public class GameWindow extends javax.swing.JFrame {
             outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
         }
         
-        if (egs.basicGameState.gameFinished) {   //game finished
-           winner = ((game.whoWon()!=0)?"Player "+boardCanvas.gameSpec.playerNames[game.whoWon()-1]+" wins!":"Draw!");                  //if someone won
+        if (egs.basicGameState.winner >= 0) {   //game finished
+           winner = ((egs.basicGameState.winner!=0)?"Player "+boardCanvas.gameSpec.playerNames[egs.basicGameState.winner-1]+" wins!":"Draw!");                  //if someone won
         }
         
         this.repaint();             

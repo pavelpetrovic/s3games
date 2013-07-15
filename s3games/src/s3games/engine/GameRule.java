@@ -32,12 +32,11 @@ public class GameRule
         scorePlayer = new ArrayList<Expr>();
         scoreAmount = new ArrayList<Expr>();        
         condition = Expr.booleanExpr(true);
-        
-        moves = new ArrayList<Move>();
     }
 
-    public boolean matches(Move move, ExtendedGameState st, Context context) throws Exception
+    public boolean matches(Move move, Context context) throws Exception
     {        
+        ExtendedGameState st = context.getState();
         if (element.matches(move.element, context))
             if ((state == null) || (state.matches(st.basicGameState.elementStates.get(move.element), context)))
                 if ((currentPlayer == null) || (currentPlayer.matches(st.basicGameState.currentPlayer, context)))
@@ -46,13 +45,13 @@ public class GameRule
                             return condition.eval(context).isTrue();                    
         return false;
     }
-    
-    private ArrayList<Move> moves;
-    /** list of moves that can be performed now with the element specified in the first argument
+        
+    /** list of moves that can be performed from this state with the element specified in the first argument
      * @return the list or null, if no such moves exist */
-    public ArrayList<Move> getMatchingMoves(Element el, ExtendedGameState st, GameSpecification specs, Context context) throws Exception
+    public ArrayList<Move> getMatchingMoves(Element el, GameSpecification specs, Context context) throws Exception
     {
-        moves.clear();
+        ExtendedGameState st = context.getState();
+        ArrayList<Move> moves = new ArrayList<Move>();
         if (element.matches(el.name.fullName, context))
             if ((state == null) || (state.matches(st.basicGameState.elementStates.get(el.name.fullName), context)))
                 if ((currentPlayer == null) || (currentPlayer.matches(st.basicGameState.currentPlayer, context)))
@@ -69,8 +68,10 @@ public class GameRule
         return null;
     }
     
-    public void addScores(Context context, ExtendedGameState state) throws Exception
+    public void addScores(Context context) throws Exception
     {
+        ExtendedGameState state = context.getState();
+        
         for(int i = 0; i < scorePlayer.size(); i++)
         {
             int player = scorePlayer.get(i).eval(context).getInt();
