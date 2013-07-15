@@ -64,7 +64,7 @@ public class Game extends Thread
         {
             window.setState(state);
             Player playerOnMove = players[state.basicGameState.currentPlayer - 1];        
-            ArrayList<Move> allowedMoves = possibleMoves();            
+            ArrayList<Move> allowedMoves = possibleMoves(state);            
             Move nextMove;
             
             //dbg
@@ -85,7 +85,7 @@ public class Game extends Thread
                 break;
             }
     
-            performMove(nextMove);   
+            performMove(state, nextMove);   
             
             for (int p = 0; p < numberOfPlayers; p++)
                 if (playerOnMove != players[p])
@@ -110,14 +110,14 @@ public class Game extends Thread
         return winner;
     }
     
-    public ArrayList<Move> possibleMoves() throws Exception
+    public ArrayList<Move> possibleMoves(ExtendedGameState st) throws Exception
     {
         ArrayList<Move> moves = new ArrayList<Move>();
         
         for (GameRule rule: gameSpecification.rules.values())        
             for (Element element: gameSpecification.elements.values())
             {
-                ArrayList<Move> moreMoves = rule.getMatchingMoves(element, state, gameSpecification, context);
+                ArrayList<Move> moreMoves = rule.getMatchingMoves(element, st, gameSpecification, context);
                 if (moreMoves != null) moves.addAll(moreMoves);
             }        
         return moves;
@@ -170,19 +170,19 @@ public class Game extends Thread
     }
     /* performs a move after it has been verified, executes follow-up action
      * of the rule that maximizes the score, adds the score */
-    private void performMove(Move move) throws Exception
+    private void performMove(ExtendedGameState st, Move move) throws Exception
     {
         GameRule bestRule = findBestRule(move);
-        bestRule.addScores(context, state);
-        moveElement(move);
+        bestRule.addScores(context, st);
+        moveElement(st, move);
         bestRule.performAction(context);        
     }
     
     /** only updates the game state by moving element between two locations, does not test anything, does not apply any rules */
-    public void moveElement(Move move)
+    public void moveElement(ExtendedGameState st, Move move)
     {
-        state.basicGameState.elementLocations.put(move.element, move.to);
+        st.basicGameState.elementLocations.put(move.element, move.to);
         gameSpecification.locations.get(move.from).content = null;
-        gameSpecification.locations.get(move.to).content = gameSpecification.elements.get(move.element);        
+        gameSpecification.locations.get(move.to).content = gameSpecification.elements.get(move.element);
     }
 }
