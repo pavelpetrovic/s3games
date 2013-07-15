@@ -49,11 +49,12 @@ public class Game extends Thread
     public void run()  
     {
         try { 
-        window.setGame(gameSpecification);
+        
         state = new ExtendedGameState(gameSpecification);
         context = new Context(this);
         int numberOfPlayers = gameSpecification.playerNames.length;
         int whoWon;
+        window.setGame(gameSpecification);
         
         do 
         {

@@ -108,6 +108,12 @@ class Expr_LOG_CONSTANT extends Expr
     }
     
     @Override
+    public boolean isFalse()
+    {
+        return !b;
+    }
+    
+    @Override
     public boolean equals(Expr other, Context context) throws Exception
     {
         other = other.eval(context);
@@ -330,7 +336,7 @@ class Expr_LIST extends Expr
         for(Expr expr: exprs)
         {
             result = expr.eval(context);
-            if (!result.isTrue()) return new Expr_LOG_CONSTANT(false);
+            if (result.isFalse()) return new Expr_LOG_CONSTANT(false);
         }
         return result;
     }

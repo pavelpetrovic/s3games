@@ -19,7 +19,7 @@ public class Operators
         {
             case EQUALS: return new Expr_LOG_CONSTANT(args[0].equals(args[1], context));
             case NOTEQUALS: return new Expr_LOG_CONSTANT(!(args[0].equals(args[1], context)));
-        }
+        } 
         if ((op == Expr.operatorType.LOWER) || 
             (op == Expr.operatorType.LOWEREQUAL) ||
             (op == Expr.operatorType.GREATER) ||
@@ -33,7 +33,8 @@ public class Operators
             Expr a0 = args[0].eval(context);
             if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("numeric operator with first arg non-numeric type");
             Expr a1 = args[1].eval(context);
-            if (!(a1 instanceof Expr_NUM_CONSTANT)) throw new Exception("operator < with second arg non-numeric type");
+            if (!(a1 instanceof Expr_NUM_CONSTANT)) 
+                throw new Exception("operator " + op + " with second arg non-numeric type");
             int arg0 = ((Expr_NUM_CONSTANT)a0).num;
             int arg1 = ((Expr_NUM_CONSTANT)a1).num;
             switch (op)

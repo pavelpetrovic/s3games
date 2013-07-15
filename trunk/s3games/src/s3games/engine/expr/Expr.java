@@ -18,7 +18,7 @@ public abstract class Expr
                         PLUS, MINUS, TIMES, DIV, MOD, SUBSET, ELEMENT, SETMINUS,
                         UNION, INTERSECTION, AND, OR, NOT, ASSIGNMENT, UNKNOWN };
 
-    public enum internalFunction { IF, FORALL, LOCTYPE, ELTYPE, STATE, LOCATION,
+    public enum internalFunction { IF, FORALL, FORSOME, LOCTYPE, ELTYPE, STATE, LOCATION,
                              CONTENT, EMPTY, INDEX, INDEXA, UNINDEX, OWNER, PLAYER,
                              SCORE, ZINDEX, MOVE, SETOWNER, SETSTATE, SETZINDEX, NEXTPLAYER, UNKNOWN }
 
@@ -65,6 +65,7 @@ public abstract class Expr
     {
         if (fn.equals("IF")) return internalFunction.IF;
         else if (fn.equals("FORALL")) return internalFunction.FORALL;
+        else if (fn.equals("FORSOME")) return internalFunction.FORSOME;
         else if (fn.equals("LOCTYPE")) return internalFunction.LOCTYPE;
         else if (fn.equals("ELTYPE")) return internalFunction.ELTYPE;
         else if (fn.equals("STATE")) return internalFunction.STATE;
@@ -112,6 +113,11 @@ public abstract class Expr
     }
     
     public boolean isTrue()
+    {
+        return false;
+    }
+    
+    public boolean isFalse()
     {
         return false;
     }

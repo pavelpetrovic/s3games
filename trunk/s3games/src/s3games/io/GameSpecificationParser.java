@@ -77,7 +77,7 @@ public class GameSpecificationParser
     ElementType et;
     int state;
     String imageName;
-    private void elementTypeSetting(String var, String val)
+    private void elementTypeSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
         if (var.equals("name"))
@@ -99,9 +99,9 @@ public class GameSpecificationParser
             try {
                 et.images[state] = new ImageWithHotSpot(config.imagePath + "/" + imageName, Integer.parseInt(hotspot[0]), Integer.parseInt(hotspot[1]));
             } catch (Exception e)
-            {
-                e.printStackTrace();
+            {                
                 logger.error("could not load image from file '" + imageName + "': " + e);
+                throw e;
             }
             state++;
         }
@@ -135,7 +135,6 @@ public class GameSpecificationParser
         var = var.toLowerCase();
         if (var.equals("name"))
         {
-            System.out.println("location name:'" + val + "'");
             location = new Location(val);
             specs.locations.put(val, location);
         }
@@ -159,8 +158,7 @@ public class GameSpecificationParser
         else if (var.equals("angles"))
             try { location.robot = new RobotLocation(val); }
             catch (Exception e)
-            {
-                e.printStackTrace();
+            {                
                 logger.error(e.toString());
                 throw e;
             }
@@ -285,7 +283,7 @@ public class GameSpecificationParser
                 throw new Exception("'player=N' and 'score=X' in game rule " + r.name + " specification is not paired");        
     }
     
-    public boolean load(String gameName, GameSpecification specs)
+    public boolean load(String gameName, GameSpecification specs) throws Exception
     {
         this.specs = specs;
         specs.playerNames = new String[0];
@@ -319,11 +317,9 @@ public class GameSpecificationParser
             r.close();
             checkRules();
         } catch (Exception e)
-        {
-            System.out.println("f:'" + fileName + "':" + e);
-            e.printStackTrace();
+        {   
             logger.error("could not load game specification from file " + fileName);
-            return false;
+            throw e;
         }
         return true;
     }
