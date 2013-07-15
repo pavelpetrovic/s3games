@@ -64,32 +64,26 @@ angles=10,20,30,40,50
 
 name=m(1)
 type=match
-player=1
 location=s(1)
 
 name=m(2)
 type=match
-player=1
 location=s(2)
 
 name=m(3)
 type=match
-player=1
 location=s(3)
 
 name=m(4)
 type=match
-player=1
 location=s(4)
 
 name=m(5)
 type=match
-player=1
 location=s(5)
 
 name=m(6)
 type=match
-player=1
 location=s(6)
 
 [EXPRESSIONS]
@@ -100,9 +94,16 @@ location=s(6)
 
 [GAME RULES]
 
-name=move
+name=move1
 element=m($J)
 player=1
+from=s($K)
+to=s($L)  
+followup=NEXTPLAYER
+
+name=move2
+element=m($J)
+player=2
 from=s($K)
 to=s($L)  
 followup=NEXTPLAYER
