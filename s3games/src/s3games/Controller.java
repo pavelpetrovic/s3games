@@ -5,13 +5,11 @@
 
 package s3games;
 
-import s3games.gui.ControllerWindow;
 import java.util.*;
-import java.io.*;
-import javax.swing.JOptionPane;
 import s3games.ai.Strategy;
 import s3games.engine.Game;
 import s3games.engine.GameSpecification;
+import s3games.gui.ControllerWindow;
 import s3games.gui.GameWindow;
 import s3games.io.*;
 import s3games.player.CameraPlayer;
@@ -50,7 +48,7 @@ public class Controller implements SwitchListener
     public void switchChanged(boolean newState)
     {
         if (newState == false)
-            cw.gameFinished(game.state.basicGameState.winner, game.state.playerScores);
+            cw.gameFinished(game.state.winner, game.state.playerScores);
     }
 
     public String[] getGameNames()

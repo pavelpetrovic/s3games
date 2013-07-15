@@ -15,22 +15,22 @@ import s3games.engine.*;
 public class Context
 {
     Map<String, Expr> vars;
-    ExtendedGameState gameState;
+    GameState gameState;
     public GameSpecification specs;
     
-    public Context(ExtendedGameState state, GameSpecification specs)
+    public Context(GameState state, GameSpecification specs)
     {
         this.gameState = state;
         this.specs = specs;
         vars = new TreeMap<String, Expr>();        
     }
     
-    public void setState(ExtendedGameState state)
+    public void setState(GameState state)
     {
         gameState = state;
     }
     
-    public ExtendedGameState getState()
+    public GameState getState()
     {
         return gameState;
     }

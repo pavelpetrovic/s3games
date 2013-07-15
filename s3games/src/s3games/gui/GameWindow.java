@@ -12,8 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import s3games.engine.Element;
-import s3games.engine.ExtendedGameState;
+import s3games.engine.GameState;
 import s3games.engine.Game;
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
@@ -116,8 +115,8 @@ public class GameWindow extends javax.swing.JFrame {
     private void canvas1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvas1MousePressed
         if (waitingForMove) {
             GameSpecification gs = boardCanvas.gameSpec;
-            ExtendedGameState egs = boardCanvas.egameState;
-            Map<String,String> elements = egs.basicGameState.elementLocations;
+            GameState egs = boardCanvas.egameState;
+            Map<String,String> elements = egs.elementLocations;
             
             int x = evt.getX();
             int y = evt.getY();
@@ -134,7 +133,7 @@ public class GameWindow extends javax.swing.JFrame {
                        }
                   } 
             } else {                      //deselect or identify new location  
-                String elementLoc = egs.basicGameState.elementLocations.get(selectedElementName);
+                String elementLoc = egs.elementLocations.get(selectedElementName);
                 if (gs.locations.get(elementLoc).shape.isInside(x, y)) {                          //if was selected actually selected again, selection will be canceled
                     isSelectedElement = false;
                     boardCanvas.setSelectedElement(null);
@@ -146,7 +145,7 @@ public class GameWindow extends javax.swing.JFrame {
                             isSelectedElement = false;
                             boardCanvas.setSelectedElement(null);
                            
-                            String fromLoc= egs.basicGameState.elementLocations.get(selectedElementName);
+                            String fromLoc= egs.elementLocations.get(selectedElementName);
                  
                             lastMove = new Move(fromLoc,entry.getKey(),selectedElementName);
                             System.out.println(fromLoc+" "+entry.getKey()+" "+selectedElementName);
@@ -236,9 +235,9 @@ public class GameWindow extends javax.swing.JFrame {
         }
         boardCanvas.setGame(gs);
     }
-    public void setState(ExtendedGameState egs) {         
+    public void setState(GameState egs) {         
         //generate array of strings for output text
-        int currentPlayer = egs.basicGameState.currentPlayer;
+        int currentPlayer = egs.currentPlayer;
         outputTexts = new ArrayList<String>();
         outputTexts.add("Player on move:"); 
         outputTexts.add("  "+boardCanvas.gameSpec.playerNames[currentPlayer-1]);
@@ -249,8 +248,8 @@ public class GameWindow extends javax.swing.JFrame {
             outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
         }
         
-        if (egs.basicGameState.winner >= 0) {   //game finished
-           winner = ((egs.basicGameState.winner!=0)?"Player "+boardCanvas.gameSpec.playerNames[egs.basicGameState.winner-1]+" wins!":"Draw!");                  //if someone won
+        if (egs.winner >= 0) {   //game finished
+           winner = ((egs.winner!=0)?"Player "+boardCanvas.gameSpec.playerNames[egs.winner-1]+" wins!":"Draw!");                  //if someone won
         }
         
         this.repaint();             
