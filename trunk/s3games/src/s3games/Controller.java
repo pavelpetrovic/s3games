@@ -18,23 +18,25 @@ import s3games.player.CameraPlayer;
 import s3games.player.MousePlayer;
 import s3games.player.Player;
 import s3games.util.Switch;
+import s3games.util.SwitchListener;
 
 /**
  *
  * @author petrovic16
  */
-public class Controller   
+public class Controller implements SwitchListener
 {
     ControllerWindow cw;
     GameWindow gw;
     GameLogger logger;
     Config config;
-
+    Game game;
     Switch gameRunning;
     
     public Controller()
     {
         gameRunning = new Switch();
+        gameRunning.addSwitchListener(this);
         
         gw =  new GameWindow();
         cw  = new ControllerWindow(this);
@@ -42,6 +44,12 @@ public class Controller
         logger = new GameLogger();
         config = new Config(logger);
         config.load();
+    }
+    
+    public void switchChanged(boolean newState)
+    {
+        if (newState == false)
+            cw.gameFinished(game.whoWon(), game.state.playerScores);
     }
 
     public String[] getGameNames()
@@ -93,7 +101,7 @@ public class Controller
            System.out.println(playerStrategies[i]);
          }
         gw.setVisible(true);
-        Game game = new Game(config, logger, gw, gameRunning);
+        game = new Game(config, logger, gw, gameRunning);
         
         GameSpecification gameSpecification = new GameSpecification(config, logger);
         try {
