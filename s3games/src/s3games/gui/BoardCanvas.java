@@ -67,7 +67,7 @@ public class BoardCanvas extends Canvas {
                     Element element = gameSpec.elements.get(elementName);
                     ElementType elType = gameSpec.elementTypes.get(element.type);                    
                     Integer actualState = egameState.basicGameState.elementStates.get(elementName);
-                    img = elType.images[actualState];
+                    img = elType.images[actualState-1];
                     String elementLoc = entry.getValue();
                     Location loc = gameSpec.locations.get(elementLoc);
                     int xCorner = loc.point.x-img.hotSpot.x-img.image.getWidth(this)/2;

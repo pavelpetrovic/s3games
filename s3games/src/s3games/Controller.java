@@ -89,7 +89,9 @@ public class Controller
         Game game = new Game(config, logger, gw);
         
         GameSpecification gameSpecification = new GameSpecification(config, logger);
-        gameSpecification.load(gameName);        
+        try {
+            gameSpecification.load(gameName);
+        } catch (Exception e) { gw.showException(e); }
         
         ArrayList<Player> players = new ArrayList<Player>();                
         for(int player = 0; player < gameSpecification.playerNames.length; player++)

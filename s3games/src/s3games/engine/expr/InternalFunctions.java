@@ -25,18 +25,19 @@ public class InternalFunctions
             else return args[2].eval(context);            
         }
         
-        if (fn == Expr.internalFunction.FORALL)
+        if ((fn == Expr.internalFunction.FORALL) ||
+            (fn == Expr.internalFunction.FORSOME))
         {
             if (!(args[0] instanceof Expr_VARIABLE))
-                throw new Exception("FORALL expects variable as its first argument");
+                throw new Exception("FORALL/FORSOME expects variable as its first argument");
             String varName = ((Expr_VARIABLE)args[0]).varName;
             Expr fromVal = args[1].eval(context);
             if (!(fromVal instanceof Expr_NUM_CONSTANT))
-                throw new Exception("FORALL expects 'from' value to be a number");
+                throw new Exception("FORALL/FORSOME expects 'from' value to be a number");
             int fromValue = ((Expr_NUM_CONSTANT)fromVal).num;
             Expr toVal = args[2].eval(context);
             if (!(toVal instanceof Expr_NUM_CONSTANT))
-                throw new Exception("FORALL expects 'to' value to be a number");            
+                throw new Exception("FORALL/FORSOME expects 'to' value to be a number");            
             int toValue = ((Expr_NUM_CONSTANT)toVal).num;
             int delta = 1;
             if (fromValue > toValue) delta = -1;
@@ -45,11 +46,17 @@ public class InternalFunctions
                 context.setVar(varName, new Expr_NUM_CONSTANT(i));
                 Expr val = args[3].eval(context);
                 if (!(val instanceof Expr_LOG_CONSTANT))
-                    throw new Exception("FORALL expects value to be true or false");
-                if (!((Expr_LOG_CONSTANT)val).b)
-                    return new Expr_LOG_CONSTANT(false);                
-            }
-            return Expr.booleanExpr(true);
+                    throw new Exception("FORALL/FORSOME expects value to be true or false");
+                if (fn == Expr.internalFunction.FORALL)
+                {
+                    if (!((Expr_LOG_CONSTANT)val).b)
+                        return Expr.booleanExpr(false);
+                }
+                else if (((Expr_LOG_CONSTANT)val).b)
+                    return Expr.booleanExpr(true);
+                    
+            }            
+            return Expr.booleanExpr((fn == Expr.internalFunction.FORALL));
         }
         
         if (fn == Expr.internalFunction.LOCTYPE)

@@ -25,5 +25,6 @@ public class Element
     public Element(String name)
     {
         this.name = new IndexedName(name);
+        initialState = 1;
     }
 }

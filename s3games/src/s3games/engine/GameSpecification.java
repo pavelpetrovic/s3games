@@ -51,7 +51,7 @@ public class GameSpecification
         this.config = config;
     }
 
-    public boolean load(String gameName)
+    public boolean load(String gameName) throws Exception
     {        
         GameSpecificationParser parser = new GameSpecificationParser(config, logger);
         return parser.load(gameName, this);
