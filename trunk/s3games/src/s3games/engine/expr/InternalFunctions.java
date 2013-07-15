@@ -87,7 +87,7 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("STATE requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer state = context.gameState.basicGameState.elementStates.get(elementName);
+            Integer state = context.gameState.elementStates.get(elementName);
             if (state == null) return Expr.numExpr(-1);
             return Expr.numExpr(state);
         }
@@ -98,7 +98,7 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("LOCATION requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            String location = context.gameState.basicGameState.elementLocations.get(elementName);
+            String location = context.gameState.elementLocations.get(elementName);
             if (location == null) return Expr.strExpr("");
             return Expr.strExpr(location);
         }
@@ -167,13 +167,13 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("OWNER requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer owner = context.gameState.basicGameState.elementOwners.get(elementName);
+            Integer owner = context.gameState.elementOwners.get(elementName);
             if (owner == null) return Expr.numExpr(-1);
             return Expr.numExpr(owner);            
         }
         
         if (fn == Expr.internalFunction.PLAYER)        
-            return Expr.numExpr(context.gameState.basicGameState.currentPlayer);
+            return Expr.numExpr(context.gameState.currentPlayer);
         
         if (fn == Expr.internalFunction.SCORE)
         {
@@ -213,7 +213,7 @@ public class InternalFunctions
             Location location1 = context.specs.locations.get(locationName1);
             if (location1 == null) throw new Exception("MOVE(): unknown location " + locationName1);
 
-            String currentLocation = context.gameState.basicGameState.elementLocations.get(elementName);
+            String currentLocation = context.gameState.elementLocations.get(elementName);
             if (!currentLocation.equals(locationName1))
                 throw new Exception("MOVE(): attempt to move element " + elementName + " from location " + locationName1 + " but its current location is " + currentLocation);
             
@@ -234,7 +234,7 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("SETOWNER requires string as first argument");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer owner = context.gameState.basicGameState.elementOwners.get(elementName);
+            Integer owner = context.gameState.elementOwners.get(elementName);
             if (owner == null) throw new Exception("SETOWNER(): unknown element " + elementName);
             Expr ow = args[1].eval(context);
             if (!(ow instanceof Expr_NUM_CONSTANT))
@@ -242,7 +242,7 @@ public class InternalFunctions
             int own = ((Expr_NUM_CONSTANT)ow).num;
             if ((own < 0 ) || (own > context.gameState.playerScores.length))
                 throw new Exception("SETOWNER requires existing player number or 0");
-            context.gameState.basicGameState.elementOwners.put(elementName, own);
+            context.gameState.elementOwners.put(elementName, own);
             return Expr.booleanExpr(true);
         }
         
@@ -261,7 +261,7 @@ public class InternalFunctions
             int state = ((Expr_NUM_CONSTANT)st).num;
             if ((state < 1 ) || (state > context.specs.elementTypes.get(element.type).numStates))
                 throw new Exception("SETSTATE on element " + elementName + " with state " + state + " is out of range");
-            context.gameState.basicGameState.elementStates.put(elementName, state);
+            context.gameState.elementStates.put(elementName, state);
             return Expr.booleanExpr(true);
         }
         
@@ -283,7 +283,7 @@ public class InternalFunctions
         
         if (fn == Expr.internalFunction.NEXTPLAYER)
         {
-            context.gameState.basicGameState.currentPlayer = (context.gameState.basicGameState.currentPlayer % context.specs.playerNames.length) + 1;
+            context.gameState.currentPlayer = (context.gameState.currentPlayer % context.specs.playerNames.length) + 1;
             return Expr.booleanExpr(true);
         }
         

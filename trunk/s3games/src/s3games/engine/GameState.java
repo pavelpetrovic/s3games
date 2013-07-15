@@ -6,6 +6,8 @@
 package s3games.engine;
 
 import java.util.*;
+import s3games.engine.expr.Context;
+import s3games.engine.expr.Expr;
 
 /**
  *
@@ -24,21 +26,30 @@ public class GameState
     /** -1 until the game has finished, then 0 for draw, or 1..N player number who won */
     public int winner;
     
+    public Map<String,Integer> elementzIndexes;
+    public int[] playerScores;
+
+    private Context context;
+    
+    public GameState getCopy()
+    {
+        GameState s = new GameState();
+        s.elementzIndexes = new TreeMap<String,Integer>(elementzIndexes);
+        s.playerScores = new int[playerScores.length];
+        System.arraycopy(playerScores, 0, s.playerScores, 0, playerScores.length);
+        s.elementStates = new TreeMap<String,Integer>(elementStates);
+        s.elementLocations = new TreeMap<String,String>(elementLocations);
+        s.elementOwners = new TreeMap<String,Integer>(elementOwners);
+        s.currentPlayer = currentPlayer;
+        s.winner = winner;
+        return s;
+    }
+    
     public GameState()
     {
         init();
     }
-
-    private void init()
-    {
-        elementStates = new TreeMap<String, Integer>();
-        elementLocations = new TreeMap<String, String>();
-        elementOwners = new TreeMap<String, Integer>();
-        currentPlayer = 1;
-        winner = -1;
-
-    }
-
+    
     public GameState(GameSpecification specs)
     {
         init();
@@ -49,28 +60,33 @@ public class GameState
             specs.locations.get(element.getValue().initialLocation).content = element.getValue();
             elementOwners.put(element.getKey(), element.getValue().initialOwner);
         }        
+        for (Map.Entry<String,Element> element: specs.elements.entrySet())        
+            elementzIndexes.put(element.getKey(), element.getValue().initialZindex);
+        playerScores = new int[specs.playerNames.length];
+        context = new Context(this, specs);
     }
-        
+    
+    private void init()
+    {
+        elementStates = new TreeMap<String, Integer>();
+        elementLocations = new TreeMap<String, String>();
+        elementOwners = new TreeMap<String, Integer>();
+        elementzIndexes = new TreeMap<String, Integer>();        
+        currentPlayer = 1;
+        winner = -1;
+    }
+
     public boolean equals(GameState other)
     {
         if (!elementStates.equals(other.elementStates)) return false;
         if (!elementLocations.equals(other.elementLocations)) return false;
         if (!elementOwners.equals(other.elementOwners)) return false;
-        if (currentPlayer != other.currentPlayer) return false;        
+        if (currentPlayer != other.currentPlayer) return false;
+        if (!elementzIndexes.equals(other.elementzIndexes)) return false;
+        if (!Arrays.equals(playerScores, other.playerScores)) return false;
         return true;
     }
-    
-    public GameState getCopy()
-    {
-        GameState s = new GameState();
-        s.elementStates = new TreeMap<String,Integer>(elementStates);
-        s.elementLocations = new TreeMap<String,String>(elementLocations);
-        s.elementOwners = new TreeMap<String,Integer>(elementOwners);
-        s.currentPlayer = currentPlayer;
-        s.winner = winner;       
-        return s;
-    }
-    
+        
     /** compares this state with newState, and returns a move that leads from this state to a new state */
     public Move findMove(GameState newState)
     {
@@ -83,5 +99,84 @@ public class GameState
             }
         return move;
     }
+    
+    public ArrayList<Move> possibleMoves() throws Exception
+    {
+        ArrayList<Move> moves = new ArrayList<Move>();
+        context.setState(this);
+        
+        for (GameRule rule: context.specs.rules.values())        
+            for (Element element: context.specs.elements.values())
+            {
+                ArrayList<Move> moreMoves = rule.getMatchingMoves(element, context.specs, context);
+                if (moreMoves != null) moves.addAll(moreMoves);
+            }
+        return moves;
+    }
 
+    /** verifies all game over conditions
+     * @return the number of player who won 1..N, or 0 if end of game with draw, or -1 if not end of game */
+    private int gameOver() throws Exception
+    {
+        context.setState(this);
+        for (Map.Entry<Expr,Expr> cond: context.specs.terminationConditions.entrySet())
+            if (cond.getKey().eval(context).isTrue())
+                return cond.getValue().eval(context).getInt();        
+        return -1;
+    }
+    
+    /** verifies all rules, returns true, if the move is allowed, or false if not,
+     * does not modify the game state, does not make any followup actions, however
+     * executes all conditions of tested rules with all the consequences */
+    public boolean moveAllowed(Move move) throws Exception
+    {
+        if (!elementLocations.get(move.element).equals(move.from))
+            return false;
+        if (context.specs.locations.get(move.to).content != null)
+            return false;
+        for (GameRule rule: context.specs.rules.values())        
+            if (rule.matches(move, context)) return true;        
+        return false;
+    }
+
+    /* performs a move after it has been verified, executes follow-up action
+     * of the rule that maximizes the score, adds the score */
+    public void performMove(Move move) throws Exception
+    {      
+        GameRule bestRule = findBestRule(move);
+        bestRule.addScores(context);
+        moveElement(move, context.specs);
+        bestRule.performAction(context);
+        winner = gameOver();
+    }
+    
+    private GameRule findBestRule(Move move) throws Exception
+    {
+        int maximumScoreGained = Integer.MIN_VALUE;
+        GameRule bestRule = null;
+        for (GameRule rule: context.specs.rules.values())        
+            if (rule.matches(move, context))
+            {
+                if (bestRule == null) bestRule = rule;            
+                for(int i = 0; i < rule.scorePlayer.size(); i++)
+                    if (rule.scorePlayer.get(i).eval(context).getInt() == currentPlayer)
+                    {
+                        int score = rule.scoreAmount.get(i).eval(context).getInt();
+                        if (score > maximumScoreGained)
+                        {
+                            maximumScoreGained = score;
+                            bestRule = rule;
+                        }
+                    }                  
+            }
+        return bestRule;
+    }
+    
+    /** only updates the game state by moving element between two locations, does not test anything, does not apply any rules */
+    public void moveElement(Move move, GameSpecification specs)
+    {
+        elementLocations.put(move.element, move.to);
+        specs.locations.get(move.from).content = null;
+        specs.locations.get(move.to).content = specs.elements.get(move.element);
+    }
 }

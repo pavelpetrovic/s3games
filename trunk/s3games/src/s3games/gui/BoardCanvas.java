@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import s3games.engine.Element;
 import s3games.engine.ElementType;
-import s3games.engine.ExtendedGameState;
+import s3games.engine.GameState;
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
 
@@ -19,7 +19,7 @@ import s3games.engine.Location;
  */
 public class BoardCanvas extends Canvas {
     public GameSpecification gameSpec = null;
-    ExtendedGameState egameState = null;
+    GameState egameState = null;
     Image bgImage;
     ImageWithHotSpot img;
     
@@ -38,7 +38,7 @@ public class BoardCanvas extends Canvas {
         buffImg = new BufferedImage(this.getWidth(), this.getWidth(), BufferedImage.TYPE_INT_ARGB);
     }
         
-    public void setState(ExtendedGameState egs) {
+    public void setState(GameState egs) {
         egameState = egs;    
     }
      
@@ -49,7 +49,7 @@ public class BoardCanvas extends Canvas {
             bg.clearRect(0, 0, this.getWidth(), this.getHeight());  //clear window
             bg.drawImage(bgImage,0,0,this.getWidth(),this.getHeight(),this); //background
             if (egameState!=null) {
-               Map<String,String> elements = egameState.basicGameState.elementLocations;
+               Map<String,String> elements = egameState.elementLocations;
                //paint of board
                for (Map.Entry<String, Location> location: gameSpec.locations.entrySet())
                {
@@ -66,7 +66,7 @@ public class BoardCanvas extends Canvas {
                     String elementName=entry.getKey();                    
                     Element element = gameSpec.elements.get(elementName);
                     ElementType elType = gameSpec.elementTypes.get(element.type);                    
-                    Integer actualState = egameState.basicGameState.elementStates.get(elementName);
+                    Integer actualState = egameState.elementStates.get(elementName);
                     img = elType.images[actualState-1];
                     String elementLoc = entry.getValue();
                     Location loc = gameSpec.locations.get(elementLoc);
@@ -82,7 +82,7 @@ public class BoardCanvas extends Canvas {
     
     private void highlightSelected(Graphics g) {
         if (selectedElementName != null) {
-            String elementLoc = egameState.basicGameState.elementLocations.get(selectedElementName);
+            String elementLoc = egameState.elementLocations.get(selectedElementName);
             gameSpec.locations.get(elementLoc).shape.paintShape(g);
         }
     }

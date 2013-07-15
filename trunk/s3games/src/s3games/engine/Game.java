@@ -18,7 +18,7 @@ import s3games.util.Switch;
  */
 public class Game extends Thread
 {
-    public ExtendedGameState state;
+    public GameState state;
     
     public GameSpecification gameSpecification;
     public GameWindow window;
@@ -49,14 +49,14 @@ public class Game extends Thread
     {
         try { 
         
-        state = new ExtendedGameState(gameSpecification);
+        state = new GameState(gameSpecification);
         int numberOfPlayers = gameSpecification.playerNames.length;
         window.setGame(this);
         
         do 
         {
             window.setState(state);
-            Player playerOnMove = players[state.basicGameState.currentPlayer - 1];        
+            Player playerOnMove = players[state.currentPlayer - 1];        
             ArrayList<Move> allowedMoves = state.possibleMoves();
             Move nextMove;
             
@@ -66,15 +66,15 @@ public class Game extends Thread
             
             if (allowedMoves.isEmpty())
             {
-                state.basicGameState.winner = 0;
+                state.winner = 0;
                 break;
             }
             
-            nextMove = playerOnMove.move(state.basicGameState, allowedMoves);
+            nextMove = playerOnMove.move(state, allowedMoves);
             boolean approved = state.moveAllowed(nextMove);
             if (!approved) 
             {
-                state.basicGameState.currentPlayer = (state.basicGameState.currentPlayer % numberOfPlayers) + 1;
+                state.winner = (state.currentPlayer % numberOfPlayers) + 1;
                 break;
             }
     
@@ -82,9 +82,9 @@ public class Game extends Thread
             
             for (int p = 0; p < numberOfPlayers; p++)
                 if (playerOnMove != players[p])
-                    players[p].otherMoved(nextMove, state.basicGameState);            
+                    players[p].otherMoved(nextMove, state);            
             
-        } while (state.basicGameState.winner == -1);
+        } while (state.winner == -1);
         
         window.setState(state);
         

@@ -36,10 +36,10 @@ public class GameRule
 
     public boolean matches(Move move, Context context) throws Exception
     {        
-        ExtendedGameState st = context.getState();
+        GameState st = context.getState();
         if (element.matches(move.element, context))
-            if ((state == null) || (state.matches(st.basicGameState.elementStates.get(move.element), context)))
-                if ((currentPlayer == null) || (currentPlayer.matches(st.basicGameState.currentPlayer, context)))
+            if ((state == null) || (state.matches(st.elementStates.get(move.element), context)))
+                if ((currentPlayer == null) || (currentPlayer.matches(st.currentPlayer, context)))
                     if (from.matches(move.from, context))
                         if (to.matches(move.to, context))                    
                             return condition.eval(context).isTrue();                    
@@ -50,13 +50,13 @@ public class GameRule
      * @return the list or null, if no such moves exist */
     public ArrayList<Move> getMatchingMoves(Element el, GameSpecification specs, Context context) throws Exception
     {
-        ExtendedGameState st = context.getState();
+        GameState st = context.getState();
         ArrayList<Move> moves = new ArrayList<Move>();
         if (element.matches(el.name.fullName, context))
-            if ((state == null) || (state.matches(st.basicGameState.elementStates.get(el.name.fullName), context)))
-                if ((currentPlayer == null) || (currentPlayer.matches(st.basicGameState.currentPlayer, context)))
+            if ((state == null) || (state.matches(st.elementStates.get(el.name.fullName), context)))
+                if ((currentPlayer == null) || (currentPlayer.matches(st.currentPlayer, context)))
                 {
-                    String tryFrom = st.basicGameState.elementLocations.get(el.name.fullName);
+                    String tryFrom = st.elementLocations.get(el.name.fullName);
                     if (from.matches(tryFrom, context))
                         for (Location tryTo:specs.locations.values())
                             if (tryTo.content == null)
@@ -70,7 +70,7 @@ public class GameRule
     
     public void addScores(Context context) throws Exception
     {
-        ExtendedGameState state = context.getState();
+        GameState state = context.getState();
         
         for(int i = 0; i < scorePlayer.size(); i++)
         {
