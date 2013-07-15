@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import s3games.engine.Element;
 import s3games.engine.ExtendedGameState;
+import s3games.engine.Game;
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
 import s3games.engine.Move;
@@ -23,6 +24,7 @@ import s3games.engine.Move;
  * @author Boris
  */
 public class GameWindow extends javax.swing.JFrame {
+    Game game;
     BoardCanvas boardCanvas;
     boolean repaint;
 
@@ -36,6 +38,7 @@ public class GameWindow extends javax.swing.JFrame {
     public Move lastMove;
     public final Object lastMoveReady;
     public boolean waitingForMove;
+    public ArrayList<Move> allowedMoves;
     
     /**
      * Creates new form Form
@@ -205,7 +208,9 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
     }
-    public void setGame(GameSpecification gs){
+    public void setGame(Game g){ //game
+        this.game = g;
+        GameSpecification gs = game.gameSpecification;
         try {
             //resize the window + canvas according to image
             Image bgImage = ImageIO.read(new File(gs.boardBackgroundFileName));
@@ -229,7 +234,11 @@ public class GameWindow extends javax.swing.JFrame {
             int score = egs.playerScores[i];
             outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
         }
-        winner = ((egs.basicGameState.gameFinished)?"niekto":"");                  //if someone won
+        
+        if (egs.basicGameState.gameFinished) {   //game finished
+           winner = ((game.whoWon()!=0)?"Player "+boardCanvas.gameSpec.playerNames[game.whoWon()-1]+" wins!":"Draw!");                  //if someone won
+        }
+        
         this.repaint();             
         if (repaint) {
             boardCanvas.setState(egs);
@@ -255,7 +264,7 @@ public class GameWindow extends javax.swing.JFrame {
         
         if (!winner.equals("")) { 
              g.setFont(new Font("Arial",Font.BOLD,12));
-             g.drawString("Player "+winner+" wins!",offsetY,55);
+             g.drawString(winner,offsetY,55);
         }
     }
     

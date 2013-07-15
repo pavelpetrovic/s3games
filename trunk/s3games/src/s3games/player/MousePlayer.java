@@ -31,6 +31,7 @@ public class MousePlayer extends Player
         try { 
             synchronized(win.lastMoveReady)
             {
+                win.allowedMoves = allowedMoves;
                 win.waitingForMove = true;
                 win.lastMoveReady.wait();
             } 
