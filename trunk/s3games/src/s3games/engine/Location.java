@@ -23,9 +23,6 @@ public class Location
     public LocationShape shape;
     public RobotLocation robot;
 
-    // dynamic during the game
-    public Element content;
-
     public Location(String name)
     {
         this.name = new IndexedName(name);

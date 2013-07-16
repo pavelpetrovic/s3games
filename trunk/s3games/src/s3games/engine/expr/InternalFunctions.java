@@ -109,10 +109,9 @@ public class InternalFunctions
             if (!(locName instanceof Expr_STR_CONSTANT))
                 throw new Exception("CONTENT requires string");
             String locationName = ((Expr_STR_CONSTANT)locName).str;            
-            Location location = context.specs.locations.get(locationName);
-            if (location == null) return Expr.strExpr("");
-            if (location.content == null) return Expr.strExpr("");
-            return Expr.strExpr(location.content.name.fullName);
+            String content = context.getState().locationElements.get(locationName);
+            if (content == null) return Expr.strExpr("");
+            return Expr.strExpr(content);
         }
         
         if (fn == Expr.internalFunction.EMPTY)
@@ -121,9 +120,8 @@ public class InternalFunctions
             if (!(locName instanceof Expr_STR_CONSTANT))
                 throw new Exception("CONTENT requires string");
             String locationName = ((Expr_STR_CONSTANT)locName).str;
-            Location location = context.specs.locations.get(locationName);
-            if (location == null) return Expr.booleanExpr(false);  
-            return Expr.booleanExpr(location.content == null);
+            String content = context.getState().locationElements.get(locationName);
+            return Expr.booleanExpr(content == null);
         }
         
         if (fn == Expr.internalFunction.INDEX)

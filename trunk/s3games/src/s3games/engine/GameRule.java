@@ -59,7 +59,7 @@ public class GameRule
                     String tryFrom = st.elementLocations.get(el.name.fullName);
                     if (from.matches(tryFrom, context))
                         for (Location tryTo:specs.locations.values())
-                            if (tryTo.content == null)
+                            if (st.locationElements.get(tryTo.name.fullName) == null)
                                 if (to.matches(tryTo.name.fullName, context))
                                     if (condition.eval(context).isTrue())
                                         moves.add(new Move(tryFrom, tryTo.name.fullName, el.name.fullName));
