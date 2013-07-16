@@ -42,6 +42,11 @@ public class BoardCanvas extends Canvas {
         egameState = egs;    
     }
      
+    
+    @Override
+    public void update(Graphics g) {
+        paint(g);
+    }
     @Override
     public void paint(Graphics g) {
         if (gameSpec!=null) {
