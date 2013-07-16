@@ -243,6 +243,7 @@ public class InternalFunctions
             if ((own < 0 ) || (own > context.gameState.playerScores.length))
                 throw new Exception("SETOWNER requires existing player number or 0");
             context.gameState.elementOwners.put(elementName, own);
+            context.gameState.touch();
             return Expr.booleanExpr(true);
         }
         
@@ -262,6 +263,7 @@ public class InternalFunctions
             if ((state < 1 ) || (state > context.specs.elementTypes.get(element.type).numStates))
                 throw new Exception("SETSTATE on element " + elementName + " with state " + state + " is out of range");
             context.gameState.elementStates.put(elementName, state);
+            context.gameState.touch();
             return Expr.booleanExpr(true);
         }
         
@@ -277,13 +279,15 @@ public class InternalFunctions
             if (!(zi instanceof Expr_NUM_CONSTANT))
                 throw new Exception("SETZINDEX requires number as second argument");
             zindex = new Integer(((Expr_NUM_CONSTANT)zi).num);
-            context.gameState.elementzIndexes.put(elementName, zindex);            
+            context.gameState.elementzIndexes.put(elementName, zindex);  
+            context.gameState.touch();
             return Expr.booleanExpr(true);
         }
         
         if (fn == Expr.internalFunction.NEXTPLAYER)
         {
             context.gameState.currentPlayer = (context.gameState.currentPlayer % context.specs.playerNames.length) + 1;
+            context.gameState.touch();
             return Expr.booleanExpr(true);
         }
         

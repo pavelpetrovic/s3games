@@ -67,6 +67,7 @@ public class Game extends Thread
             if (allowedMoves.isEmpty())
             {
                 state.winner = 0;
+                state.touch();
                 break;
             }
             
@@ -75,6 +76,7 @@ public class Game extends Thread
             if (!approved) 
             {
                 state.winner = (state.currentPlayer % numberOfPlayers) + 1;
+                state.touch();
                 break;
             }
     
