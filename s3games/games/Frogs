@@ -1,15 +1,34 @@
 [BOARD]    
 image=frogsbackground.png
 
+[REALBOARD ELEMENT TYPES]
+name=greenFrog
+hueMin=82
+hueMax=167
+saturationMin=0.3
+saturationMax=1.0
+valueMin=0.3
+valueMax=0.9
+
+name=redFrog
+hueMin=344
+hueMax=10
+saturationMin=0.6
+saturationMax=1.0
+valueMin=0.6
+valueMax=1.0
+
 [ELEMENT TYPES]
 name=greenFrog
 states=1
 image=greenFrog.png
+real=greenFrog
 point=1,1
 
 name=redFrog
 states=1
 image=redFrog.png
+real=redFrog
 point=1,1
 
 [LOCATION TYPES]
@@ -67,32 +86,32 @@ angles=10,20,30,40,50
 
 name=gf(1)
 type=greenFrog
-player=p1
+player=1
 location=s(1)
 
 name=gf(2)
 type=greenFrog
-player=p1
+player=1
 location=s(2)
 
 name=gf(3)
 type=greenFrog
-player=p1
+player=1
 location=s(3)
 
 name=rf(1)
 type=redFrog
-player=p1
+player=1
 location=s(5)
 
 name=rf(2)
 type=redFrog
-player=p1
+player=1
 location=s(6)
 
 name=rf(3)
 type=redFrog
-player=p1
+player=1
 location=s(7)
 
 [EXPRESSIONS]
@@ -112,7 +131,7 @@ END
 
 [END OF GAME]
 situation=FrogsAtHome
-winner=p1
+winner=1
 
 [GAME RULES]
 
