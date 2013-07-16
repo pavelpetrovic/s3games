@@ -8,6 +8,7 @@ package s3games.engine;
 import java.util.*;
 import s3games.engine.expr.Context;
 import s3games.engine.expr.Expr;
+import java.util.Arrays;
 
 /**
  *
@@ -22,15 +23,19 @@ public class GameState
     /** for each element name, the number of player */
     public Map<String,Integer> elementOwners;
     /** the player number on move 1..N */
-    public int currentPlayer;    
+    public int currentPlayer;
     /** -1 until the game has finished, then 0 for draw, or 1..N player number who won */
     public int winner;
+    
+    private int hash;
+    private boolean modified;
     
     public Map<String,Integer> elementzIndexes;
     public int[] playerScores;
 
     private Context context;
-    
+        
+    /** return a copy of this state state */
     public GameState getCopy()
     {
         GameState s = new GameState();
@@ -42,14 +47,52 @@ public class GameState
         s.elementOwners = new TreeMap<String,Integer>(elementOwners);
         s.currentPlayer = currentPlayer;
         s.winner = winner;
+        s.hash = hash;
+        s.modified = modified;
         return s;
     }
     
+    /** return a hash code for fast hashmap access, remember to call touch() always after state changes */
+    @Override
+    public int hashCode()
+    {
+        if (modified) recomputeHash();
+        return hash;
+    }
+    
+    /** recomputes the hash code for this state using String.hasCode() */
+    private void recomputeHash()
+    {
+        StringBuilder b = new StringBuilder();
+        b.append(elementStates.toString());
+        b.append(elementLocations.toString());
+        b.append(elementOwners.toString());
+        b.append(Integer.toString(currentPlayer));
+        b.append(Integer.toString(winner));
+        b.append(elementzIndexes);
+        b.append(Arrays.toString(playerScores));
+        hash = b.toString().hashCode();
+    }
+ 
+    /** always call this method after modifying the state */
+    public void touch()
+    {
+        modified = true;
+    }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof GameState)) return false;
+        return equals((GameState)other);
+    }
+        
     public GameState()
     {
         init();
     }
     
+    /** use this constructor to create a state corresponding to the start of game situation */
     public GameState(GameSpecification specs)
     {
         init();
@@ -74,10 +117,12 @@ public class GameState
         elementzIndexes = new TreeMap<String, Integer>();        
         currentPlayer = 1;
         winner = -1;
+        modified = true;
     }
 
     public boolean equals(GameState other)
     {
+        if (hashCode() != other.hashCode()) return false;
         if (!elementStates.equals(other.elementStates)) return false;
         if (!elementLocations.equals(other.elementLocations)) return false;
         if (!elementOwners.equals(other.elementOwners)) return false;
@@ -100,6 +145,7 @@ public class GameState
         return move;
     }
     
+    /** return a list of moves that can be taken from this state */
     public ArrayList<Move> possibleMoves() throws Exception
     {
         ArrayList<Move> moves = new ArrayList<Move>();
@@ -148,8 +194,10 @@ public class GameState
         moveElement(move, context.specs);
         bestRule.performAction(context);
         winner = gameOver();
+        modified = true;
     }
     
+    /** finds the rule that maximizes the score for the specified move  */
     private GameRule findBestRule(Move move) throws Exception
     {
         int maximumScoreGained = Integer.MIN_VALUE;
@@ -178,5 +226,6 @@ public class GameState
         elementLocations.put(move.element, move.to);
         specs.locations.get(move.from).content = null;
         specs.locations.get(move.to).content = specs.elements.get(move.element);
+        modified = true;
     }
 }
