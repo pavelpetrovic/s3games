@@ -20,6 +20,8 @@ public class GameState
     public Map<String,Integer> elementStates; // 1..numStates
     /** for each element name, location name where it currently is placed */
     public Map<String,String> elementLocations;
+    /** for each location, content of the element */
+    public Map<String,String> locationElements;
     /** for each element name, the number of player */
     public Map<String,Integer> elementOwners;
     /** the player number on move 1..N */
@@ -44,11 +46,13 @@ public class GameState
         System.arraycopy(playerScores, 0, s.playerScores, 0, playerScores.length);
         s.elementStates = new TreeMap<String,Integer>(elementStates);
         s.elementLocations = new TreeMap<String,String>(elementLocations);
+        s.locationElements = new TreeMap<String,String>(locationElements);
         s.elementOwners = new TreeMap<String,Integer>(elementOwners);
         s.currentPlayer = currentPlayer;
         s.winner = winner;
         s.hash = hash;
         s.modified = modified;
+        s.context = context;
         return s;
     }
     
@@ -100,9 +104,9 @@ public class GameState
         {
             elementStates.put(element.getKey(), element.getValue().initialState);
             elementLocations.put(element.getKey(), element.getValue().initialLocation);
-            specs.locations.get(element.getValue().initialLocation).content = element.getValue();
+            locationElements.put(element.getValue().initialLocation, element.getKey());            
             elementOwners.put(element.getKey(), element.getValue().initialOwner);
-        }        
+        }
         for (Map.Entry<String,Element> element: specs.elements.entrySet())        
             elementzIndexes.put(element.getKey(), element.getValue().initialZindex);
         playerScores = new int[specs.playerNames.length];
@@ -113,6 +117,7 @@ public class GameState
     {
         elementStates = new TreeMap<String, Integer>();
         elementLocations = new TreeMap<String, String>();
+        locationElements = new TreeMap<String, String>();
         elementOwners = new TreeMap<String, Integer>();
         elementzIndexes = new TreeMap<String, Integer>();        
         currentPlayer = 1;
@@ -176,9 +181,12 @@ public class GameState
      * executes all conditions of tested rules with all the consequences */
     public boolean moveAllowed(Move move) throws Exception
     {
+        context.setState(this);
+        if (elementLocations.get(move.element) == null)
+            System.out.println("...");
         if (!elementLocations.get(move.element).equals(move.from))
             return false;
-        if (context.specs.locations.get(move.to).content != null)
+        if (locationElements.get(move.to) != null)
             return false;
         for (GameRule rule: context.specs.rules.values())        
             if (rule.matches(move, context)) return true;        
@@ -189,7 +197,9 @@ public class GameState
      * of the rule that maximizes the score, adds the score */
     public void performMove(Move move) throws Exception
     {      
+        context.setState(this);
         GameRule bestRule = findBestRule(move);
+        if (bestRule==null) throw new Exception("Trying to perform a move that is not legal in this state " + move);
         bestRule.addScores(context);
         moveElement(move, context.specs);
         bestRule.performAction(context);
@@ -224,8 +234,8 @@ public class GameState
     public void moveElement(Move move, GameSpecification specs)
     {
         elementLocations.put(move.element, move.to);
-        specs.locations.get(move.from).content = null;
-        specs.locations.get(move.to).content = specs.elements.get(move.element);
+        locationElements.put(move.from, null);
+        locationElements.put(move.to, move.element);
         modified = true;
     }
 }

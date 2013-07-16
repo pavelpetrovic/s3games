@@ -39,7 +39,7 @@ public class DepthFirstSearchPlayer extends Player {
         this.specs = specs;
     }
     @Override
-    public Move move(GameState state, ArrayList<Move> allowedMoves) {
+    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception {
         try { Thread.sleep(1000); } catch (Exception e) {};
         open = new ArrayList<Node>();
         closed = new HashSet<GameState>();
@@ -47,31 +47,29 @@ public class DepthFirstSearchPlayer extends Player {
         GameState activeState;
         open.add(new Node(null, null, state));
        
-        while (open.size()>0) {
-            try {
+        while (open.size()>0) 
+        {
                 Node actualNode = open.get(open.size()-1);
                 activeState = actualNode.gs;
                 open.remove(open.size()-1);
                 closed.add(activeState);
                 
                 ArrayList<Move> possibleMoves = activeState.possibleMoves();
-                for(int i=0; i<possibleMoves.size();i++) {
+                for(int i=0; i<possibleMoves.size();i++) 
+                {
                     GameState gs = activeState.getCopy();
                    
                     gs.performMove(possibleMoves.get(i));
-                    if (gs.winner==number) {  //find a path to the first move
-                          while(actualNode.previous!=null) {
+                    if (gs.winner==number)   //find a path to the first move
+                    {
+                        if (actualNode.previous == null) return possibleMoves.get(i);
+                        while(actualNode.previous.previous!=null) 
                                actualNode = actualNode.previous;
-                          }  
-                         return actualNode.moveToThisState;
+                        return actualNode.moveToThisState;
                     }
                     if (!closed.contains(gs) && gs.winner==-1)   //not visited and not finished
-                       open.add(new Node(actualNode,possibleMoves.get(i),gs));
-                
+                       open.add(new Node(actualNode,possibleMoves.get(i),gs));                
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(DepthFirstSearchPlayer.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }        
         return allowedMoves.get(0);
     }

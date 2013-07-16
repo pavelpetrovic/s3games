@@ -92,6 +92,7 @@ public class Game extends Thread
         
         } catch (Exception e)
         {            
+            e.printStackTrace();
             window.showException(e);
         }
         finally { gameRuns.off(); }

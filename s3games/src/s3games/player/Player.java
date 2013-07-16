@@ -19,7 +19,7 @@ public abstract class Player
     public enum playerType { HUMAN, COMPUTER };
     public enum boardType { REALWORLD, SIMULATED };
 
-    public abstract Move move(GameState state, ArrayList<Move> allowedMoves);    
+    public abstract Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception;   
     public abstract void otherMoved(Move move, GameState newState);
     
     public void setPlayerNumber(int pn) {
