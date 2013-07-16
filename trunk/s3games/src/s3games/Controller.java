@@ -53,7 +53,7 @@ public class Controller implements SwitchListener
 
     public String[] getGameNames()
     {
-        return new String[] { "Nim", "Frogs", "TicTacToe" };
+        return new String[] { "Nim", "Frogs", "tictactoe" };
     }
     
     //todo
@@ -118,7 +118,7 @@ public class Controller implements SwitchListener
                 else p = new MousePlayer(gameSpecification, gw);
             }
             else p = Strategy.getStrategy(playerStrategies[player]).getPlayer(gameSpecification);
-            
+            p.setPlayerNumber(player+1);
             players.add(p);
         }
         
