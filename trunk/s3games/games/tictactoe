@@ -1,15 +1,34 @@
 [BOARD]
 image=tictactoe.png
 
+[REALBOARD ELEMENT TYPES]
+name=green
+hueMin=82
+hueMax=167
+saturationMin=0.3
+saturationMax=1.0
+valueMin=0.3
+valueMax=0.9
+
+name=red
+hueMin=344
+hueMax=10
+saturationMin=0.6
+saturationMax=1.0
+valueMin=0.6
+valueMax=1.0
+
 [ELEMENT TYPES]
 name=circle
 states=1
 image=circle.png
+real=red
 point=1,1
 
 name=cross
 states=1
 image=cross.png
+real=green
 point=1,1
 
 [LOCATION TYPES]

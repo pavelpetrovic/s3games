@@ -25,7 +25,7 @@ public class GameSpecificationParser
     GameLogger logger;
     GameSpecification specs;
 
-    enum sections { BOARD, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
+    enum sections { BOARD, REAL_ELEMENT_TYPES, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
                         PLAYER_NAMES, MOVABLE_ELEMENTS, EXPRESSIONS,
                         SCORINGS, END_OF_GAME, GAME_RULES };
 
@@ -33,6 +33,7 @@ public class GameSpecificationParser
     {
         sectionName=sectionName.toUpperCase();
         if (sectionName.equals("BOARD")) return sections.BOARD;
+        if (sectionName.equals("REALBOARD ELEMENT TYPES")) return sections.REAL_ELEMENT_TYPES;
         if (sectionName.equals("ELEMENT TYPES")) return sections.ELEMENT_TYPES;
         if (sectionName.equals("LOCATION TYPES")) return sections.LOCATION_TYPES;
         if (sectionName.equals("LOCATIONS")) return sections.LOCATIONS;
@@ -318,6 +319,7 @@ public class GameSpecificationParser
             checkRules();
         } catch (Exception e)
         {   
+            e.printStackTrace();
             logger.error("could not load game specification from file " + fileName);
             throw e;
         }

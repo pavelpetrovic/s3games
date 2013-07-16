@@ -1,15 +1,34 @@
 [BOARD]    
 image=frogsbackground.png
 
+[REALBOARD ELEMENT TYPES]
+name=greenFrog
+hueMin=82
+hueMax=167
+saturationMin=0.3
+saturationMax=1.0
+valueMin=0.3
+valueMax=0.9
+
+name=redFrog
+hueMin=344
+hueMax=10
+saturationMin=0.6
+saturationMax=1.0
+valueMin=0.6
+valueMax=1.0
+
 [ELEMENT TYPES]
 name=greenFrog
 states=1
 image=greenFrog.png
+real=greenFrog
 point=1,1
 
 name=redFrog
 states=1
 image=redFrog.png
+real=redFrog
 point=1,1
 
 [LOCATION TYPES]
