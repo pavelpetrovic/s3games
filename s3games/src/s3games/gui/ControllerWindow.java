@@ -322,6 +322,7 @@ public class ControllerWindow extends javax.swing.JFrame
         int selectedPlayer = jComboBox3.getSelectedIndex();
         if (jComboBox2.getSelectedIndex()==0) {  //computer player selected
             jComboBox4.setEnabled(true);
+            jComboBox4.setSelectedItem((Object) playerStrategies[selectedPlayer]);
             playerTypes[selectedPlayer]=Player.playerType.COMPUTER;
         } else {  //human player selected
             jComboBox4.setEnabled(false);
