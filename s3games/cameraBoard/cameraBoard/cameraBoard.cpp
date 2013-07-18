@@ -1,3 +1,7 @@
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -8,6 +12,18 @@ using namespace cv;
 using namespace std;
 
 inline int f2i(double f) { return (int) floor(f + 0.5); }
+
+#ifdef WIN32
+double usec()
+{
+	LARGE_INTEGER ticksPerSecond;
+	LARGE_INTEGER tick;	
+	QueryPerformanceFrequency(&ticksPerSecond); 
+	QueryPerformanceCounter(&tick);
+	double ticks_per_micro= (double)ticksPerSecond.QuadPart/1000000.0;
+	return (double)(tick.QuadPart / ticks_per_micro);
+}
+#endif
 
 class ElementType
 {
@@ -22,14 +38,14 @@ public:
 	int elementTypeState;
 	int index;
 	
-	ElementType(float hueMin, float hueMax, float satMin, float satMax, float valueMin, float valueMax, int sizeMin, int sizeMax, char *elementTypeName, int elementTypeState, int index)
+	ElementType(double hueMin, double hueMax, double satMin, double satMax, double valueMin, double valueMax, int sizeMin, int sizeMax, char *elementTypeName, int elementTypeState, int index)
 	{
-		this->hueMin = hueMin;
-		this->hueMax = hueMax;
-		this->satMin = satMin;
-		this->satMax = satMax;
-		this->valueMin = valueMin;
-		this->valueMax = valueMax;
+		this->hueMin = (float)hueMin;
+		this->hueMax = (float)hueMax;
+		this->satMin = (float)satMin;
+		this->satMax = (float)satMax;
+		this->valueMin = (float)valueMin;
+		this->valueMax = (float)valueMax;
 		this->sizeMin = sizeMin;
 		this->sizeMax = sizeMax;
 		this->elementTypeName = elementTypeName;
@@ -64,7 +80,7 @@ public:
 	char *toString()
 	{
 		static char str[200];
-		sprintf(str, "Hue: %d - %d, Sat: %.2f - %.2f, Val: %d - %d\n", f2i(hueMin), f2i(hueMax), satMin, satMax, f2i(valueMin), f2i(valueMax));
+		sprintf_s(str, 199, "Hue: %d - %d, Sat: %.2f - %.2f, Val: %d - %d\n", f2i(hueMin), f2i(hueMax), satMin, satMax, f2i(valueMin), f2i(valueMax));
 		return str;
 	}
 
@@ -171,20 +187,30 @@ public:
 		fheight = img.size().height;
 		fx = x;
 		fy = y;
+		centerx = 0;
+		centery = 0;
 	}
 
-	long size()
+	long size(int &cx, int &cy)
 	{
-		if (fsize == -1)
-			if (follow()) getSize();
+		if (fsize == -1)		
+			if (follow()) 
+			{				
+				getSize();
+				centerx /= fsize;
+				centery /= fsize;
+			}		
+		cx = (int)centerx;
+		cy = (int)centery;
 		return fsize;
 	}
 
 private:	
 	Mat &fImg;
 	ElementType &et;
-	int fx, fy;
+	int fx, fy, startx, starty;
 	int	fwidth, fheight;
+	long long centerx, centery;
 	double fhue, fsat, fval;
 	long fsize;
 	int dir;
@@ -223,8 +249,10 @@ private:
 	void getSize()
 	{	
 		dir = -1;
-		fImg.at<Vec3f>(fy, fx)[2] = (float)(-et.index);
-		do { step(); } while (findStep());
+		fsize = 0;
+		startx = fx;
+		starty = fy;
+		do { step(); } while (findStep());			
 	}
 
 	void step()
@@ -234,6 +262,8 @@ private:
 		fImg.at<Vec3f>(fy, fx)[0] = (float)dir; 
 		fImg.at<Vec3f>(fy, fx)[2] = (float)(-2 - et.index); 
 		fsize++;
+		centerx += fx;
+		centery += fy;
 	}
 
 	bool goToNeighbor(int dir)
@@ -256,7 +286,7 @@ private:
 			fImg.at<Vec3f>(fy, fx)[0] = (float)dir;
 			while (dir == (f2i(fImg.at<Vec3f>(fy, fx)[1]))) 
 			{
-				if (fImg.at<Vec3f>(fy, fx)[2] < 0.0) return false;
+				if ((fx == startx) && (fy == starty)) return false;
 				goToNeighbor(dir);				
 				dir = f2i(fImg.at<Vec3f>(fy, fx)[0]);
 				dir = next(dir);
@@ -285,8 +315,9 @@ public:
 				for (vector<ElementType *>::iterator it = elementTypes.begin(); it < elementTypes.end(); it++)
 				{
 					ElementMatcher elo(**it, findingImg, x, y);
-					if ((*it)->matchesSize(elo.size()))
-						locations.push_back(new Location(x, y, (*it)->elementTypeName, (*it)->elementTypeState));
+					int cx, cy;
+					if ((*it)->matchesSize(elo.size(cx, cy)))
+						locations.push_back(new Location(cx, cy, (*it)->elementTypeName, (*it)->elementTypeState));
 				}
 	}
 
@@ -334,11 +365,13 @@ int main( int argc, char** argv )
     VideoCapture *cap = new VideoCapture(0);
 	Mat image;
 
-	//ElementType t1(82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 100, 5000, "green", 1);
-	//ElementType t1(12.0, 347.0, 0.3, 1.0, 76.0, 230.0, 100, 5000, "green", 1, 0);
-	ElementType t2(343.0, 19.0, 0.5, 1.0, 100.0, 255.0, 100, 5000, "red", 1, 0);
+	bool show = false;
 
-	//elementTypes.push_back(&t1);
+	ElementType t1(82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 500, 5000, "green", 1, 0);
+	//ElementType t1(12.0, 347.0, 0.3, 1.0, 76.0, 230.0, 100, 5000, "green", 1, 0);
+	ElementType t2(343.0, 19.0, 0.5, 1.0, 100.0, 255.0, 10, 5000, "red", 1, 1);
+
+	elementTypes.push_back(&t1);
 	elementTypes.push_back(&t2);
 
 	if (!cap->isOpened())
@@ -370,20 +403,28 @@ int main( int argc, char** argv )
 
 	do
 	{
+		key = waitKey(1);
+		
+		char k = key;
+		while (k != -1) k = waitKey(1);
+		
+		double tm1 = usec();
+
 		if (!cap->read(image))
 		{
 			cerr << "could not read frame from camera.";
 			return 0;
 		}
 
+		double tm2 = usec();
+
 		imshow( camera, image );
-
-		key = waitKey(1);
-
+				
 		if (mouseClicked)
 		{
 			image.convertTo(image32, CV_32FC3);
 			cvtColor(image32, hsv32, CV_RGB2HSV);
+			cout << "[" << mouseX << "," << mouseY << "]: ";
 			cout << "hue=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[0] << " ";
 			cout << "sat=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[1] << " ";
 			cout << "val=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[2] << endl;
@@ -465,17 +506,40 @@ int main( int argc, char** argv )
 			key = ' ';
 		}
 
+		if (key == 13)
+		{
+			key = ' ';
+			show = true;
+		}
+		else show = false;
+
 		if (key == ' ')
 		{
+			double tm3 = usec();
 			image.convertTo(image32, CV_32FC3);
+			double tm4 = usec();
 			cvtColor(image32, hsv32, CV_BGR2HSV);
+			double tm5 = usec();
+			locations.clear();
 			ObjectLocator ol(hsv32, elementTypes, locations);
 			ol.findObjects();
-			//cout << "objects:" << endl;
-			//for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
-			//	cout << (*it)->elementType << "(" << (*it)->elementState << ") at " << (*it)->x << ", " << (*it)->y << endl;
+			double tm6 = usec();
+			if (!show)
+			{
+				cout << "objects:" << endl;
+				for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
+					cout << (*it)->elementType << "(" << (*it)->elementState << ") at " << (*it)->x << ", " << (*it)->y << endl;
+			}
+			else
+			{
+				visualize(hsv32, vis, elementTypes);
+				double tm7 = usec();
+				cout << "frame grabbed in " << tm2 - tm1 << "us," << endl << "      shown in " << tm3 - tm2 << "us," << endl 
+					 << "      switched to floats in " << tm4 - tm3 << "us," << endl << "      converted to HSV in " 
+					 << tm5 - tm4 << "us," << endl << "      objects detected in " << tm6 - tm5 << "us," << endl 
+					 << "      visualized in "  << tm7 - tm6 << "us." << endl << "   total: " << tm7 - tm1 << "us." << endl;
+			}
 			key = -1;
-			visualize(hsv32, vis, elementTypes);
 		}
 
 	} while (key == -1);
