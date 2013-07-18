@@ -21,7 +21,7 @@ public abstract class Strategy
 
     public static String[] availableStrategies(String gameName)
     {
-        return new String[] {"Random","DFS"};
+        return new String[] {"Random","DFS","BFS"};
     }
     
     public static boolean learnable(String strategyName)
@@ -35,6 +35,8 @@ public abstract class Strategy
             return new RandomGeneralStrategy();
         if (name.equals("DFS"))
             return new DepthFirstSearchStrategy();
+        if (name.equals("BFS"))
+            return new BreadthFirstSearchStrategy();
         return null;
     }
 }
