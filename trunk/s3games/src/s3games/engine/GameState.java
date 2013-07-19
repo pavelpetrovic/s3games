@@ -68,12 +68,23 @@ public class GameState
     private void recomputeHash()
     {
         StringBuilder b = new StringBuilder();
-        b.append(elementStates.toString());
-        b.append(elementLocations.toString());
-        b.append(elementOwners.toString());
+        for (Map.Entry<String, String> loel: locationElements.entrySet())
+        {
+            String el = loel.getValue();
+            if (el != null)
+            {
+                b.append(context.specs.elements.get(el).type);
+                b.append('*');
+                b.append(elementStates.get(el));
+                b.append('*');
+                b.append(elementOwners.get(el));
+                b.append('*');
+                b.append(elementzIndexes.get(el));
+            }
+            b.append('*');
+        }
         b.append(Integer.toString(currentPlayer));
         b.append(Integer.toString(winner));
-        b.append(elementzIndexes);
         b.append(Arrays.toString(playerScores));
         hash = b.toString().hashCode();
     }
@@ -128,12 +139,25 @@ public class GameState
     public boolean equals(GameState other)
     {
         if (hashCode() != other.hashCode()) return false;
-        if (!elementStates.equals(other.elementStates)) return false;
-        if (!elementLocations.equals(other.elementLocations)) return false;
-        if (!elementOwners.equals(other.elementOwners)) return false;
+        
+        Iterator<Map.Entry<String, String>> otherLocationElements = other.locationElements.entrySet().iterator();
         if (currentPlayer != other.currentPlayer) return false;
-        if (!elementzIndexes.equals(other.elementzIndexes)) return false;
-        if (!Arrays.equals(playerScores, other.playerScores)) return false;
+        for (Map.Entry<String, String> loel: locationElements.entrySet())
+        {            
+            Map.Entry<String, String> otherloel = otherLocationElements.next();
+            String el = loel.getValue();
+            String otherel = otherloel.getValue();
+            
+            if (el != null)
+            {                
+                if (!context.specs.elements.get(el).type.equals(context.specs.elements.get(otherel).type)) return false;
+                if (!elementStates.get(el).equals(other.elementStates.get(otherel))) return false;
+                if (!elementOwners.get(el).equals(other.elementOwners.get(otherel))) return false;
+                if (!elementzIndexes.get(el).equals(other.elementzIndexes.get(otherel))) return false;
+            }
+            else if (otherel != null) return false;
+        }        
+        //if (!Arrays.equals(playerScores, other.playerScores)) return false;
         return true;
     }
         
