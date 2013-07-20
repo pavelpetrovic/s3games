@@ -206,8 +206,6 @@ public class GameState
     public boolean moveAllowed(Move move) throws Exception
     {
         context.setState(this);
-        if (elementLocations.get(move.element) == null)
-            System.out.println("...");
         if (!elementLocations.get(move.element).equals(move.from))
             return false;
         if (locationElements.get(move.to) != null)
