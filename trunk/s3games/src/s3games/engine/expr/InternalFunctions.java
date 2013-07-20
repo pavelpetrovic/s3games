@@ -215,12 +215,13 @@ public class InternalFunctions
             if (!currentLocation.equals(locationName1))
                 throw new Exception("MOVE(): attempt to move element " + elementName + " from location " + locationName1 + " but its current location is " + currentLocation);
             
-            Expr locName2 = args[1].eval(context);
+            Expr locName2 = args[2].eval(context);
             if (!(locName2 instanceof Expr_STR_CONSTANT))
                 throw new Exception("MOVE requires location name as third argument");
             String locationName2 = ((Expr_STR_CONSTANT)locName2).str;            
             Location location2 = context.specs.locations.get(locationName2);
             if (location2 == null) throw new Exception("MOVE(): unknown location " + locationName2);
+            if (context.gameState.locationElements.get(locationName2) != null) return Expr.booleanExpr(false);
         
             context.gameState.moveElement(new Move(locationName1, locationName2, elementName), context.specs);
             return Expr.booleanExpr(true);
