@@ -49,7 +49,6 @@ public class GameWindow extends javax.swing.JFrame {
         waitingForMove = false;
         
         outputTexts = null;
-        winner = "";
         repaint = true; 
         isSelectedElement = false;
     }
@@ -223,6 +222,7 @@ public class GameWindow extends javax.swing.JFrame {
     }
     public void setGame(Game g){ //game
         this.game = g;
+        winner = "";
         GameSpecification gs = game.gameSpecification;
         try {
             //resize the window + canvas according to image
@@ -251,7 +251,7 @@ public class GameWindow extends javax.swing.JFrame {
             }
 
             if (egs.winner >= 0) {   //game finished
-               winner = ((egs.winner!=0)?"Player "+boardCanvas.gameSpec.playerNames[egs.winner-1]+" wins!":"Draw!");                  //if someone won
+               winner = ((egs.winner!=0)?boardCanvas.gameSpec.playerNames[egs.winner-1]+" wins!":"Draw!");                  //if someone won
             }
         }
         this.repaint();             
