@@ -50,7 +50,6 @@ public class BreadthFirstSearchPlayer extends Player{
         while (open.size()>0)  //while fifo stack(queue) is not empty
         {            
             Node actualNode = open.poll();   //retrieve and remove head of the queue
-            System.out.println("open rozvijam");
             activeState = actualNode.gs;
             
             ArrayList<Move> possibleMoves = activeState.possibleMoves();
@@ -68,7 +67,6 @@ public class BreadthFirstSearchPlayer extends Player{
                         return actualNode.moveToThisState;
                     }
                     if (gs.winner == -1) {  //game continues
-                        System.out.println(open.size());
                         open.add(new Node(actualNode, possibleMoves.get(i),gs));  //previous state, move to this state, state
                     }
                 }
