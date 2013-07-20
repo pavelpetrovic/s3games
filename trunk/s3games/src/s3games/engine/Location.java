@@ -20,7 +20,6 @@ public class Location
     public IndexedName name;
     public String type;
     public Point point;
-    public LocationShape shape;
     public RobotLocation robot;
 
     public Location(String name)

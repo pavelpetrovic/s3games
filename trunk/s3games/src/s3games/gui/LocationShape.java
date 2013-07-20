@@ -6,6 +6,7 @@
 package s3games.gui;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
 /**
  *
@@ -13,15 +14,7 @@ import java.awt.Graphics;
  */
 public abstract class LocationShape
 {
-    int x;
-    int y;
-
-    abstract boolean isInside(int x, int y);
-    abstract void paintShape(Graphics g);
-    
-    public void setCenterPoint(int x, int y) {
-       this.x =x;
-       this.y =y;
-    }
-    
+    abstract boolean isInside(int x, int y, Point center);
+    abstract void paintShape(Graphics g, Point center);
+     
 }

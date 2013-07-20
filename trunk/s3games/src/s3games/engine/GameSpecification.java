@@ -23,7 +23,7 @@ public class GameSpecification
     public String gameName;
     public String boardBackgroundFileName;
 
-    public Map<String,ImageWithHotSpot> locationTypes;
+    public Map<String,LocationType> locationTypes;
     public Map<String,ElementType> elementTypes;
     public Map<String,Element> elements;
     public Map<String,Location> locations;
@@ -40,7 +40,7 @@ public class GameSpecification
 
     public GameSpecification(Config config, GameLogger logger)
     {
-        locationTypes = new HashMap<String, ImageWithHotSpot>();
+        locationTypes = new HashMap<String, LocationType>();
         elementTypes = new HashMap<String, ElementType>();
         elements = new HashMap<String, Element>();
         locations = new HashMap<String, Location>();

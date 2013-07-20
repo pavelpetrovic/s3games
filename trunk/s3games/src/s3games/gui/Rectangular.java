@@ -7,6 +7,7 @@ package s3games.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 
 /**
  *
@@ -23,19 +24,20 @@ public class Rectangular extends LocationShape
     }
 
     @Override
-    boolean isInside(int x, int y)
+    boolean isInside(int x, int y, Point center)
     {
-        if ( Math.abs(this.x-x)<a/2 && Math.abs(this.y-y)<b/2)  {
+        if ( Math.abs(center.x-x)<a/2 && Math.abs(center.y-y)<b/2)  
           return true; 
-        }
+        
         return false;
     }
     
     @Override 
-    void paintShape(Graphics g) {
+    void paintShape(Graphics g, Point center) 
+    {
         g.setColor(Color.red);
-        g.drawRect(x-a/2, y-b/2, a, b);  //xy upper left corner - offset necessary
+        g.drawRect(center.x-a/2, center.y-b/2, a, b);  //xy upper left corner - offset necessary
         g.setColor(Color.yellow);
-        g.drawRect(x-a/2+2, y-b/2+2, a-4, b-4); 
+        g.drawRect(center.x-a/2+2, center.y-b/2+2, a-4, b-4); 
     }
 }

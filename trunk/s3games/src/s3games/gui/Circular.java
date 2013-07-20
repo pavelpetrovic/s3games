@@ -7,6 +7,7 @@ package s3games.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 
 /**
  *
@@ -22,17 +23,17 @@ public class Circular extends LocationShape
     }
     
     @Override
-    boolean isInside(int x, int y)
+    boolean isInside(int x, int y, Point center)
     {
       //  System.out.println(this.x+" "+this.y+" "+x+" "+y+" "+radius+" "+Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)));
-        return ( radius > Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)) );
+        return ( radius > Math.sqrt(Math.pow(center.y-y,2)+Math.pow(center.x-x,2)) );
     }
     
     @Override 
-    void paintShape(Graphics g) {
+    void paintShape(Graphics g, Point center) {
         g.setColor(Color.red);
-        g.drawOval(x-radius, y-radius, radius*2, radius*2);
+        g.drawOval(center.x-radius, center.y-radius, radius*2, radius*2);
         g.setColor(Color.YELLOW);
-        g.drawOval(x-radius+2, y-radius+2, radius*2-4, radius*2-4);
+        g.drawOval(center.x-radius+2, center.y-radius+2, radius*2-4, radius*2-4);
     }
 }
