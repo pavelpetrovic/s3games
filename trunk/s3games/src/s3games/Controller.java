@@ -53,7 +53,7 @@ public class Controller implements SwitchListener
 
     public String[] getGameNames()
     {
-        return new String[] {"Mill","Nim", "Frogs", "TicTacToe"};
+        return new String[] {"alquerque","Mill","Nim", "Frogs", "TicTacToe"};
     }
     
     //todo

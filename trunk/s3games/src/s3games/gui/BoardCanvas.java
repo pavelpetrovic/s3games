@@ -35,7 +35,7 @@ public class BoardCanvas extends Canvas {
         gameSpec = gs;
         bgImage = Toolkit.getDefaultToolkit().getImage(gs.boardBackgroundFileName);
         egameState = null;
-        buffImg = new BufferedImage(this.getWidth(), this.getWidth(), BufferedImage.TYPE_INT_ARGB);
+        buffImg = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
     }
         
     public void setState(GameState egs) {

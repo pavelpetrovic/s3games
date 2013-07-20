@@ -29,7 +29,7 @@ public class GameWindow extends javax.swing.JFrame {
 
     ArrayList<String> outputTexts;
     String winner;
-    int offsetY;  //for drawing of text = distance of right gap from left side
+    int offsetX;  //for drawing of text = distance of right gap from left side
     
     boolean isSelectedElement;
     String selectedElementName;
@@ -102,11 +102,11 @@ public class GameWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
-                .addGap(132, 132, 132))
+                .addGap(152, 152, 152))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
         );
 
         pack();
@@ -228,7 +228,7 @@ public class GameWindow extends javax.swing.JFrame {
             //resize the window + canvas according to image
             Image bgImage = ImageIO.read(new File(gs.boardBackgroundFileName));
             this.setSize(bgImage.getWidth(this)+132,bgImage.getHeight(this)+30);  //130 takes panel and 30 because top panel also takes a place and his height is counted to total size of jframe...
-            offsetY=bgImage.getWidth(this)+4;
+            offsetX=bgImage.getWidth(this)+12;
             //boardCanvas.setPreferredSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
             boardCanvas.setSize(new java.awt.Dimension(bgImage.getWidth(this),bgImage.getHeight(this)));
         } catch (IOException ex) {
@@ -239,20 +239,21 @@ public class GameWindow extends javax.swing.JFrame {
     public void setState(GameState egs) {         
         //generate array of strings for output text
         int currentPlayer = egs.currentPlayer;
-        outputTexts = new ArrayList<String>();
-        outputTexts.add("Player on move:"); 
-        outputTexts.add("  "+boardCanvas.gameSpec.playerNames[currentPlayer-1]);
-        outputTexts.add("Scores: ");
-        for(int i=0; i< boardCanvas.gameSpec.playerNames.length; i++) {
-            String name = boardCanvas.gameSpec.playerNames[i];
-            int score = egs.playerScores[i];
-            outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
+        synchronized(this) {
+            outputTexts = new ArrayList<String>();
+            outputTexts.add("Player on move:"); 
+            outputTexts.add("  "+boardCanvas.gameSpec.playerNames[currentPlayer-1]);
+            outputTexts.add("Scores: ");
+            for(int i=0; i< boardCanvas.gameSpec.playerNames.length; i++) {
+                String name = boardCanvas.gameSpec.playerNames[i];
+                int score = egs.playerScores[i];
+                outputTexts.add((i+1)+" "+name+": "+score);   //for output are players indexing from 1
+            }
+
+            if (egs.winner >= 0) {   //game finished
+               winner = ((egs.winner!=0)?"Player "+boardCanvas.gameSpec.playerNames[egs.winner-1]+" wins!":"Draw!");                  //if someone won
+            }
         }
-        
-        if (egs.winner >= 0) {   //game finished
-           winner = ((egs.winner!=0)?"Player "+boardCanvas.gameSpec.playerNames[egs.winner-1]+" wins!":"Draw!");                  //if someone won
-        }
-        
         this.repaint();             
         if (repaint) {
             boardCanvas.setState(egs);
@@ -261,24 +262,26 @@ public class GameWindow extends javax.swing.JFrame {
     }
     
     @Override
-    public void paint(Graphics g) {
-        g.clearRect(offsetY, 0, this.getWidth(), this.getHeight());  //clear last text
-        //draw output texts from array of strings - generated in setState
-        if (outputTexts != null) {
-           int x = 70;
-           for(String s :outputTexts) {  //foreach item
-               x += 17;
-               g.drawString(s,offsetY,x);
-           }
-        }
-        Font font = new Font("Arial", Font.PLAIN, 10);
-        g.setFont(font);
-        g.drawString("Canvas redrawing: "+((repaint)?"ON":"OFF"), offsetY+3, this.getHeight() - 30 );
-        g.drawString("-press key R to change", offsetY+5, this.getHeight() - 19 );
-        
-        if (!winner.equals("")) { 
-             g.setFont(new Font("Arial",Font.BOLD,12));
-             g.drawString(winner,offsetY,55);
+    public void paint(Graphics g) {   
+        g.clearRect(offsetX-12, 0, this.getWidth(), this.getHeight());  //clear last text
+        synchronized(this) {
+            //draw output texts from array of strings - generated in setState
+            if (outputTexts != null) {
+               int x = 70;
+               for(String s :outputTexts) {  //foreach item
+                   x += 17;
+                   g.drawString(s,offsetX,x);
+               }
+            }
+            Font font = new Font("Arial", Font.PLAIN, 10);
+            g.setFont(font);
+            g.drawString("Canvas redrawing: "+((repaint)?"ON":"OFF"), offsetX, this.getHeight() - 30 );
+            g.drawString("-press key R to change", offsetX+2, this.getHeight() - 19 );
+
+            if (!winner.equals("")) { 
+                 g.setFont(new Font("Arial",Font.BOLD,12));
+                 g.drawString(winner,offsetX,55);
+            }
         }
     }
     
