@@ -59,7 +59,7 @@ public class BoardCanvas extends Canvas {
                for (Map.Entry<String, Location> location: gameSpec.locations.entrySet())
                {
                     Location loc = location.getValue();
-                    img = gameSpec.locationTypes.get(loc.type);
+                    img = gameSpec.locationTypes.get(loc.type).image;
                     int xCorner = loc.point.x-img.hotSpot.x-img.image.getWidth(this)/2;
                     int yCorner = loc.point.y-img.hotSpot.y-img.image.getHeight(this)/2;
                     bg.drawImage(img.image,xCorner, yCorner,this);   //drawing from upper left corner, not center => offset according to widht and height and hotspot
@@ -88,7 +88,8 @@ public class BoardCanvas extends Canvas {
     private void highlightSelected(Graphics g) {
         if (selectedElementName != null) {
             String elementLoc = egameState.elementLocations.get(selectedElementName);
-            gameSpec.locations.get(elementLoc).shape.paintShape(g);
+            Location loc = gameSpec.locations.get(elementLoc);
+            gameSpec.locationTypes.get(loc.type).shape.paintShape(g, loc.point);
         }
     }
     

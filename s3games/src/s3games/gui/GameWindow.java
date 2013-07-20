@@ -125,7 +125,7 @@ public class GameWindow extends javax.swing.JFrame {
                   for (Map.Entry<String, String> entry : elements.entrySet()) {
                        String elementLoc = entry.getValue();
                        Location loc = gs.locations.get(elementLoc);
-                       if (loc.shape.isInside(x, y) && isElementAllowed(entry.getKey())) {
+                       if (gs.locationTypes.get(loc.type).shape.isInside(x, y, loc.point) && isElementAllowed(entry.getKey())) {
                           isSelectedElement = true;
                           selectedElementName = entry.getKey();
                           boardCanvas.setSelectedElement(selectedElementName);
@@ -134,14 +134,15 @@ public class GameWindow extends javax.swing.JFrame {
                   } 
             } else {                      //deselect or identify new location  
                 String elementLoc = egs.elementLocations.get(selectedElementName);
-                if (gs.locations.get(elementLoc).shape.isInside(x, y)) {                          //if was selected actually selected again, selection will be canceled
+                Location loc1 = gs.locations.get(elementLoc);
+                if (gs.locationTypes.get(loc1.type).shape.isInside(x, y, loc1.point)) {                          //if was selected actually selected again, selection will be canceled
                     isSelectedElement = false;
                     boardCanvas.setSelectedElement(null);
                 } else {       //iterate through each location...  
                     for (Map.Entry<String, Location> entry : gs.locations.entrySet()) {
                        Location loc = entry.getValue();
                        
-                       if (loc.shape.isInside(x, y)  && isMoveAllowed(selectedElementName, entry.getKey())) { 
+                       if (gs.locationTypes.get(loc.type).shape.isInside(x, y, loc.point) && isMoveAllowed(selectedElementName, entry.getKey())) { 
                             isSelectedElement = false;
                             boardCanvas.setSelectedElement(null);
                            

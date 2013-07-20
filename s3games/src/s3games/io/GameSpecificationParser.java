@@ -108,21 +108,30 @@ public class GameSpecificationParser
         }
     }
 
-    String locationName;
+    LocationType locationType;
     private void locationTypeSetting(String var, String val)
     {
         var = var.toLowerCase();
         if (var.equals("name"))
-            locationName = val;
+            locationType = new LocationType(val);
         else if (var.equals("image"))
             imageName = val;
+        else if (var.equals("shape"))
+        {
+            IndexedName shapeName = new IndexedName(val);
+            if (shapeName.baseName.equals("circle"))
+                locationType.shape = new Circular(shapeName.index[0]);
+            else if (shapeName.baseName.equals("rectangular"))
+                locationType.shape = new Rectangular(shapeName.index[0], shapeName.index[1]);
+        }
         else if (var.equals("point"))
         {
             String[] hotspot = val.split(",");
 
             try {
                 ImageWithHotSpot img = new ImageWithHotSpot(config.imagePath + "/" + imageName, Integer.parseInt(hotspot[0].trim()), Integer.parseInt(hotspot[1].trim()));
-                specs.locationTypes.put(locationName, img);
+                locationType.image = img;
+                specs.locationTypes.put(locationType.name, locationType);
             } catch (Exception e)
             {
                 logger.error("could not load image from file '" + imageName + "': " + e);
@@ -145,16 +154,6 @@ public class GameSpecificationParser
         {
             String[] coord = val.split(",");
             location.point = new Point(Integer.parseInt(coord[0].trim()), Integer.parseInt(coord[1].trim()));
-        }
-        else if (var.equals("shape"))
-        {
-            IndexedName shapeName = new IndexedName(val);
-            if (shapeName.baseName.equals("circle"))
-                location.shape = new Circular(shapeName.index[0]);
-            else if (shapeName.baseName.equals("rectangular"))
-                location.shape = new Rectangular(shapeName.index[0], shapeName.index[1]);
-            
-            location.shape.setCenterPoint(location.point.x, location.point.y);          
         }
         else if (var.equals("angles"))
             try { location.robot = new RobotLocation(val); }
