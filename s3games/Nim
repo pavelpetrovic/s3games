@@ -90,6 +90,12 @@ type=active
 point=470,150
 angles=10,20,30,40,50
 
+name=s(13)
+type=active
+point=490,150
+shape=rectangular(0,0)
+angles=10,20,30,40,50
+
 name=b(1) 
 type=box
 point=600,280
@@ -207,22 +213,36 @@ location=s(12)
 
 [EXPRESSIONS]
 
+CheckMove
+  $M=$K+1
+  $N=$K+2
+  $P=$K+3
+  EMPTY("s($M)") OR EMPTY("s($N)") OR EMPTY("s($P)")
+END
+
+PlaceMatch($W)  
+  MOVE("m($W)","s($W)","b($F)")
+END
+
+PerformMove
+  IF(NOT EMPTY("s($M)"),FORSOME($F,1,12,PlaceMatch($M)),true)
+  IF(NOT EMPTY("s($N)"),FORSOME($F,1,12,PlaceMatch($N)),true)
+  NEXTPLAYER
+END
+
 [SCORINGS]
 
 [END OF GAME]
+
+situation=EMPTY("s(1)")
+winner=PLAYER
 
 [GAME RULES]
 
 name=move1
 element=m($J)
-player=1
 from=s($K)
 to=b($L)  
-followup=NEXTPLAYER
+condition=CheckMove
+followup=PerformMove
 
-name=move2
-element=m($J)
-player=2
-from=s($K)
-to=b($L)  
-followup=NEXTPLAYER
