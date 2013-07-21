@@ -5,7 +5,6 @@
 
 package s3games.engine;
 
-import s3games.gui.ImageWithHotSpot;
 import java.util.*;
 import java.util.Map;
 import s3games.io.Config;
@@ -34,6 +33,7 @@ public class GameSpecification
     public Map<String,GameRule> rules;
 
     public String playerNames[];
+    public int initialPlayerScore;
 
     Config config;
     GameLogger logger;
@@ -49,6 +49,7 @@ public class GameSpecification
         scorings = new ArrayList<GameScoring>();
         rules = new HashMap<String, GameRule>();
         this.config = config;
+        initialPlayerScore = 0;
     }
 
     public boolean load(String gameName) throws Exception

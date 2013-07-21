@@ -15,7 +15,7 @@ import s3games.util.IndexedName;
 public abstract class Expr
 {
     public enum operatorType { EQUALS, NOTEQUALS, LOWER, LOWEREQUAL, GREATER, GREATEREQUAL,
-                        PLUS, MINUS, TIMES, DIV, MOD, SUBSET, ELEMENT, SETMINUS,
+                        PLUS, MINUS, TIMES, DIV, MOD, ABS, SUBSET, ELEMENT, SETMINUS,
                         UNION, INTERSECTION, AND, OR, NOT, ASSIGNMENT, UNKNOWN };
 
     public enum internalFunction { IF, FORALL, FORSOME, LOCTYPE, ELTYPE, STATE, LOCATION,
@@ -49,6 +49,7 @@ public abstract class Expr
         else if (op.equals("*")) return operatorType.TIMES;
         else if (op.equals("/")) return operatorType.DIV;
         else if (op.equals("%")) return operatorType.MOD;
+        else if (op.equals("ABS")) return operatorType.ABS;
         else if (op.equals("SUBSET")) return operatorType.SUBSET;
         else if (op.equals("IN")) return operatorType.ELEMENT;
         else if (op.equals("SETMINUS")) return operatorType.SETMINUS;

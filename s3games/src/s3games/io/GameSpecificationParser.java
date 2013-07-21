@@ -166,13 +166,18 @@ public class GameSpecificationParser
 
     private void playerNameSetting(String var, String val)
     {
-        int n = Integer.parseInt(var) - 1;
-        int max = Math.max(n, specs.playerNames.length + 1);
-        String[] newNames = new String[max];
-        for (int i = 0; i < specs.playerNames.length; i++)
-            newNames[i] = specs.playerNames[i];
-        newNames[n] = val;
-        specs.playerNames = newNames;
+        if (var.toLowerCase().equals("score"))        
+            specs.initialPlayerScore = Integer.parseInt(val);
+        else
+        {        
+            int n = Integer.parseInt(var) - 1;
+            int max = Math.max(n, specs.playerNames.length + 1);
+            String[] newNames = new String[max];
+            for (int i = 0; i < specs.playerNames.length; i++)
+                newNames[i] = specs.playerNames[i];
+            newNames[n] = val;
+            specs.playerNames = newNames;
+        }
     }
 
     private int getPlayerNumber(String playerName)
