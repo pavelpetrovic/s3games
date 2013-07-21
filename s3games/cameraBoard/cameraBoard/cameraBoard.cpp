@@ -35,10 +35,9 @@ private:
 
 public:
 	char *elementTypeName;
-	int elementTypeState;
 	int index;
 	
-	ElementType(double hueMin, double hueMax, double satMin, double satMax, double valueMin, double valueMax, int sizeMin, int sizeMax, char *elementTypeName, int elementTypeState, int index)
+	ElementType(double hueMin, double hueMax, double satMin, double satMax, double valueMin, double valueMax, int sizeMin, int sizeMax, char *elementTypeName, int index)
 	{
 		this->hueMin = (float)hueMin;
 		this->hueMax = (float)hueMax;
@@ -48,8 +47,7 @@ public:
 		this->valueMax = (float)valueMax;
 		this->sizeMin = sizeMin;
 		this->sizeMax = sizeMax;
-		this->elementTypeName = elementTypeName;
-		this->elementTypeState = elementTypeState;
+		this->elementTypeName = elementTypeName;		
 		this->index = index;
 	}
 
@@ -162,15 +160,13 @@ class Location
 {
 public:
 	int x, y;
-	char *elementType;
-	int elementState;
+	char *elementType;	
 
-	Location(int x, int y, char *elementType, int elementState)
+	Location(int x, int y, char *elementType)
 	{
 		this->x = x;
 		this->y = y;
-		this->elementType = elementType;
-		this->elementState = elementState;
+		this->elementType = elementType;		
 	}
 };
 
@@ -317,7 +313,7 @@ public:
 					ElementMatcher elo(**it, findingImg, x, y);
 					int cx, cy;
 					if ((*it)->matchesSize(elo.size(cx, cy)))
-						locations.push_back(new Location(cx, cy, (*it)->elementTypeName, (*it)->elementTypeState));
+						locations.push_back(new Location(cx, cy, (*it)->elementTypeName));
 				}
 	}
 
@@ -361,15 +357,18 @@ int main( int argc, char** argv )
 {
 	vector<Location *> locations;
 	vector<ElementType *> elementTypes;
+	int selectedElement = 0;
+
+	cout << "S:S3 Games Camera" << endl;
 
     VideoCapture *cap = new VideoCapture(0);
 	Mat image;
 
 	bool show = false;
-
-	ElementType t1(82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 500, 5000, "green", 1, 0);
+	
+	ElementType t1(82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 500, 5000, "green", 0);
 	//ElementType t1(12.0, 347.0, 0.3, 1.0, 76.0, 230.0, 100, 5000, "green", 1, 0);
-	ElementType t2(343.0, 19.0, 0.5, 1.0, 100.0, 255.0, 10, 5000, "red", 1, 1);
+	ElementType t2(343.0, 19.0, 0.5, 1.0, 100.0, 255.0, 10, 5000, "red", 1);
 
 	elementTypes.push_back(&t1);
 	elementTypes.push_back(&t2);
@@ -380,8 +379,8 @@ int main( int argc, char** argv )
 		return 0;
 	}
 
-	char *camera = "Camera - SPACE to capture the board state";
-	namedWindow( camera, CV_WINDOW_AUTOSIZE );// Create a window for display.
+	char *camera = "View from Camera";
+	namedWindow( camera, CV_WINDOW_AUTOSIZE );
 	
 	int mouseData[3];
 	int &mouseClicked = mouseData[0];
@@ -392,7 +391,7 @@ int main( int argc, char** argv )
 
 	if (!cap->read(image))
 	{
-		cerr << "could not read frame from camera.";
+		cout << "F:Could not read frame from camera.";
 		return 0;
 	}
 	Mat image32(image.size().width, image.size().height, CV_32FC3);
@@ -424,86 +423,97 @@ int main( int argc, char** argv )
 		{
 			image.convertTo(image32, CV_32FC3);
 			cvtColor(image32, hsv32, CV_RGB2HSV);
-			cout << "[" << mouseX << "," << mouseY << "]: ";
+			cout << "I:[" << mouseX << "," << mouseY << "]: ";
 			cout << "hue=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[0] << " ";
 			cout << "sat=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[1] << " ";
 			cout << "val=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[2] << endl;
 			mouseClicked = false;
 			key = -1;
 		}
-
 		
 		if (key == 'h')
 		{
-			elementTypes.at(0)->decHueMin();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->decHueMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'j')
 		{
-			elementTypes.at(0)->decHueMax();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->decHueMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'H')
 		{
-			elementTypes.at(0)->incHueMin();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->incHueMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'J')
 		{
-			elementTypes.at(0)->incHueMax();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->incHueMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 's')
 		{
-			elementTypes.at(0)->decSatMin();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->decSatMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'd')
 		{
-			elementTypes.at(0)->decSatMax();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->decSatMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'S')
 		{
-			elementTypes.at(0)->incSatMin();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->incSatMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'D')
 		{
-			elementTypes.at(0)->incSatMax();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->incSatMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'v')
 		{
-			elementTypes.at(0)->decValMin();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->decValMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'b')
 		{
-			elementTypes.at(0)->decValMax();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->decValMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'V')
 		{
-			elementTypes.at(0)->incValMin();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->incValMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
 		}
 		else if (key == 'B')
 		{
-			elementTypes.at(0)->incValMax();
-			cout << elementTypes.at(0)->toString();
+			elementTypes.at(selectedElement)->incValMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			key = ' ';
+		}
+		else if (key == '+')
+		{
+			selectedElement++;
+			if (selectedElement >= (int)(elementTypes.size())) selectedElement = elementTypes.size() - 1;		
+			cout << "I:Selected element " << selectedElement << '=' + elementTypes.at(selectedElement)->elementTypeName;
+		}
+		else if (key == '-')
+		{
+			selectedElement--;
+			if (selectedElement < 0) selectedElement = 0;				
+			cout << "I:Selected element " << selectedElement << '=' + elementTypes.at(selectedElement)->elementTypeName;
 		}
 
 		if (key == 13)
@@ -525,19 +535,18 @@ int main( int argc, char** argv )
 			ol.findObjects();
 			double tm6 = usec();
 			if (!show)
-			{
-				cout << "objects:" << endl;
+			{				
 				for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
-					cout << (*it)->elementType << "(" << (*it)->elementState << ") at " << (*it)->x << ", " << (*it)->y << endl;
+					cout << "O:" << (*it)->elementType << " at " << (*it)->x << ", " << (*it)->y << endl;
 			}
 			else
 			{
 				visualize(hsv32, vis, elementTypes);
 				double tm7 = usec();
-				cout << "frame grabbed in " << tm2 - tm1 << "us," << endl << "      shown in " << tm3 - tm2 << "us," << endl 
-					 << "      switched to floats in " << tm4 - tm3 << "us," << endl << "      converted to HSV in " 
-					 << tm5 - tm4 << "us," << endl << "      objects detected in " << tm6 - tm5 << "us," << endl 
-					 << "      visualized in "  << tm7 - tm6 << "us." << endl << "   total: " << tm7 - tm1 << "us." << endl;
+				cout << "D:frame grabbed in " << tm2 - tm1 << "us," << endl << "D:      shown in " << tm3 - tm2 << "us," << endl 
+					 << "D:      switched to floats in " << tm4 - tm3 << "us," << endl << "D:      converted to HSV in " 
+					 << tm5 - tm4 << "us," << endl << "D:      objects detected in " << tm6 - tm5 << "us," << endl 
+					 << "D:      visualized in "  << tm7 - tm6 << "us." << endl << "D:   total: " << tm7 - tm1 << "us." << endl;
 			}
 			key = -1;
 		}
