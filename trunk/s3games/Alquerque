@@ -435,20 +435,35 @@ location=b(5,1)
 
 [EXPRESSIONS]
 
+CheckMove
+  $Z=($K+$L)%2
+  IF($Z==1,CheckShapePlus,CheckDiagonals)
+END
+
+CheckShapePlus
+   (($K+1==$M) AND ($L==$N)) OR (($K-1==$M) AND ($L==$N)) OR (($K==$M) AND ($L+1==$N)) OR (($K==$M) AND ($L-1==$N))
+END
+
+CheckDiagonals
+    CheckShapePlus OR (($K+1==$M) AND ($L+1==$N)) OR (($K+1==$M) AND ($L-1==$N)) OR (($K-1==$M) AND ($L+1==$N))  OR (($K-1==$M) AND ($L-1==$N))
+END
+
 [GAME RULES]
 
 name=whitestep
 element=w($J)
 player=1
 from=b($K,$L)
-to=sb($M)  
+to=b($M,$N)  
+condition=CheckMove
 followup=NEXTPLAYER
 
 name=blackstep
 element=b($J)
 player=2
 from=b($K,$L)
-to=sw($M)  
+to=b($M,$N)  
+condition=CheckMove
 followup=NEXTPLAYER
 
 name=switchmoved
