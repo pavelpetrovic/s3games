@@ -441,11 +441,36 @@ CheckMove
 END
 
 CheckShapePlus
-   (($K+1==$M) AND ($L==$N)) OR (($K-1==$M) AND ($L==$N)) OR (($K==$M) AND ($L+1==$N)) OR (($K==$M) AND ($L-1==$N))
+    $DISTX = ABS($K-$M)
+    $DISTY = ABS($L-$N)
+    (($DISTX==1) AND ($DISTY==0)) OR (($DISTX==0) AND ($DISTY==1))
 END
 
 CheckDiagonals
-    CheckShapePlus OR (($K+1==$M) AND ($L+1==$N)) OR (($K+1==$M) AND ($L-1==$N)) OR (($K-1==$M) AND ($L+1==$N))  OR (($K-1==$M) AND ($L-1==$N))
+    $DISTX = ABS($K-$M)
+    $DISTY = ABS($L-$N)
+    CheckShapePlus OR (($DISTX==1) AND ($DISTY==1))
+END
+
+StoneOccupied($X,$Y)
+  NOT EMPTY("b($X,$Y)") 
+END
+
+CheckJump
+  $Z=($K+$L)%2
+  IF($Z==1,CheckJumpP,CheckJumpD)  
+END
+
+CheckJumpP
+    $DISTX = ABS($K-$M)
+    $DISTY = ABS($L-$N)
+    ( (($DISTX==2) AND ($DISTY==0)) AND StoneOccupied($K+(($K-$M)/2),$L) ) OR ( (($DISTX==0) AND ($DISTY==2)) AND StoneOccupied($K,$L+(($L-$N)/2)) )
+END
+
+CheckJumpD
+    $DISTX = ABS($K-$M)
+    $DISTY = ABS($L-$N)
+    CheckJumpP OR ( (($DISTX==2) AND ($DISTY==2)) AND StoneOccupied($K+(($K-$M)/2),$L+(($L-$N)/2)) )
 END
 
 [GAME RULES]
@@ -464,7 +489,21 @@ player=2
 from=b($K,$L)
 to=b($M,$N)  
 condition=CheckMove
-followup=NEXTPLAYER
+followup=NEXTPLAYER  
+
+name=blackjump
+element=b($J)
+player=2
+from=b($K,$L)
+to=b($M,$N)
+condition=CheckJump
+
+name=whitejump
+element=w($J)
+player=1
+from=b($K,$L)
+to=b($M,$N)
+condition=CheckJump
 
 name=switchmoved
 element=switch
