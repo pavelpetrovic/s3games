@@ -40,10 +40,12 @@ public class ExprParser
         lexs.remove(0);
         if (lex instanceof OperatorLexeme)
         {
-            if (((OperatorLexeme)lex).op == Expr.operatorType.NOT)
+            Expr.operatorType oper = ((OperatorLexeme)lex).op;
+            if ((oper == Expr.operatorType.NOT) ||
+                (oper == Expr.operatorType.ABS))
             {
-                if (lexs.isEmpty()) throw new Exception("operator NOT without argument");
-                return new Expr_OPERATOR(Expr.operatorType.NOT, new Expr[] { parseExpr(lexs) });
+                if (lexs.isEmpty()) throw new Exception("operator NOT or ABS without argument");
+                return new Expr_OPERATOR(oper, new Expr[] { parseExpr(lexs) });
             }            
             throw new Exception("misplaced operator");
         }
