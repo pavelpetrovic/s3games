@@ -9,8 +9,6 @@ import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -32,7 +30,7 @@ public class DepthFirstSearchPlayer extends Player {
             previous = p;
             gs = g;
         }
-        
+      
     }
 
     public DepthFirstSearchPlayer(GameSpecification specs) {
