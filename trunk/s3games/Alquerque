@@ -439,7 +439,7 @@ CheckMove
   $DISTX = ABS($K-$M)
   $DISTY = ABS($L-$N)
   $Z=($K+$L)%2
-  CheckShapePlus OR ($Z==1) OR CheckDiagonals
+  CheckShapePlus OR CheckDiagonals
 END
 
 CheckShapePlus
@@ -447,6 +447,7 @@ CheckShapePlus
 END
 
 CheckDiagonals
+    $Z==0
     (($DISTX==1) AND ($DISTY==1))
 END
 
@@ -458,7 +459,7 @@ CheckJump
   $DISTX = ABS($K-$M)
   $DISTY = ABS($L-$N)
   $Z=($K+$L)%2
-  CheckJumpP OR ($Z==1) OR CheckJumpD
+  CheckJumpP OR CheckJumpD
 END
 
 CheckJumpP
@@ -466,6 +467,7 @@ CheckJumpP
 END
 
 CheckJumpD
+    $Z==0
     (($DISTX==2) AND ($DISTY==2)) AND StoneOccupied(($K+$M)/2,($L+$N)/2)
 END
 
