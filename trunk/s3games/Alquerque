@@ -436,20 +436,18 @@ location=b(5,1)
 [EXPRESSIONS]
 
 CheckMove
+  $DISTX = ABS($K-$M)
+  $DISTY = ABS($L-$N)
   $Z=($K+$L)%2
-  IF($Z==1,CheckShapePlus,CheckDiagonals)
+  CheckShapePlus OR ($Z==1) OR CheckDiagonals
 END
 
 CheckShapePlus
-    $DISTX = ABS($K-$M)
-    $DISTY = ABS($L-$N)
-    (($DISTX==1) AND ($DISTY==0)) OR (($DISTX==0) AND ($DISTY==1))
+    (($DISTX + $DISTY) == 1)
 END
 
 CheckDiagonals
-    $DISTX = ABS($K-$M)
-    $DISTY = ABS($L-$N)
-    CheckShapePlus OR (($DISTX==1) AND ($DISTY==1))
+    (($DISTX==1) AND ($DISTY==1))
 END
 
 StoneOccupied($X,$Y)
@@ -457,20 +455,18 @@ StoneOccupied($X,$Y)
 END
 
 CheckJump
+  $DISTX = ABS($K-$M)
+  $DISTY = ABS($L-$N)
   $Z=($K+$L)%2
-  IF($Z==1,CheckJumpP,CheckJumpD)  
+  CheckJumpP OR ($Z==1) OR CheckJumpD
 END
 
 CheckJumpP
-    $DISTX = ABS($K-$M)
-    $DISTY = ABS($L-$N)
-    ( (($DISTX==2) AND ($DISTY==0)) AND StoneOccupied($K+(($K-$M)/2),$L) ) OR ( (($DISTX==0) AND ($DISTY==2)) AND StoneOccupied($K,$L+(($L-$N)/2)) )
+    ( (($DISTX==2) AND ($DISTY==0)) AND StoneOccupied(($K+$M)/2,$L) ) OR ( (($DISTX==0) AND ($DISTY==2)) AND StoneOccupied($K,($L+$N)/2) )
 END
 
 CheckJumpD
-    $DISTX = ABS($K-$M)
-    $DISTY = ABS($L-$N)
-    CheckJumpP OR ( (($DISTX==2) AND ($DISTY==2)) AND StoneOccupied($K+(($K-$M)/2),$L+(($L-$N)/2)) )
+    (($DISTX==2) AND ($DISTY==2)) AND StoneOccupied(($K+$M)/2,($L+$N)/2)
 END
 
 [GAME RULES]
