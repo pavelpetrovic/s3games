@@ -121,6 +121,8 @@ public class GameState
         for (Map.Entry<String,Element> element: specs.elements.entrySet())        
             elementzIndexes.put(element.getKey(), element.getValue().initialZindex);
         playerScores = new int[specs.playerNames.length];
+        for (int i = 0; i < playerScores.length; i++) 
+            playerScores[i] = specs.initialPlayerScore;
         context = new Context(this, specs);
     }
     

@@ -20,6 +20,12 @@ public class Operators
             case EQUALS: return new Expr_LOG_CONSTANT(args[0].equals(args[1], context));
             case NOTEQUALS: return new Expr_LOG_CONSTANT(!(args[0].equals(args[1], context)));
         } 
+        if ((op == Expr.operatorType.ABS))
+        {
+            Expr a0 = args[0].eval(context);
+            if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("operator ABS requires number");
+            return Expr.numExpr(Math.abs(((Expr_NUM_CONSTANT)a0).num));
+        }
         if ((op == Expr.operatorType.LOWER) || 
             (op == Expr.operatorType.LOWEREQUAL) ||
             (op == Expr.operatorType.GREATER) ||
