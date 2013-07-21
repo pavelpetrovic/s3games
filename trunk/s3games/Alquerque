@@ -3,8 +3,8 @@ image=alquerque.png
 
 [REALBOARD ELEMENT TYPES]
 
-[ELEMENT TYPES]  
- 
+[ELEMENT TYPES]
+
 name=white
 states=1
 image=stonewhite.png
@@ -172,122 +172,122 @@ type=board
 point=542,506
 angles=10,20,30,40,50
 
-name=sb(1) 
+name=sb(1)
 type=stackb
 point=61,576
 angles=10,20,30,40,50
 
-name=sb(2) 
+name=sb(2)
 type=stackb
 point=124,576
 angles=10,20,30,40,50
 
-name=sb(3) 
+name=sb(3)
 type=stackb
 point=186,576
 angles=10,20,30,40,50
 
-name=sb(4) 
+name=sb(4)
 type=stackb
 point=249,576
 angles=10,20,30,40,50
 
-name=sb(5) 
+name=sb(5)
 type=stackb
 point=61,634
 angles=10,20,30,40,50
 
-name=sb(6) 
+name=sb(6)
 type=stackb
 point=124,634
 angles=10,20,30,40,50
 
-name=sb(7) 
+name=sb(7)
 type=stackb
 point=186,634
 angles=10,20,30,40,50
 
-name=sb(8) 
+name=sb(8)
 type=stackb
 point=249,634
 angles=10,20,30,40,50
 
-name=sb(9) 
+name=sb(9)
 type=stackb
 point=61,689
 angles=10,20,30,40,50
 
-name=sb(10) 
+name=sb(10)
 type=stackb
 point=124,689
 angles=10,20,30,40,50
 
-name=sb(11) 
+name=sb(11)
 type=stackb
 point=186,689
 angles=10,20,30,40,50
 
-name=sb(12) 
+name=sb(12)
 type=stackb
 point=249,689
 angles=10,20,30,40,50
 
-name=sw(1) 
+name=sw(1)
 type=stackw
 point=375,576
 angles=10,20,30,40,50
 
-name=sw(2) 
+name=sw(2)
 type=stackw
 point=438,576
 angles=10,20,30,40,50
 
-name=sw(3) 
+name=sw(3)
 type=stackw
 point=500,576
 angles=10,20,30,40,50
 
-name=sw(4) 
+name=sw(4)
 type=stackw
 point=563,576
 angles=10,20,30,40,50
 
-name=sw(5) 
+name=sw(5)
 type=stackw
 point=375,634
 angles=10,20,30,40,50
 
-name=sw(6) 
+name=sw(6)
 type=stackw
 point=438,634
 angles=10,20,30,40,50
 
-name=sw(7) 
+name=sw(7)
 type=stackw
 point=500,634
 angles=10,20,30,40,50
 
-name=sw(8) 
+name=sw(8)
 type=stackw
 point=563,634
 angles=10,20,30,40,50
 
-name=sw(9) 
+name=sw(9)
 type=stackw
 point=375,689
 angles=10,20,30,40,50
 
-name=sw(10) 
+name=sw(10)
 type=stackw
 point=438,689
 angles=10,20,30,40,50
 
-name=sw(11) 
+name=sw(11)
 type=stackw
 point=500,689
 angles=10,20,30,40,50
 
-name=sw(12) 
+name=sw(12)
 type=stackw
 point=563,689
 angles=10,20,30,40,50
@@ -438,37 +438,51 @@ location=b(5,1)
 CheckMove
   $DISTX = ABS($K-$M)
   $DISTY = ABS($L-$N)
-  $Z=($K+$L)%2
   CheckShapePlus OR CheckDiagonals
 END
 
 CheckShapePlus
-    (($DISTX + $DISTY) == 1)
+  ($DISTX + $DISTY) == 1
 END
 
 CheckDiagonals
-    $Z==0
-    (($DISTX==1) AND ($DISTY==1))
+  (($K+$L)%2)==0
+  ($DISTX==1) AND ($DISTY==1)
 END
 
-StoneOccupied($X,$Y)
-  NOT EMPTY("b($X,$Y)") 
+MiddleStoneOccupied
+  NOT EMPTY("b($MX,$MY)")
+  $MIDDLE=CONTENT("b($MX,$MY)")
+  ELTYPE($MIDDLE) != ELTYPE(CONTENT("b($K,$L)"))
 END
 
 CheckJump
   $DISTX = ABS($K-$M)
   $DISTY = ABS($L-$N)
-  $Z=($K+$L)%2
+  $MX = ($K + $M) / 2
+  $MY = ($L + $N) / 2
   CheckJumpP OR CheckJumpD
 END
 
 CheckJumpP
-    ( (($DISTX==2) AND ($DISTY==0)) AND StoneOccupied(($K+$M)/2,$L) ) OR ( (($DISTX==0) AND ($DISTY==2)) AND StoneOccupied($K,($L+$N)/2) )
+  ($DISTX * $DISTY) == 0
+  ($DISTX + $DISTY) == 2
+  MiddleStoneOccupied
 END
 
 CheckJumpD
-    $Z==0
-    (($DISTX==2) AND ($DISTY==2)) AND StoneOccupied(($K+$M)/2,($L+$N)/2)
+  (($K + $L) % 2) == 0
+  $DISTX == 2
+  $DISTY == 2 
+  MiddleStoneOccupied
+END
+
+EraseJumpedB
+  FORSOME($SB,1,12,MOVE($MIDDLE, "b($MX,$MY)", "sb($SB)"))
+END
+
+EraseJumpedW
+  FORSOME($SB,1,12,MOVE($MIDDLE, "b($MX,$MY)", "sw($SB)"))
 END
 
 [GAME RULES]
@@ -477,7 +491,7 @@ name=whitestep
 element=w($J)
 player=1
 from=b($K,$L)
-to=b($M,$N)  
+to=b($M,$N)
 condition=CheckMove
 followup=NEXTPLAYER
 
@@ -485,9 +499,9 @@ name=blackstep
 element=b($J)
 player=2
 from=b($K,$L)
-to=b($M,$N)  
+to=b($M,$N)
 condition=CheckMove
-followup=NEXTPLAYER  
+followup=NEXTPLAYER
 
 name=blackjump
 element=b($J)
@@ -495,6 +509,7 @@ player=2
 from=b($K,$L)
 to=b($M,$N)
 condition=CheckJump
+followup=EraseJumpedB
 
 name=whitejump
 element=w($J)
@@ -502,9 +517,11 @@ player=1
 from=b($K,$L)
 to=b($M,$N)
 condition=CheckJump
+followup=EraseJumpedW
 
 name=switchmoved
 element=switch
 from=sp($K)
 to=sp($J)
 followup=NEXTPLAYER
+

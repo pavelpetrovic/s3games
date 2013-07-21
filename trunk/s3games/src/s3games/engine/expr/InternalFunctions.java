@@ -202,7 +202,8 @@ public class InternalFunctions
                 throw new Exception("MOVE requires string as first argument");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
             Element element = context.specs.elements.get(elementName);
-            if (element == null) throw new Exception("MOVE(): unknown element " + elementName);
+            if (element == null) 
+                throw new Exception("MOVE(): unknown element " + elementName);
             
             Expr locName1 = args[1].eval(context);
             if (!(locName1 instanceof Expr_STR_CONSTANT))
