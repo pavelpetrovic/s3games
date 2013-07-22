@@ -51,7 +51,7 @@ public class Game extends Thread
         
         state = new GameState(gameSpecification);
         int numberOfPlayers = gameSpecification.playerNames.length;
-        window.setGame(this);
+        window.setGame(this, gameRuns);
         
         do 
         {

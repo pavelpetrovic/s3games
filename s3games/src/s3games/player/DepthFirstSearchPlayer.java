@@ -4,11 +4,10 @@
  */
 package s3games.player;
 
-import java.util.ArrayList;
+import java.util.*;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
-import java.util.*;
 
 /**
  *
