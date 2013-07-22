@@ -6,19 +6,19 @@ image=alquerque.png
 [ELEMENT TYPES]
 
 name=white
-states=1
+states=3
 image=stonewhite.png
 real=red
 point=1,1
 
 name=black
-states=1
+states=3
 image=stoneblack.png
 real=green
 point=1,1
 
-name=switch
-states=1
+name=switchingStone
+states=2
 image=greenStone2.png
 real=blue
 point=1,1
@@ -47,127 +47,127 @@ point=1,1
 
 [LOCATIONS]
 
-name=b(1,1)
+name=s(1,1)
 type=board
 point=73,57
 angles=10,20,30,40,50
 
-name=b(2,1)
+name=s(2,1)
 type=board
 point=192,57
 angles=10,20,30,40,50
 
-name=b(3,1)
+name=s(3,1)
 type=board
 point=306,57
 angles=10,20,30,40,50
 
-name=b(4,1)
+name=s(4,1)
 type=board
 point=425,57
 angles=10,20,30,40,50
 
-name=b(5,1)
+name=s(5,1)
 type=board
 point=542,57
 angles=10,20,30,40,50
 
-name=b(1,2)
+name=s(1,2)
 type=board
 point=73,168
 angles=10,20,30,40,50
 
-name=b(2,2)
+name=s(2,2)
 type=board
 point=192,168
 angles=10,20,30,40,50
 
-name=b(3,2)
+name=s(3,2)
 type=board
 point=306,168
 angles=10,20,30,40,50
 
-name=b(4,2)
+name=s(4,2)
 type=board
 point=425,168
 angles=10,20,30,40,50
 
-name=b(5,2)
+name=s(5,2)
 type=board
 point=542,168
 angles=10,20,30,40,50
 
-name=b(1,3)
+name=s(1,3)
 type=board
 point=73,281
 angles=10,20,30,40,50
 
-name=b(2,3)
+name=s(2,3)
 type=board
 point=192,281
 angles=10,20,30,40,50
 
-name=b(3,3)
+name=s(3,3)
 type=board
 point=306,281
 angles=10,20,30,40,50
 
-name=b(4,3)
+name=s(4,3)
 type=board
 point=425,281
 angles=10,20,30,40,50
 
-name=b(5,3)
+name=s(5,3)
 type=board
 point=542,281
 angles=10,20,30,40,50
 
-name=b(1,4)
+name=s(1,4)
 type=board
 point=73,394
 angles=10,20,30,40,50
 
-name=b(2,4)
+name=s(2,4)
 type=board
 point=192,394
 angles=10,20,30,40,50
 
-name=b(3,4)
+name=s(3,4)
 type=board
 point=306,394
 angles=10,20,30,40,50
 
-name=b(4,4)
+name=s(4,4)
 type=board
 point=425,394
 angles=10,20,30,40,50
 
-name=b(5,4)
+name=s(5,4)
 type=board
 point=542,394
 angles=10,20,30,40,50
 
-name=b(1,5)
+name=s(1,5)
 type=board
 point=73,506
 angles=10,20,30,40,50
 
-name=b(2,5)
+name=s(2,5)
 type=board
 point=192,506
 angles=10,20,30,40,50
 
-name=b(3,5)
+name=s(3,5)
 type=board
 point=306,506
 angles=10,20,30,40,50
 
-name=b(4,5)
+name=s(4,5)
 type=board
 point=425,506
 angles=10,20,30,40,50
 
-name=b(5,5)
+name=s(5,5)
 type=board
 point=542,506
 angles=10,20,30,40,50
@@ -309,135 +309,136 @@ angles=10,20,30,40,50
 [MOVABLE ELEMENTS]
 
 name=switch
-type=switch
+type=switchingStone
 location=sp(1)
 
 name=w(1)
 type=white
 player=1
-location=b(4,3)
+location=s(4,3)
 
 name=w(2)
 type=white
 player=1
-location=b(5,3)
+location=s(5,3)
 
 name=w(3)
 type=white
 player=1
-location=b(1,4)
+location=s(1,4)
 
 name=w(4)
 type=white
 player=1
-location=b(2,4)
+location=s(2,4)
 
 name=w(5)
 type=white
 player=1
-location=b(3,4)
+location=s(3,4)
 
 name=w(6)
 type=white
 player=1
-location=b(4,4)
+location=s(4,4)
 
 name=w(7)
 type=white
 player=1
-location=b(5,4)
+location=s(5,4)
 
 name=w(8)
 type=white
 player=1
-location=b(1,5)
+location=s(1,5)
 
 name=w(9)
 type=white
 player=1
-location=b(2,5)
+location=s(2,5)
 
 name=w(10)
 type=white
 player=1
-location=b(3,5)
+location=s(3,5)
 
 name=w(11)
 type=white
 player=1
-location=b(4,5)
+location=s(4,5)
 
 name=w(12)
 type=white
 player=1
-location=b(5,5)
+location=s(5,5)
 
 name=b(1)
 type=black
 player=2
-location=b(2,3)
+location=s(2,3)
 
 name=b(2)
 type=black
 player=2
-location=b(1,3)
+location=s(1,3)
 
 name=b(3)
 type=black
 player=2
-location=b(1,2)
+location=s(1,2)
 
 name=b(4)
 type=black
 player=2
-location=b(2,2)
+location=s(2,2)
 
 name=b(5)
 type=black
 player=2
-location=b(3,2)
+location=s(3,2)
 
 name=b(6)
 type=black
 player=2
-location=b(4,2)
+location=s(4,2)
 
 name=b(7)
 type=black
 player=2
-location=b(5,2)
+location=s(5,2)
 
 name=b(8)
 type=black
 player=2
-location=b(1,1)
+location=s(1,1)
 
 name=b(9)
 type=black
 player=2
-location=b(2,1)
+location=s(2,1)
 
 name=b(10)
 type=black
 player=2
-location=b(3,1)
+location=s(3,1)
 
 name=b(11)
 type=black
 player=2
-location=b(4,1)
+location=s(4,1)
 
 name=b(12)
 type=black
 player=2
-location=b(5,1)
+location=s(5,1)
 
 
 [EXPRESSIONS]
 
-CheckMove
-  $DISTX = ABS($K-$M)
-  $DISTY = ABS($L-$N)
+CheckMove  
+  STATE(CONTENT("s($K,$L)")) == 1
+  $DISTX = ABS($K - $M)
+  $DISTY = ABS($L - $N)
   CheckShapePlus OR CheckDiagonals
 END
 
@@ -446,19 +447,20 @@ CheckShapePlus
 END
 
 CheckDiagonals
-  (($K+$L)%2)==0
-  ($DISTX==1) AND ($DISTY==1)
+  (($K + $L) % 2)==0
+  ($DISTX == 1) AND ($DISTY == 1)
 END
 
 MiddleStoneOccupied
-  NOT EMPTY("b($MX,$MY)")
-  $MIDDLE=CONTENT("b($MX,$MY)")
-  ELTYPE($MIDDLE) != ELTYPE(CONTENT("b($K,$L)"))
+  NOT EMPTY("s($MX,$MY)")
+  $MIDDLE=CONTENT("s($MX,$MY)")
+  ELTYPE($MIDDLE) != ELTYPE(CONTENT("s($K,$L)"))
 END
 
 CheckJump
-  $DISTX = ABS($K-$M)
-  $DISTY = ABS($L-$N)
+  STATE(CONTENT("s($K,$L)")) < 3
+  $DISTX = ABS($K - $M)
+  $DISTY = ABS($L - $N)
   $MX = ($K + $M) / 2
   $MY = ($L + $N) / 2
   CheckJumpP OR CheckJumpD
@@ -478,44 +480,86 @@ CheckJumpD
 END
 
 EraseJumpedB
-  FORSOME($SB,1,12,MOVE($MIDDLE, "b($MX,$MY)", "sb($SB)"))
+  FORSOME($SB, 12, 1, MOVE($MIDDLE, "s($MX,$MY)", "sb($SB)"))
+  EnableMoreJumps
 END
 
 EraseJumpedW
-  FORSOME($SB,1,12,MOVE($MIDDLE, "b($MX,$MY)", "sw($SB)"))
+  FORSOME($SB, 12, 1, MOVE($MIDDLE, "s($MX,$MY)", "sw($SB)"))
+  EnableMoreJumps
 END
+
+EnableMoreJumps
+  FORALL($EL, 1, 12, SETSTATE("b($EL)", 3))
+  FORALL($EL, 1, 12, SETSTATE("w($EL)", 3))
+  SETSTATE(CONTENT("s($M,$N)"), 2)
+END
+
+CompleteMove
+  $CURRENT = PLAYER
+  $OTHER = (PLAYER % 2) + 1
+  MOVE("switch", "sp($CURRENT)", "sp($OTHER)")
+  NEXTPLAYER
+END
+
+IsAfterJump
+  FORSOME($EL, 1, 12, (STATE("b($EL)") == 2) OR (STATE("w($EL)") == 2))
+END
+
+FinishJumping  
+  FORALL($EL, 1, 12, SETSTATE("b($EL)", 1))
+  FORALL($EL, 1, 12, SETSTATE("w($EL)", 1))
+  NEXTPLAYER
+END
+
+Draw
+  $COUNT = 0
+  FORALL($X, 1, 5, FORALL($Y, 1, 5, EMPTY("s($X,$Y)") OR ($COUNT = ($COUNT + 1))))
+  $COUNT == 2
+END
+
+[END OF GAME]
+
+situation=FORALL($STACK, 1, 12, NOT EMPTY("sb($STACK)"))
+winner=2
+
+situation=FORALL($STACK, 1, 12, NOT EMPTY("sw($STACK)"))
+winner=1
+
+situation=Draw
+winner=0
 
 [GAME RULES]
 
 name=whitestep
 element=w($J)
 player=1
-from=b($K,$L)
-to=b($M,$N)
+from=s($K,$L)
+to=s($M,$N)
 condition=CheckMove
-followup=NEXTPLAYER
+followup=CompleteMove
 
 name=blackstep
 element=b($J)
 player=2
-from=b($K,$L)
-to=b($M,$N)
+from=s($K,$L)
+to=s($M,$N)
 condition=CheckMove
-followup=NEXTPLAYER
+followup=CompleteMove
 
 name=blackjump
 element=b($J)
 player=2
-from=b($K,$L)
-to=b($M,$N)
+from=s($K,$L)
+to=s($M,$N)
 condition=CheckJump
 followup=EraseJumpedB
 
 name=whitejump
 element=w($J)
 player=1
-from=b($K,$L)
-to=b($M,$N)
+from=s($K,$L)
+to=s($M,$N)
 condition=CheckJump
 followup=EraseJumpedW
 
@@ -523,5 +567,6 @@ name=switchmoved
 element=switch
 from=sp($K)
 to=sp($J)
-followup=NEXTPLAYER
+condition=IsAfterJump
+followup=FinishJumping
 

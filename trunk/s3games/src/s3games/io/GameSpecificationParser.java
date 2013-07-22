@@ -90,19 +90,28 @@ public class GameSpecificationParser
         {
             et.numStates = Integer.parseInt(val);
             et.images = new ImageWithHotSpot[et.numStates];
+            et.realShapes = new String[et.numStates];
             state = 0;
         }
         else if (var.equals("image"))
             imageName = val;
+        else if (var.equals("real"))
+            et.realShapes[state] = val;
         else if (var.equals("point"))
         {
             String[] hotspot = val.split(",");
             try {
-                et.images[state] = new ImageWithHotSpot(config.imagePath + "/" + imageName, Integer.parseInt(hotspot[0]), Integer.parseInt(hotspot[1]));
+                et.images[state] = new ImageWithHotSpot(config.imagePath + "/" + imageName, Integer.parseInt(hotspot[0]), Integer.parseInt(hotspot[1]));               
             } catch (Exception e)
             {                
                 logger.error("could not load image from file '" + imageName + "': " + e);
                 throw e;
+            }
+            if (state == 0) 
+            {
+                ImageWithHotSpot defaultImageForAllStates = et.images[0];            
+                for (int st = 1; st < et.numStates; st++)
+                    et.images[st] = defaultImageForAllStates;
             }
             state++;
         }

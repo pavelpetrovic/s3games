@@ -19,7 +19,7 @@ public class Operators
         {
             case EQUALS: return new Expr_LOG_CONSTANT(args[0].equals(args[1], context));
             case NOTEQUALS: return new Expr_LOG_CONSTANT(!(args[0].equals(args[1], context)));
-        } 
+        }
         if (op == Expr.operatorType.ABS)
         {
             Expr a0 = args[0].eval(context);
@@ -45,15 +45,15 @@ public class Operators
             int arg1 = ((Expr_NUM_CONSTANT)a1).num;
             switch (op)
             {
-                case LOWER: return new Expr_LOG_CONSTANT(arg0 < arg1);
-                case LOWEREQUAL: return new Expr_LOG_CONSTANT(arg0 <= arg1);
-                case GREATER: return new Expr_LOG_CONSTANT(arg0 > arg1);
-                case GREATEREQUAL: return new Expr_LOG_CONSTANT(arg0 >= arg1);
-                case PLUS: return new Expr_NUM_CONSTANT(arg0 + arg1);
-                case MINUS: return new Expr_NUM_CONSTANT(arg0 - arg1);
-                case TIMES: return new Expr_NUM_CONSTANT(arg0 * arg1);
-                case DIV: return new Expr_NUM_CONSTANT(arg0 / arg1);
-                case MOD: return new Expr_NUM_CONSTANT(arg0 % arg1);
+                case LOWER: return Expr.booleanExpr(arg0 < arg1);
+                case LOWEREQUAL: return Expr.booleanExpr(arg0 <= arg1);
+                case GREATER: return Expr.booleanExpr(arg0 > arg1);
+                case GREATEREQUAL: return Expr.booleanExpr(arg0 >= arg1);
+                case PLUS: return Expr.numExpr(arg0 + arg1);
+                case MINUS: return Expr.numExpr(arg0 - arg1);
+                case TIMES: return Expr.numExpr(arg0 * arg1);
+                case DIV: return Expr.numExpr(arg0 / arg1);
+                case MOD: return Expr.numExpr(arg0 % arg1);
             }
         }
         if ((op == Expr.operatorType.AND) ||
@@ -64,15 +64,15 @@ public class Operators
             if  (!(a0 instanceof Expr_LOG_CONSTANT)) throw new Exception("logic operator with first argument non-logic type");
             boolean arg0 = ((Expr_LOG_CONSTANT)a0).b;
             if (op == Expr.operatorType.NOT)
-                return new Expr_LOG_CONSTANT(!arg0);
+                return Expr.booleanExpr(!arg0);
             if ((op == Expr.operatorType.AND) && (!arg0)) 
-                return new Expr_LOG_CONSTANT(false);
+                return Expr.booleanExpr(false);
             if ((op == Expr.operatorType.OR) && arg0)
-                return new Expr_LOG_CONSTANT(true);
+                return Expr.booleanExpr(true);
             Expr a1 = args[1].eval(context);
             if (!(a1 instanceof  Expr_LOG_CONSTANT)) throw new Exception("logic operator with second argument non-logic type");
             boolean arg1 = ((Expr_LOG_CONSTANT)a1).b;
-            return new Expr_LOG_CONSTANT(arg1);
+            return Expr.booleanExpr(arg1);
         }
         if (op == Expr.operatorType.ASSIGNMENT)
         {
@@ -81,7 +81,7 @@ public class Operators
             String varName = ((Expr_VARIABLE)args[0]).varName;
             Expr value = args[1].eval(context);
             context.setVar(varName, value);
-            return value;
+            return Expr.booleanExpr(true);
         }
         if (op == Expr.operatorType.ELEMENT)
         {
@@ -91,8 +91,8 @@ public class Operators
                 throw new Exception("ELEMENT operator with non-set on the right");
             for(Expr el:((Expr_SET)a1).set)
                 if (a0.equals(el, context)) 
-                    return new Expr_LOG_CONSTANT(true);
-            return new Expr_LOG_CONSTANT(false);
+                    return Expr.booleanExpr(true);
+            return Expr.booleanExpr(false);
         }
 
         if ((op == Expr.operatorType.SUBSET) ||
@@ -119,9 +119,9 @@ public class Operators
                             found = true;
                             break;
                         }
-                    if (!found) return new Expr_LOG_CONSTANT(false);
+                    if (!found) return Expr.booleanExpr(false);
                 }
-                return new Expr_LOG_CONSTANT(true);                     
+                return Expr.booleanExpr(true);                     
             }
             if (op == Expr.operatorType.SETMINUS)
             {
