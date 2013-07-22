@@ -16,6 +16,7 @@ public class ElementType
     public String name;
     public int numStates;
     public ImageWithHotSpot images[]; // 0..n-1
+    public String realShapes[];
 
     public ElementType(String name)
     {
