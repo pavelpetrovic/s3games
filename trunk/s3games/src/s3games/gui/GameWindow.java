@@ -5,6 +5,8 @@
 package s3games.gui;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -17,6 +19,7 @@ import s3games.engine.Game;
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
 import s3games.engine.Move;
+import s3games.util.Switch;
 
 /**
  *
@@ -39,11 +42,21 @@ public class GameWindow extends javax.swing.JFrame {
     public boolean waitingForMove;
     public ArrayList<Move> allowedMoves;
     
+    private Switch gameRuns;
+    
     /**
      * Creates new form Form
      */
     public GameWindow() {
         initComponents();
+        
+   /*     addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                gameRuns.off();
+            }
+        });*/
+        
         boardCanvas = (BoardCanvas) canvas1;
         lastMoveReady = new Object();
         waitingForMove = false;
@@ -220,7 +233,7 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
     }
-    public void setGame(Game g){ //game
+    public void setGame(Game g, Switch gameRuns){ //game
         this.game = g;
         winner = "";
         GameSpecification gs = game.gameSpecification;

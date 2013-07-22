@@ -27,4 +27,18 @@ public class Move
     {
         return from + "->" + to + ":" + element;
     }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other instanceof Move)
+        {
+            Move otherMove = (Move)other;
+            if (!otherMove.from.equals(from)) return false;
+            if (!otherMove.to.equals(to)) return false;
+            if (!otherMove.element.equals(element)) return false;
+            return true;            
+        }
+        return false;
+    }
 }

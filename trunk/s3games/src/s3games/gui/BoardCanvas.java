@@ -27,15 +27,16 @@ public class BoardCanvas extends Canvas {
     
     String selectedElementName = null;
     
-    public BoardCanvas() {
-      
+    public BoardCanvas() 
+    {      
     }
     
-    public void setGame(GameSpecification gs) {
-        gameSpec = gs;
+    public void setGame(GameSpecification gs) 
+    {        
         bgImage = Toolkit.getDefaultToolkit().getImage(gs.boardBackgroundFileName);
         egameState = null;
         buffImg = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        gameSpec = gs;
     }
         
     public void setState(GameState egs) {

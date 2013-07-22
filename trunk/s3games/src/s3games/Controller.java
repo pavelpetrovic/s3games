@@ -119,6 +119,8 @@ public class Controller implements SwitchListener
             }
             else p = Strategy.getStrategy(playerStrategies[player]).getPlayer(gameSpecification);
             p.setPlayerNumber(player+1);
+            // TODO setup from controller window
+            p.setMaximumNumberOfNodes(500);
             players.add(p);
         }
         
