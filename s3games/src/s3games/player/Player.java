@@ -29,6 +29,10 @@ public abstract class Player
         number = pn;
     }
     
+    public void gameOver()
+    {
+    }
+            
     public void setMaximumNumberOfNodes(int maxNodes)
     {
         this.maxNodes = maxNodes;

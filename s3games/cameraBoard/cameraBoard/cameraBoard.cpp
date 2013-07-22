@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+#include <pthread.h>
+
+
 using namespace cv;
 using namespace std;
 
@@ -353,11 +356,29 @@ void visualize(Mat &img, Mat &vis, vector<ElementType *> &ets)
 	imshow( "result", vis2 );
 }
 
+bool detectObjects;
+void *readerThreadEntryPoint(void *data)
+{
+	int n;
+	do {
+		cin >> n;
+		if (n == 1) detectObjects = 1;
+	} while (n > 0);
+	return 0;
+}
+
+pthread_t readerThread;
+static void launchReaderThread()
+{
+	pthread_create(&readerThread, 0, readerThreadEntryPoint, 0);
+}
+
 int main( int argc, char** argv )
 {
 	vector<Location *> locations;
 	vector<ElementType *> elementTypes;
 	int selectedElement = 0;
+	detectObjects = 0;
 
 	cout << "S:S3 Games Camera" << endl;
 
@@ -400,10 +421,12 @@ int main( int argc, char** argv )
 
 	char key;
 
+	launchReaderThread();
+
 	do
 	{
 		key = waitKey(1);
-		
+				
 		char k = key;
 		while (k != -1) k = waitKey(1);
 		
@@ -523,8 +546,9 @@ int main( int argc, char** argv )
 		}
 		else show = false;
 
-		if (key == ' ')
+		if ((key == ' ') || detectObjects)
 		{
+			detectObjects = 0;
 			double tm3 = usec();
 			image.convertTo(image32, CV_32FC3);
 			double tm4 = usec();
@@ -537,7 +561,8 @@ int main( int argc, char** argv )
 			if (!show)
 			{				
 				for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
-					cout << "O:" << (*it)->elementType << " at " << (*it)->x << ", " << (*it)->y << endl;
+					cout << "O:" << (*it)->elementType << "\t" << (*it)->x << "\t" << (*it)->y << endl;
+				cout << '=' << endl;
 			}
 			else
 			{
@@ -555,6 +580,6 @@ int main( int argc, char** argv )
 	
 	delete cap;
 
-    exit(0);
+    return 0;
 }
 

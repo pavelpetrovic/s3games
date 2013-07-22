@@ -15,6 +15,7 @@ import s3games.io.*;
 import s3games.player.CameraPlayer;
 import s3games.player.MousePlayer;
 import s3games.player.Player;
+import s3games.robot.Camera;
 import s3games.util.Switch;
 import s3games.util.SwitchListener;
 
@@ -30,6 +31,7 @@ public class Controller implements SwitchListener
     Config config;
     Game game;
     Switch gameRunning;
+    Camera camera;
     
     public Controller()
     {
@@ -48,7 +50,14 @@ public class Controller implements SwitchListener
     public void switchChanged(boolean newState)
     {
         if (newState == false)
+        {
             cw.gameFinished(game.state.winner, game.state.playerScores);
+            if (camera != null)
+            {
+                camera.close();
+                camera = null;
+            }
+        }
     }
 
     public String[] getGameNames()
@@ -107,6 +116,9 @@ public class Controller implements SwitchListener
             gameSpecification.load(gameName);
         } catch (Exception e) { gw.showException(e); }
         
+        if (boardType == Player.boardType.REALWORLD)
+            camera = new Camera(gameSpecification);
+        
         ArrayList<Player> players = new ArrayList<Player>();                
         for(int player = 0; player < gameSpecification.playerNames.length; player++)
         {
@@ -114,7 +126,7 @@ public class Controller implements SwitchListener
             if (playerTypes[player] == Player.playerType.HUMAN)
             {
                 if (boardType == Player.boardType.REALWORLD)
-                    p = new CameraPlayer(gameSpecification);
+                    p = new CameraPlayer(gameSpecification, camera);
                 else p = new MousePlayer(gameSpecification, gw);
             }
             else p = Strategy.getStrategy(playerStrategies[player]).getPlayer(gameSpecification);
