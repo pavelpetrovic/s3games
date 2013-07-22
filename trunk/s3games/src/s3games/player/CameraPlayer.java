@@ -11,46 +11,30 @@ import java.io.*;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
-import s3games.gui.CameraPlayerWindow;
+import s3games.gui.CameraWindow;
+import s3games.robot.Camera;
 
 /**
  *
  * @author petrovic
  */
-public class CameraPlayer extends Player implements Runnable
+
+
+public class CameraPlayer extends Player
 {
     GameSpecification specs;
-    CameraPlayerWindow win;
-    Thread commThread;
-
-    private static final String CAMERA_PROGRAM = "cameraBoard/cameraBoard/OpenCV Release/cameraBoard.exe";
+    Camera camera;
     
-    public CameraPlayer(GameSpecification specs)
-    {
+    public CameraPlayer(GameSpecification specs, Camera camera)
+    {        
         this.specs = specs;
-        win = new CameraPlayerWindow(this);
-        commThread = new Thread(this);
-    }
-    
-    @Override
-    public void run()
-    {
-        try {
-            Process p = Runtime.getRuntime().exec(CAMERA_PROGRAM);
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            PrintWriter out = new PrintWriter(p.getOutputStream());
-            if (!in.readLine().equals("S:S3 Games Camera"))
-                throw new Exception("Camera program did not respond");
-        } catch (Exception e)
-        {
-            win.addMessage(e.toString());
-        }
-
+        this.camera = camera;        
     }
     
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves)
     {
+        Move userMove = camera.waitForUserMove();
         return allowedMoves.get(0);
     }
 

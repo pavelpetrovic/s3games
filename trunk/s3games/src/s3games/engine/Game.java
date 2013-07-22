@@ -88,6 +88,9 @@ public class Game extends Thread
             
         } while (state.winner == -1);
         
+        for (int p = 0; p < numberOfPlayers; p++)
+            players[p].gameOver();
+        
         window.setState(state);
         
         } catch (Exception e)
