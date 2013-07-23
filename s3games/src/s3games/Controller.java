@@ -69,9 +69,12 @@ public class Controller implements SwitchListener
     public String[] getStrategiesForGame(String gameName)
     {
         return Strategy.availableStrategies(gameName);
-        //return new String[] { "Random", "Intelligent123" };
     }
 
+    //todo
+    public String[] getHeuristicsForStrategy(String strategyName) {
+        return Strategy.heuristicsForGame(strategyName);
+    }
     //todo
     public String[] getLearnableStrategyTypesForGame(String gameName)
     {
@@ -97,7 +100,7 @@ public class Controller implements SwitchListener
      * @param playerTypes for each player whether it is a human or a computer
      * @param playerStrategies only for computer players, name of strategy to use
      */
-    public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies) 
+    public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String[] strategyHeuristics) 
     {   
         if (gameRunning.isOn()) return;
         gameRunning.on();
@@ -106,7 +109,8 @@ public class Controller implements SwitchListener
         System.out.println(boardType);
         for (int i=0; i<playerTypes.length ; i++) {
            System.out.print(playerTypes[i]+" ");
-           System.out.println(playerStrategies[i]);
+           System.out.print(playerStrategies[i]+" ");
+           System.out.println(strategyHeuristics[i]+" ");
          }
         gw.setVisible(true);
         game = new Game(config, logger, gw, gameRunning);
@@ -138,7 +142,7 @@ public class Controller implements SwitchListener
         
         Player[] pls = new Player[players.size()];
         game.setGameAndPlayers(gameSpecification, players.toArray(pls));
-        game.start();        
+        game.start();   
     }
 
         /** starts a single game
@@ -150,13 +154,14 @@ public class Controller implements SwitchListener
      * @param learnStrategy strategy that will be learned
      * @return the number of player who won, 0 for draw/nobody, -1 if game was interrupted
      */
-    public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String learnStrategyType, String strategyFileName, int numberOfRuns)
+    public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String[] strategyHeuristics, String learnStrategyType, String strategyFileName, int numberOfRuns)
     {
         System.out.println(gameName);
         System.out.println(boardType);
         for (int i=0; i<playerTypes.length ; i++) {
            System.out.print(playerTypes[i]+" ");
-           System.out.println(playerStrategies[i]);
+           System.out.print(playerStrategies[i]+" ");
+           System.out.println(strategyHeuristics[i]+" ");
          }
          System.out.println(learnStrategyType+" "+strategyFileName+" "+numberOfRuns);
         gw.setVisible(true);

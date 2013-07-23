@@ -41,6 +41,9 @@ public abstract class Strategy
         return new String[] {"Random","DFS","BFS","MiniMax"};
     }
     
+    public static String[] heuristicsForGame(String strategyName) {
+         return new String[] {"zero","heuristika1", "heuristika2"};
+    }
     public static boolean learnable(String strategyName)
     {
         return true;
