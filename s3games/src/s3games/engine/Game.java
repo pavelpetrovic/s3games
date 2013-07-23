@@ -75,6 +75,7 @@ public class Game extends Thread
             boolean approved = state.moveAllowed(nextMove);
             if (!approved) 
             {
+                window.showException(new Exception("Player performed illegal move " + nextMove));
                 state.winner = (state.currentPlayer % numberOfPlayers) + 1;
                 state.touch();
                 break;

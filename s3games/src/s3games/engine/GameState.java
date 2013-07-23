@@ -70,6 +70,8 @@ public class GameState
         StringBuilder b = new StringBuilder();
         for (Map.Entry<String, String> loel: locationElements.entrySet())
         {
+            b.append(loel.getKey());
+            b.append('*');
             String el = loel.getValue();
             if (el != null)
             {
@@ -84,7 +86,9 @@ public class GameState
             b.append('*');
         }
         b.append(Integer.toString(currentPlayer));
+        b.append('*');
         b.append(Integer.toString(winner));
+        b.append('*');
         b.append(Arrays.toString(playerScores));
         hash = b.toString().hashCode();
     }
