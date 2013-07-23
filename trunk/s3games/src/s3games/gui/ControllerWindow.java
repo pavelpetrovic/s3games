@@ -372,14 +372,12 @@ public class ControllerWindow extends javax.swing.JFrame
             jComboBox4.setEnabled(true);
             jComboBox4.setSelectedItem((Object) playerStrategies[selectedPlayer]);
             jComboBox7.setEnabled(true);
-            //tu
             playerTypes[selectedPlayer]=Player.playerType.COMPUTER;
         } else {  //human player selected
             jComboBox4.setEnabled(false);
             jComboBox7.setEnabled(false);
             playerTypes[selectedPlayer]=Player.playerType.HUMAN;
         }
-        //tu
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
