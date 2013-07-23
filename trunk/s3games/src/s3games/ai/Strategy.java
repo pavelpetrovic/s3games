@@ -22,7 +22,7 @@ public abstract class Strategy
     class ZeroHeuristic extends Heuristic
     {
         @Override
-        public double heuristic(GameState gameState) 
+        public double heuristic(GameState gameState, int forPlayer) 
         {
             return 0;
         }    

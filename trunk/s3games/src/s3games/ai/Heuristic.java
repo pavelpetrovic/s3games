@@ -11,5 +11,5 @@ import s3games.engine.GameState;
  * @author Zuzka
  */
 public abstract class Heuristic {
-    public abstract double heuristic(GameState gameState);
+    public abstract double heuristic(GameState gameState, int forPlayer);
 }
