@@ -1,0 +1,226 @@
+[BOARD]
+image=bridge.png
+
+[REALBOARD ELEMENT TYPES]
+
+[ELEMENT TYPES]
+
+name=light
+states=1
+image=bridgelight.png
+real=yellow
+point=1,1
+
+name=mother
+states=1
+image=bridgemother.png
+real=red
+point=1,1
+
+name=father
+states=1
+image=bridgefather.png
+real=blue
+point=1,1
+
+name=bob
+states=1
+image=bridgebob.png
+real=green
+point=1,1
+
+name=emily
+states=1
+image=bridgeemily.png
+real=brown
+point=1,1
+
+[LOCATION TYPES]
+
+name=lightplace
+image=emptyplace.png
+shape=rectangular(55,55)
+point=1,1
+
+name=place
+image=emptyplace.png
+shape=rectangular(90,283)
+point=1,1
+
+name=stack
+image=bridgestack.png
+shape=rectangular(35,120)
+point=1,1
+
+[LOCATIONS]
+
+name=lightLeft
+type=lightplace
+point=454,275
+angles=10,20,30,40,50
+
+name=lightRight
+type=lightplace
+point=862,275
+angles=10,20,30,40,50
+
+name=left(1)
+type=place
+point=40,215
+angles=10,20,30,40,50
+
+name=left(2)
+type=place
+point=135,215
+angles=10,20,30,40,50
+
+name=left(3)
+type=place
+point=225,215
+angles=10,20,30,40,50
+
+name=left(4)
+type=place
+point=315,215
+angles=10,20,30,40,50
+
+name=right(1)
+type=place
+point=995,210
+angles=10,20,30,40,50
+
+name=right(2)
+type=place
+point=1085,210
+angles=10,20,30,40,50
+
+name=right(3)
+type=place
+point=1185,210
+angles=10,20,30,40,50
+
+name=right(4)
+type=place
+point=1280,210
+angles=10,20,30,40,50
+
+name=leftstack(1)
+type=stack
+point=380,201
+angles=10,20,30,40,50
+
+name=leftstack(2)
+type=stack
+point=420,201
+angles=10,20,30,40,50
+
+name=rightstack(1)
+type=stack
+point=890,201
+angles=10,20,30,40,50
+
+name=rightstack(2)
+type=stack
+point=930,201
+angles=10,20,30,40,50
+
+
+[PLAYER NAMES]
+
+1=Player
+score=50
+
+
+[MOVABLE ELEMENTS]
+
+name=lg
+type=light
+location=lightLeft
+
+name=person(1)
+type=father
+location=left(1)
+
+name=person(2)
+type=bob
+location=left(2)
+
+name=person(3)
+type=emily
+location=left(3)
+
+name=person(4)
+type=mother
+location=left(4)
+
+[EXPRESSIONS]
+
+CheckStackL
+   (NOT EMPTY("leftstack(1)")) OR (NOT EMPTY("leftstack(2)")) 
+END
+
+CheckStackR
+   (NOT EMPTY("rightstack(1)")) OR (NOT EMPTY("rightstack(2)")) 
+END
+
+
+moveToRight($EL,$FROM)
+   $I = INDEX($EL)
+   MOVE($EL,$FROM,"right($I)")
+END
+
+crossToRight
+  $M = CONTENT("leftstack(1)")
+  $N = CONTENT("leftstack(2)")
+  IF(NOT EMPTY("leftstack(1)"),moveToRight($M,"leftstack(1)"),true)
+  IF(NOT EMPTY("leftstack(2)"),moveToRight($N,"leftstack(2)"),true)
+END
+
+moveToLeft($EL,$FROM)
+   $I = INDEX($EL)
+   MOVE($EL,$FROM,"left($I)")
+END
+
+crossToLeft
+  $M = CONTENT("rightstack(1)")
+  $N = CONTENT("rightstack(2)")
+  IF(NOT EMPTY("rightstack(1)"),moveToLeft($M,"rightstack(1)"),true)
+  IF(NOT EMPTY("rightstack(2)"),moveToLeft($N,"rightstack(2)"),true)
+END
+
+[SCORINGS]
+
+[END OF GAME]
+
+situation=FORALL($V,1,4,EMPTY ("left($V)")) AND EMPTY("lightLeft")
+winner=PLAYER
+
+[GAME RULES]
+
+name=toRstack
+element=person($J)
+from=right($K)
+to=rightstack($S)
+condition=NOT EMPTY("lightRight")
+
+name=toLstack
+element=person($J)
+from=left($K)
+to=leftstack($S)
+condition=NOT EMPTY("lightLeft")
+
+name=toRight
+element=lg
+from=lightLeft
+to=lightRight
+condition=CheckStackL
+followup=crossToRight
+
+name=toLeft
+element=lg
+from=lightRight
+to=lightLeft
+condition=CheckStackR
+awardPlayer=1
+withScore=-5
+followup=crossToLeft 
