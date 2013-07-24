@@ -18,6 +18,7 @@ public class DepthFirstSearchPlayer extends Player {
     private GameSpecification specs;
     private ArrayList<Node> open; 
     private HashSet<GameState> visited;
+    private HashSet<GameState> history;
     
     class Node {
         Move moveToThisState;
@@ -28,22 +29,25 @@ public class DepthFirstSearchPlayer extends Player {
             moveToThisState = m;
             previous = p;
             gs = g;
-        }
-      
+        }     
     }
 
     public DepthFirstSearchPlayer(GameSpecification specs) {
         this.specs = specs;
+        history = new HashSet<GameState>();
     }
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception {
         try { Thread.sleep(1000); } catch (Exception e) {};
         open = new ArrayList<Node>();
         visited = new HashSet<GameState>();
+        visited.addAll(history);
         
         GameState activeState;
+        history.add(state.getCopy());
         visited.add(state);
         open.add(new Node(null, null, state));
+        System.out.println(history.size());
        
         while (open.size()>0) 
         {
@@ -56,7 +60,7 @@ public class DepthFirstSearchPlayer extends Player {
                 {
                     GameState gs = activeState.getCopy(); 
                     gs.performMove(possibleMoves.get(i)); //perfom move and get next state
-                    if (!visited.contains(gs)) {
+                    if ((!visited.contains(gs)) && (!history.contains(gs))) {
                         visited.add(gs);      //to prevent adding same neighbours
                         if (gs.winner==number)   //find a path to the first move
                         {
