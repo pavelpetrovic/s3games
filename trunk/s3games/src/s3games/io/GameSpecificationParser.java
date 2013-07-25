@@ -273,9 +273,9 @@ public class GameSpecificationParser
             rule.to = Expr.parseExpr(stringify(val));
         else if (var.equals("condition"))
             rule.condition = Expr.parseExpr(val);
-        else if (var.equals("awardPlayer"))
+        else if (var.equals("awardplayer"))
             rule.scorePlayer.add(Expr.parseExpr(val));
-        else if (var.equals("withScore"))
+        else if (var.equals("withscore"))
             rule.scoreAmount.add(Expr.parseExpr(val));
         else if (var.equals("followup"))
             rule.action = Expr.parseExpr(val);
@@ -308,7 +308,7 @@ public class GameSpecificationParser
     {
         this.specs = specs;
         specs.playerNames = new String[0];
-        String fileName = gameName; //config.gamesFolder + "/" + gameName;
+        String fileName = config.gamesFolder + "/" + gameName;  //gameName; //
         inExpression = false;
         try {
             BufferedReader r = new BufferedReader(new FileReader (fileName));

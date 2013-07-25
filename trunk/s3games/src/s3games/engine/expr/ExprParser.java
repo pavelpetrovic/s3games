@@ -42,9 +42,10 @@ public class ExprParser
         {
             Expr.operatorType oper = ((OperatorLexeme)lex).op;
             if ((oper == Expr.operatorType.NOT) ||
-                (oper == Expr.operatorType.ABS))
+                (oper == Expr.operatorType.ABS) ||
+                (oper == Expr.operatorType.MINUS))
             {
-                if (lexs.isEmpty()) throw new Exception("operator NOT or ABS without argument");
+                if (lexs.isEmpty()) throw new Exception("operator NOT, ABS or MINUS without argument");
                 return new Expr_OPERATOR(oper, new Expr[] { parseExpr(lexs) });
             }            
             throw new Exception("misplaced operator");

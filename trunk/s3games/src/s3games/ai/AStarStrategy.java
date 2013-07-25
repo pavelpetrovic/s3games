@@ -15,6 +15,11 @@ import s3games.player.Player;
  */
 public class AStarStrategy extends Strategy {
 
+    public AStarStrategy(Heuristic h)
+    {
+        setHeuristic(h);        
+    }
+    
     @Override
     public Player getPlayer(GameSpecification specs) {
        return new AStarPlayer(specs);
