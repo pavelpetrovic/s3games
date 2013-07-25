@@ -21,6 +21,7 @@ public class Location
     public String type;
     public Point point;
     public RobotLocation robot;
+    public boolean relevant;
 
     public Location(String name)
     {

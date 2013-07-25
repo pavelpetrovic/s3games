@@ -65,28 +65,28 @@ public class AStarPlayer extends Player {
             Node actualNode = open.poll();   //retrieve and remove head of the queue
             activeState = actualNode.gs;
             
-            ArrayList<Move> possibleMoves = activeState.possibleMoves();
-            for (int i=0; i<possibleMoves.size(); i++) 
+            Set<Move> possibleMoves = activeState.possibleMoves();
+            for (Move mv : possibleMoves) 
             {
                 GameState gs = activeState.getCopy();
-                gs.performMove(possibleMoves.get(i));
+                gs.performMove(mv);
                 if (!visited.contains(gs)) {   //after move that new state  wasnt examined yet
                     visited.add(gs);  //prevent of repeating same states waiting for examination in open
                     if (gs.winner==number)    //then find path to the first move 
                     {
-                        if (actualNode.previous == null) return possibleMoves.get(i);
+                        if (actualNode.previous == null) return mv;
                         while(actualNode.previous.previous!=null) 
                                actualNode = actualNode.previous;
                         return actualNode.moveToThisState;
                     }
                     if (gs.winner == -1) {  //game continues
-                        open.add(new Node(actualNode, possibleMoves.get(i),gs));  //previous state, move to this state, state
+                        open.add(new Node(actualNode, mv,gs));  //previous state, move to this state, state
                     }
                 }
             }
         }
         
-        return allowedMoves.get(0);
+        return allowedMoves.iterator().next();
     }
 
     @Override

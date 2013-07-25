@@ -62,7 +62,7 @@ public class GameRule
                             if (st.locationElements.get(tryTo.name.fullName) == null)
                                 if (to.matches(tryTo.name.fullName, context))
                                     if (condition.eval(context).isTrue())
-                                        moves.add(new Move(tryFrom, tryTo.name.fullName, el.name.fullName));
+                                        moves.add(new Move(tryFrom, tryTo.name.fullName, el.name.fullName, specs));
                 }
         if (moves.size() > 0) return moves;
         return null;
@@ -70,13 +70,13 @@ public class GameRule
     
     public void addScores(Context context) throws Exception
     {
-        GameState state = context.getState();
+        GameState gs = context.getState();
         
         for(int i = 0; i < scorePlayer.size(); i++)
         {
             int player = scorePlayer.get(i).eval(context).getInt();
             int amount = scoreAmount.get(i).eval(context).getInt();
-            state.playerScores[player-1] += amount;
+            gs.playerScores[player-1] += amount;
         }
     }
     

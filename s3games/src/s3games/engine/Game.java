@@ -57,7 +57,7 @@ public class Game extends Thread
         {
             window.setState(state);
             Player playerOnMove = players[state.currentPlayer - 1];        
-            ArrayList<Move> allowedMoves = state.possibleMoves();
+            ArrayList<Move> allowedMoves = state.allPossibleMoves();
             Move nextMove;
             
             //dbg
@@ -72,8 +72,9 @@ public class Game extends Thread
             }
             
             nextMove = playerOnMove.move(state, allowedMoves);
+            System.out.println("Player moves: " + nextMove.toString());
             boolean approved = state.moveAllowed(nextMove);
-            if (!approved) 
+            if (!approved)
             {
                 window.showException(new Exception("Player performed illegal move " + nextMove));
                 state.winner = (state.currentPlayer % numberOfPlayers) + 1;
@@ -81,7 +82,7 @@ public class Game extends Thread
                 break;
             }
     
-            state.performMove(nextMove);   
+            state.performMove(nextMove);
             
             for (int p = 0; p < numberOfPlayers; p++)
                 if (playerOnMove != players[p])
