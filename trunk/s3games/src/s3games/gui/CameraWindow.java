@@ -31,7 +31,7 @@ public class CameraWindow implements ActionListener
         
         win = new JFrame("Camera control panel");
         win.setLayout(new BorderLayout());
-        out = new JTextArea("Connecting to camera...", 15, 60);
+        out = new JTextArea(15, 60);
         out.setEditable(false);
         win.add(out, BorderLayout.CENTER);
         JPanel panel = new JPanel();        
@@ -41,12 +41,14 @@ public class CameraWindow implements ActionListener
         win.add(panel, BorderLayout.SOUTH);                
         win.pack();
         win.setVisible(true);
-        goButton.addActionListener(this);        
+        goButton.addActionListener(this);
+        addMessage("Connecting to camera...");
     }
     
     public void addMessage(String msg)
     {
-        out.append(msg);        
+        out.append(msg);
+        out.append(System.lineSeparator());
     }
     
     public void moving(boolean b)
