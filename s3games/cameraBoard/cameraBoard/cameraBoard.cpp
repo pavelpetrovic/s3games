@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#include <stdio.h>
+
 #include <pthread.h>
 
 
@@ -380,7 +382,14 @@ int main( int argc, char** argv )
 	int selectedElement = 0;
 	detectObjects = 0;
 
+	FILE *f;
+	fopen_s(&f, "camera.log", "w+");
+	fprintf(f, "cameraBoard started.\n");
+	fflush(f);
+	fclose(f);
+
 	cout << "S:S3 Games Camera" << endl;
+	cout.flush();
 
     VideoCapture *cap = new VideoCapture(0);
 	Mat image;
@@ -413,6 +422,7 @@ int main( int argc, char** argv )
 	if (!cap->read(image))
 	{
 		cout << "F:Could not read frame from camera.";
+		cout.flush();
 		return 0;
 	}
 	Mat image32(image.size().width, image.size().height, CV_32FC3);
@@ -450,6 +460,7 @@ int main( int argc, char** argv )
 			cout << "hue=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[0] << " ";
 			cout << "sat=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[1] << " ";
 			cout << "val=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[2] << endl;
+			cout.flush();
 			mouseClicked = false;
 			key = -1;
 		}
@@ -458,72 +469,84 @@ int main( int argc, char** argv )
 		{
 			elementTypes.at(selectedElement)->decHueMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'j')
 		{
 			elementTypes.at(selectedElement)->decHueMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'H')
 		{
 			elementTypes.at(selectedElement)->incHueMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'J')
 		{
 			elementTypes.at(selectedElement)->incHueMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 's')
 		{
 			elementTypes.at(selectedElement)->decSatMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'd')
 		{
 			elementTypes.at(selectedElement)->decSatMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'S')
 		{
 			elementTypes.at(selectedElement)->incSatMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'D')
 		{
 			elementTypes.at(selectedElement)->incSatMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'v')
 		{
 			elementTypes.at(selectedElement)->decValMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'b')
 		{
 			elementTypes.at(selectedElement)->decValMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'V')
 		{
 			elementTypes.at(selectedElement)->incValMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == 'B')
 		{
 			elementTypes.at(selectedElement)->incValMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 			key = ' ';
 		}
 		else if (key == '+')
@@ -531,12 +554,14 @@ int main( int argc, char** argv )
 			selectedElement++;
 			if (selectedElement >= (int)(elementTypes.size())) selectedElement = elementTypes.size() - 1;		
 			cout << "I:Selected element " << selectedElement << '=' + elementTypes.at(selectedElement)->elementTypeName;
+			cout.flush();
 		}
 		else if (key == '-')
 		{
 			selectedElement--;
 			if (selectedElement < 0) selectedElement = 0;				
 			cout << "I:Selected element " << selectedElement << '=' + elementTypes.at(selectedElement)->elementTypeName;
+			cout.flush();
 		}
 
 		if (key == 13)
@@ -563,6 +588,7 @@ int main( int argc, char** argv )
 				for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
 					cout << "O:" << (*it)->elementType << "\t" << (*it)->x << "\t" << (*it)->y << endl;
 				cout << '=' << endl;
+				cout.flush();
 			}
 			else
 			{
@@ -572,6 +598,7 @@ int main( int argc, char** argv )
 					 << "D:      switched to floats in " << tm4 - tm3 << "us," << endl << "D:      converted to HSV in " 
 					 << tm5 - tm4 << "us," << endl << "D:      objects detected in " << tm6 - tm5 << "us," << endl 
 					 << "D:      visualized in "  << tm7 - tm6 << "us." << endl << "D:   total: " << tm7 - tm1 << "us." << endl;
+				cout.flush();
 			}
 			key = -1;
 		}

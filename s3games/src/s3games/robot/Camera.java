@@ -53,11 +53,12 @@ public class Camera implements Runnable
     boolean terminating;
     final Object notificator;
 
-    private static final String CAMERA_PROGRAM = "C:\\s\\nebeansProjects\\s3games\\cameraBoard\\cameraBoard\\OpenCV Release\\cameraBoard.exe";
+    private static final String CAMERA_PROGRAM = "cameraBoard.exe";
     
     public Camera(GameSpecification specs)
     {
         notificator = new Object();
+        objects = new ArrayList<DetectedObject>();
         showDebuggingMessages = false;
         terminating = false;
         this.specs = specs;
@@ -70,13 +71,23 @@ public class Camera implements Runnable
     public void run()
     {
         try {
-            Process p = Runtime.getRuntime().exec(CAMERA_PROGRAM);
+            ProcessBuilder pb = new ProcessBuilder(CAMERA_PROGRAM);
+            Process p = pb.start();
             in = new BufferedReader(new InputStreamReader(p.getInputStream()));
             out = new PrintWriter(p.getOutputStream());
-            if (!in.readLine().equals("S:S3 Games Camera"))
-                throw new Exception("Camera program did not respond");
+            int terminated = 0;
+            boolean hasTerminated = true;
+            try { terminated = p.exitValue(); } 
+            catch (IllegalThreadStateException e) { hasTerminated = false; }
+            if (hasTerminated) throw new Exception("The camera program has terminated with exit code " + terminated);
+            try { Thread.sleep(5000); } catch (Exception e) {}
+            String header = in.readLine();
+            if (header == null) throw new Exception("Could not start talking with the camera program");
+            if (!header.equals("S:S3 Games Camera"))
+                throw new Exception("Camera program did not respond properly");
             do {
                 String ln = in.readLine();
+                if (ln == null) throw new Exception("Camera disconnected");
                 if (ln.charAt(0) == 'F') throw new Exception("Camera program stoped with error " + ln.substring(2));
                 else if (ln.charAt(0) == 'D') 
                 {
@@ -89,7 +100,8 @@ public class Camera implements Runnable
             } while (!terminating);
         } catch (Exception e)
         {
-            if (!terminating) win.addMessage(e.toString());
+            if (!terminating) win.addMessage(e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -123,6 +135,6 @@ public class Camera implements Runnable
     public void close()
     {
         terminating = true;
-        out.println("0");
+        if (out != null) out.println("0");
     }
 }
