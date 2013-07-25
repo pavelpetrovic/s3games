@@ -48,7 +48,7 @@ public class CameraWindow implements ActionListener
     public void addMessage(String msg)
     {
         out.append(msg);
-        out.append(System.lineSeparator());
+        out.append(System.getProperty("line.separator"));
     }
     
     public void moving(boolean b)

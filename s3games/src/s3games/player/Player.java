@@ -27,7 +27,7 @@ public abstract class Player
     
     public void setPlayerNumber(int pn) 
     {
-        number = pn;
+        number =  pn;
     }
     
     public void gameOver()
