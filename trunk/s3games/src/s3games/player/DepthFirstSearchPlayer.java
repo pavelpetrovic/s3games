@@ -58,7 +58,7 @@ public class DepthFirstSearchPlayer extends Player {
                 Set<Move> possibleMoves = activeState.possibleMoves();
                 for (Move mv: possibleMoves) 
                 {
-                    GameState gs = activeState.getCopy(); 
+                    GameState gs = activeState.getCopy( ); 
                     gs.performMove(mv); //perfom move and get next state
                     if ((!visited.contains(gs)) && (!history.contains(gs))) {
                         visited.add(gs);      //to prevent adding same neighbours
