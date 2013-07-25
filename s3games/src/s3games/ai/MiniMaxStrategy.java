@@ -15,7 +15,12 @@ import s3games.player.Player;
  * @author petrovic
  */
 public class MiniMaxStrategy extends Strategy
-{
+{      
+    public MiniMaxStrategy(Heuristic h)
+    {
+        setHeuristic(h);
+    }
+    
     @Override
     public Player getPlayer(GameSpecification specs) 
     {

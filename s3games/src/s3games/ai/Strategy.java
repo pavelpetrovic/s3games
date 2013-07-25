@@ -19,15 +19,6 @@ public abstract class Strategy
 {
     protected Heuristic heuristic;
     
-    class ZeroHeuristic extends Heuristic
-    {
-        @Override
-        public double heuristic(GameState gameState, int forPlayer) 
-        {
-            return 0;
-        }    
-    }
-    
     public Strategy()
     {
         heuristic = new ZeroHeuristic();
@@ -38,12 +29,9 @@ public abstract class Strategy
 
     public static String[] availableStrategies(String gameName)
     {
-        return new String[] {"Random","DFS","BFS","MiniMax"};
+        return new String[] {"Random","DFS","BFS","AStar", "MiniMax"};
     }
-    
-    public static String[] heuristicsForGame(String strategyName) {
-         return new String[] {"zero","heuristika1", "heuristika2"};
-    }
+
     public static boolean learnable(String strategyName)
     {
         return true;
@@ -54,7 +42,7 @@ public abstract class Strategy
         this.heuristic = heuristic;
     }
     
-    public static Strategy getStrategy(String name)
+    public static Strategy getStrategy(String name, Heuristic h)
     {
         if (name.equals("Random"))
             return new RandomGeneralStrategy();
@@ -63,7 +51,10 @@ public abstract class Strategy
         if (name.equals("BFS"))
             return new BreadthFirstSearchStrategy();
         if (name.equals("MiniMax"))
-            return new MiniMaxStrategy();
+            return new MiniMaxStrategy(h);
+        if (name.equals("AStar"))
+            return new AStarStrategy(h);
         return null;
     }
+  
 }

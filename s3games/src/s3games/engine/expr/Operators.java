@@ -26,6 +26,12 @@ public class Operators
             if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("operator ABS requires number");
             return Expr.numExpr(Math.abs(((Expr_NUM_CONSTANT)a0).num));
         }
+        if ((op == Expr.operatorType.MINUS) && (args.length == 1))
+        {
+            Expr a0 = args[0].eval(context);
+            if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("unary MINUS requires number");
+            return Expr.numExpr(-(((Expr_NUM_CONSTANT)a0).num));
+        }
         if ((op == Expr.operatorType.LOWER) || 
             (op == Expr.operatorType.LOWEREQUAL) ||
             (op == Expr.operatorType.GREATER) ||

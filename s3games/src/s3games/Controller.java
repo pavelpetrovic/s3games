@@ -6,6 +6,7 @@
 package s3games;
 
 import java.util.*;
+import s3games.ai.Heuristic;
 import s3games.ai.Strategy;
 import s3games.engine.Game;
 import s3games.engine.GameSpecification;
@@ -72,9 +73,10 @@ public class Controller implements SwitchListener
     }
 
     //todo
-    public String[] getHeuristicsForStrategy(String strategyName) {
-        return Strategy.heuristicsForGame(strategyName);
+    public String[] getHeuristicsForGame(String strategyName) {
+        return Heuristic.availableHeuristics(strategyName);
     }
+    
     //todo
     public String[] getLearnableStrategyTypesForGame(String gameName)
     {
@@ -133,11 +135,16 @@ public class Controller implements SwitchListener
                     p = new CameraPlayer(gameSpecification, camera);
                 else p = new MousePlayer(gameSpecification, gw);
             }
-            else p = Strategy.getStrategy(playerStrategies[player]).getPlayer(gameSpecification);
+            else 
+            {
+                Heuristic h = Heuristic.getHeuristic(strategyHeuristics[player], gameSpecification);
+                p = Strategy.getStrategy(playerStrategies[player], h).getPlayer(gameSpecification);
+                
+            }
             p.setPlayerNumber(player+1);
             // TODO setup from controller window
-            p.setMaximumNumberOfNodes(20000);
-            p.setMaximumCacheSize(100000);
+            p.setMaximumNumberOfNodes(cw.getNumberOfNodesToExpand());
+            p.setMaximumCacheSize(4 * cw.getNumberOfNodesToExpand());
             players.add(p);
         }
         
