@@ -14,201 +14,196 @@ import s3games.engine.*;
  */
 public class MiniMaxPlayer extends Player
 {
-    class Node
+    public enum NodeType { MIN, MAX };
+    
+    public Node newNode(Node previous, GameState gs) throws Exception
     {
-        GameState gs;
-        double value;
-        ArrayList<Node> subNodes;
+        NodeType type = NodeType.MIN;
+        if (gs.currentPlayer == number) type = NodeType.MAX;        
+        
+        double val;        
+        if (type == NodeType.MIN) val = Double.POSITIVE_INFINITY;
+        else val = Double.NEGATIVE_INFINITY;    
+        
+        int depth = 1;
+        if (previous != null) depth = previous.depth + 1;
+        
+        Node node = new Node(previous, val, type, depth);
+        node.open(gs);
+        
+        return node;
+    }
+
+    public class Node implements Comparable
+    {
         Node previous;
-        Move moveToThisState;
-        boolean isModified;
+        double value;
+        NodeType type;
+        int depth;
         
-        public Node(Move move, Node previous, GameState state)
+        Node(Node previous, double value, NodeType type, int depth)
         {
-            subNodes = new ArrayList<Node>();
             this.previous = previous;
-            moveToThisState = move;    
-            gs = state;            
-            resetValue();
-            if (gs.currentPlayer == number)
-                if (previous != null)
-                    previous.subNodes.add(this);
+            this.value = value;
+            this.type = type;
+            this.depth = depth;
         }
         
-        void resetValue()
-        {
-            if (gs.currentPlayer == number)            
-                value = Double.NEGATIVE_INFINITY;
-            else value = Double.POSITIVE_INFINITY;
-            isModified = false;
-        }
-        
-        void requestUpdate(double subNodeValue, Node subNode, int phase)
-        {
-            if (gs.currentPlayer == number)
+        void open(GameState state) throws Exception
+        {            
+            if (state.winner >= 0)
+                value = valueOfWinner(state.winner);
+            else
             {
-                if (subNodeValue > value)
-                {                  
-                    value = subNodeValue;
-                    subNodes.clear();
-                    subNodes.add(subNode);
-                    if (!isModified)
-                    {
-                        if (phase == 1) modified.addFirst(this);
-                        else modified.addLast(this);
-                        isModified = true;
-                    }
-                }                
-            }
-            else 
-            {
-                if (subNodeValue < value)
+                HashMap<Move, GameState> newStates = expand(state, state.possibleMoves()); 
+                if (newStates.isEmpty())
+                    value = 0;
+                else
                 {
-                    value = subNodeValue;
-                    if (!isModified)
-                    {
-                        if (phase == 1) modified.addFirst(this);
-                        else modified.addLast(this);
-                        isModified = true;
-                    }
+                    for(GameState gs: newStates.values())
+                        leaves.add(new Leaf(gs, this));
+                    nodesOpened += newStates.size();
+                    return;
                 }
-            }
+            }          
+            if (previous != null)
+                previous.update(value);
         }
         
-        void computeNodeValue()
+        void update(double val)
         {
-            if (gs.winner >= 0)
+            if (type == NodeType.MAX)
             {
-               if (gs.winner == number)
-                   value = 1;
-               else if (gs.winner == 0)
-                   value = 0;
-               else value = -1;            
-            }        
-            else value = heuristic.heuristic(gs, number);
+                if (val > value)
+                    value = val;
+                else return;
+            }
+            else if (val < value)
+                value = val;
+            else return;
+            modified.add(this);
         }
 
-        void evalAndPropagateUp()
+        @Override
+        public int compareTo(Object o) 
         {
-            computeNodeValue();            
-            propagateUp(1);
+            Node other = (Node)o;
+            if (depth > other.depth) return -1;
+            else if (depth < other.depth) return 1;
+            else return 0;
         }
-
-        void propagateUp(int phase)
-        {
-            if (previous != null)        
-                previous.requestUpdate(value, this, phase); 
-        }        
     }
     
-    private boolean rootReachable(Node node)
+    public class Leaf
     {
-        while (node.previous != null)
-            if (node.previous == root) return true;
-            else node = node.previous;
-        return false;
+        Node previous;
+        GameState gs;        
+        
+        public Leaf(GameState gs, Node previous)
+        {
+            this.gs = gs;
+            this.previous = previous;
+        }
     }
-
-    LinkedList<Node> open;
-    HashSet<GameState> visited;
-    LinkedList<Node> modified;
-    Node root;
     
     Heuristic heuristic;
     GameSpecification specs;
+    HashMap<GameState, HashMap<Move, GameState>> openedStates;
+    LinkedList<Leaf> leaves;
+    PriorityQueue<Node> modified;
+    long nodesOpened;
     
     public MiniMaxPlayer(GameSpecification specs, Heuristic heuristic)
     {
         this.specs = specs;
-        this.heuristic = heuristic;        
+        this.heuristic = heuristic;
+        openedStates = new HashMap<GameState, HashMap<Move, GameState>>();        
     }
-        
-    private void removeAbandonedSubtrees()
+
+    double valueOfWinner(int winner)
     {
-        Iterator<Node> it = open.listIterator();
-        while (it.hasNext())
+        double val = Double.NaN;        
+        if (winner == number)
+            val = 1;
+        else if (winner == 0)
+            val = 0;
+        else if (winner > 0)
+            val = -1;    
+        return val;
+    }
+
+    public HashMap<Move, GameState> expand(GameState state, HashSet<Move> moves) throws Exception
+    {
+        HashMap<Move, GameState> expanded = openedStates.get(state);
+        if (expanded == null)
         {
-            Node node = it.next();
-            if (!rootReachable(node)) it.remove();    
+            expanded = new HashMap<Move, GameState>();
+            for (Move mv: moves)
+            {
+                GameState newState = state.getCopy();
+                newState.performMove(mv);      
+                expanded.put(mv, newState);                
+            }
+            openedStates.put(state, expanded);
+            if (openedStates.size() > maxCacheSize) openedStates.keySet().iterator().remove();
         }
+        return expanded;
     }
     
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
-    {        
-        if (visited == null)
-        {
-            visited = new HashSet<GameState>();
-            open = new LinkedList<Node>();
-            root = new Node(null, null, state);
-            open.add(root);
-            modified = new LinkedList<Node>();
-        }
-        else removeAbandonedSubtrees();
-                 
-        modified.clear();
-                
-        int nodesOpened = 0;
+    {
+        nodesOpened = 0;
+        if (allowedMoves.size() == 1) return allowedMoves.get(0);
         
-        while ((nodesOpened < maxNodes) && (!open.isEmpty()))
+        HashMap<Move, Node> topMoves = new HashMap<Move, Node>();
+        HashMap<Move, GameState> newStates = expand(state, new HashSet<Move>(allowedMoves));
+        modified = new PriorityQueue<Node>();
+        leaves = new LinkedList<Leaf>();
+        
+        for(Map.Entry<Move, GameState> mv: newStates.entrySet())
+            topMoves.put(mv.getKey(), newNode(null, mv.getValue()));
+        
+        while ((nodesOpened < maxNodes) && (!leaves.isEmpty()))
         {
-            Node actualNode = open.poll();
-            nodesOpened++;
-            GameState activeState = actualNode.gs;
-            actualNode.resetValue();
-            
-            if (activeState.winner >= 0)
-            {
-                actualNode.evalAndPropagateUp();
-                continue;
-            }
-            
-            ArrayList<Move> possibleMoves = activeState.possibleMoves();
-            for (int i=0; i<possibleMoves.size(); i++) 
-            {
-                Move mv = possibleMoves.get(i);
-                GameState gs = activeState.getCopy();
-                gs.performMove(mv);
-                Node successor = new Node(mv, actualNode, gs);
-                if (!visited.contains(gs)) 
-                {   
-                    visited.add(gs);                    
-                    open.add(successor);
-                    successor.evalAndPropagateUp();
-                }
-            }
+            Leaf lf = leaves.poll();
+            if (lf.gs.winner >= 0)
+                lf.previous.update(valueOfWinner(lf.gs.winner));
+            else
+                newNode(lf.previous, lf.gs);
         }
-                            
+        
+        while (!leaves.isEmpty())
+        {
+            Leaf lf = leaves.poll();
+            double val = valueOfWinner(lf.gs.winner);
+            if (Double.isNaN(val))
+                val = heuristic.heuristic(lf.gs, number);
+            lf.previous.update(val);                
+        }
+        
         while (!modified.isEmpty())
         {
-            Node node = modified.poll();         
-            node.isModified = false;
-            node.propagateUp(2);            
+            Node node = modified.poll();
+            if (node.previous != null) node.previous.update(node.value);
         }
         
-        root.previous = null;
-        Move bestMove;
-        if (root.subNodes.size() > 0) 
+        double max = Double.NEGATIVE_INFINITY;
+        Move bestMove = null;
+        for (Map.Entry<Move, Node> mv: topMoves.entrySet())
         {
-            root = root.subNodes.get(0);
-            bestMove = root.moveToThisState;
+            double val = mv.getValue().value;
+            if (val > max)
+            {
+                max = val;
+                bestMove = mv.getKey();
+            }
         }
-        else // not sure we really need this here        
-            bestMove = allowedMoves.get(0);
-                
         return bestMove;
     }
 
     @Override
     public void otherMoved(Move move, GameState newState) 
     {
-        for (Node node: root.subNodes)        
-            if (node.moveToThisState.equals(move))
-            {
-                root = node;
-                root.previous = null;
-                return;
-            }
-        root = new Node(move, null, newState);
     }    
 }

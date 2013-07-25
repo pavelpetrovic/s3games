@@ -4,8 +4,7 @@
  */
 package s3games.player;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
@@ -29,7 +28,7 @@ public class RandomGeneralPlayer extends Player
     public Move move(GameState state, ArrayList<Move> allowedMoves) 
     {
         try { Thread.sleep(1000); } catch (Exception e) {}
-        return allowedMoves.get(rnd.nextInt(allowedMoves.size()));        
+        return allowedMoves.get(rnd.nextInt(allowedMoves.size()));
     }
 
     @Override

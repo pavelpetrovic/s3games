@@ -5,7 +5,7 @@
 
 package s3games.player;
 
-import java.util.ArrayList;
+import java.util.*;
 import s3games.engine.GameState;
 import s3games.engine.Move;
 
@@ -16,7 +16,8 @@ import s3games.engine.Move;
 public abstract class Player
 {
     protected int number;
-    protected int maxNodes;
+    protected long maxNodes;
+    protected long maxCacheSize;
     
     public enum playerType { HUMAN, COMPUTER };
     public enum boardType { REALWORLD, SIMULATED };
@@ -33,8 +34,13 @@ public abstract class Player
     {
     }
             
-    public void setMaximumNumberOfNodes(int maxNodes)
+    public void setMaximumNumberOfNodes(long maxNodes)
     {
         this.maxNodes = maxNodes;
+    }
+    
+    public void setMaximumCacheSize(long maxCache)
+    {
+        this.maxCacheSize = maxCache;
     }
 }

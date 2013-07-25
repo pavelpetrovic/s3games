@@ -5,13 +5,11 @@
 package s3games.player;
 
 
-import java.util.ArrayList;
-import java.io.*;
+import java.util.*;
 
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
-import s3games.gui.CameraWindow;
 import s3games.robot.Camera;
 
 /**
@@ -35,7 +33,7 @@ public class CameraPlayer extends Player
     public Move move(GameState state, ArrayList<Move> allowedMoves)
     {
         Move userMove = camera.waitForUserMove();
-        return allowedMoves.get(0);
+        return allowedMoves.iterator().next();
     }
 
     @Override

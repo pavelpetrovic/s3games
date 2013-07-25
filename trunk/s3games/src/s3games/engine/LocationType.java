@@ -16,9 +16,11 @@ public class LocationType
     public String name;
     public ImageWithHotSpot image;
     public LocationShape shape;
+    public boolean relevant;
     
     public LocationType(String name)
     {
         this.name = name;
+        relevant = true;
     }
 }

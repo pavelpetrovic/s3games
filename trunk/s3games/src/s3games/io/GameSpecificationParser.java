@@ -123,6 +123,8 @@ public class GameSpecificationParser
         var = var.toLowerCase();
         if (var.equals("name"))
             locationType = new LocationType(val);
+        if (var.equals("irelevant"))
+            locationType.relevant = !val.toLowerCase().equals("yes");
         else if (var.equals("image"))
             imageName = val;
         else if (var.equals("shape"))
@@ -158,7 +160,12 @@ public class GameSpecificationParser
             specs.locations.put(val, location);
         }
         else if (var.equals("type"))
+        {
             location.type = val;
+            LocationType locType = specs.locationTypes.get(val);
+            if (locType == null) throw new Exception("Unknown location type " + val);
+            location.relevant = locType.relevant;
+        }
         else if (var.equals("point"))
         {
             String[] coord = val.split(",");

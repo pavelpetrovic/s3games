@@ -56,6 +56,12 @@ public class GameState
         return s;
     }
     
+    @Override
+    public String toString()
+    {
+        return hashString();
+    }
+    
     /** return a hash code for fast hashmap access, remember to call touch() always after state changes */
     @Override
     public int hashCode()
@@ -64,12 +70,12 @@ public class GameState
         return hash;
     }
     
-    /** recomputes the hash code for this state using String.hasCode() */
-    private void recomputeHash()
+    private String hashString()
     {
         StringBuilder b = new StringBuilder();
         for (Map.Entry<String, String> loel: locationElements.entrySet())
         {
+            if (!context.specs.locations.get(loel.getKey()).relevant) continue;
             b.append(loel.getKey());
             b.append('*');
             String el = loel.getValue();
@@ -90,7 +96,14 @@ public class GameState
         b.append(Integer.toString(winner));
         b.append('*');
         b.append(Arrays.toString(playerScores));
-        hash = b.toString().hashCode();
+        return b.toString();
+    }
+    
+    /** recomputes the hash code for this state using String.hasCode() */
+    private void recomputeHash()
+    {        
+        hash = hashString().hashCode();
+        //System.out.println("h:" + b + "=" + hash);
     }
  
     /** always call this method after modifying the state */
@@ -149,13 +162,15 @@ public class GameState
         Iterator<Map.Entry<String, String>> otherLocationElements = other.locationElements.entrySet().iterator();
         if (currentPlayer != other.currentPlayer) return false;
         for (Map.Entry<String, String> loel: locationElements.entrySet())
-        {            
+        {                        
             Map.Entry<String, String> otherloel = otherLocationElements.next();
+            if (!context.specs.locations.get(loel.getKey()).relevant) continue;
             String el = loel.getValue();
             String otherel = otherloel.getValue();
             
             if (el != null)
-            {                
+            {          
+                if (otherel == null) return false;
                 if (!context.specs.elements.get(el).type.equals(context.specs.elements.get(otherel).type)) return false;
                 if (!elementStates.get(el).equals(other.elementStates.get(otherel))) return false;
                 if (!elementOwners.get(el).equals(other.elementOwners.get(otherel))) return false;
@@ -172,16 +187,20 @@ public class GameState
     {
         Move move = null;
         for(Map.Entry<String,String> eLoc: elementLocations.entrySet())
-            if (!eLoc.getValue().equals(newState.elementLocations.get(eLoc.getKey())))
+        {
+            String element = eLoc.getKey();
+            String location = eLoc.getValue();
+            if (!location.equals(newState.elementLocations.get(element)))
             {
                 if (move != null) return null;
-                else move = new Move(eLoc.getValue(), newState.elementLocations.get(eLoc.getKey()), eLoc.getKey());
+                else move = new Move(location, newState.elementLocations.get(element), element, context.specs);
             }
+        }
         return move;
     }
     
     /** return a list of moves that can be taken from this state */
-    public ArrayList<Move> possibleMoves() throws Exception
+    public ArrayList<Move> allPossibleMoves() throws Exception
     {
         ArrayList<Move> moves = new ArrayList<Move>();
         context.setState(this);
@@ -195,6 +214,13 @@ public class GameState
         return moves;
     }
 
+    public HashSet<Move> possibleMoves() throws Exception
+    {
+        HashSet<Move> moves = new HashSet<Move>();
+        moves.addAll(allPossibleMoves());
+        return moves;
+    }
+    
     /** verifies all game over conditions
      * @return the number of player who won 1..N, or 0 if end of game with draw, or -1 if not end of game */
     private int gameOver() throws Exception
@@ -222,7 +248,10 @@ public class GameState
     }
 
     /* performs a move after it has been verified, executes follow-up action
-     * of the rule that maximizes the score, adds the score */
+     * of the rule that maximizes the score, adds the score, important: the
+     * game is marked finished only if one of the players won, or rules 
+     * specifically announced draw. when there are no more moves, you need
+     * to determine draw state on your own */
     public void performMove(Move move) throws Exception
     {      
         context.setState(this);

@@ -26,11 +26,13 @@ point=1,1
 [LOCATION TYPES]
 
 name=stackw
+irelevant=yes
 image=emptyplace.png
 shape=rectangular(75,75)
 point=1,1
 
 name=stackb
+irelevant=yes
 image=emptyplace.png
 shape=rectangular(75,75)
 point=1,1

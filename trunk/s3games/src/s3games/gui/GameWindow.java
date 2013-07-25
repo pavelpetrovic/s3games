@@ -64,6 +64,8 @@ public class GameWindow extends javax.swing.JFrame {
         outputTexts = null;
         repaint = true; 
         isSelectedElement = false;
+        
+        winner = "";
     }
 
     public void showException(Exception e)
@@ -160,7 +162,7 @@ public class GameWindow extends javax.swing.JFrame {
                            
                             String fromLoc= egs.elementLocations.get(selectedElementName);
                  
-                            lastMove = new Move(fromLoc,entry.getKey(),selectedElementName);
+                            lastMove = new Move(fromLoc,entry.getKey(),selectedElementName, gs);
                             System.out.println(fromLoc+" "+entry.getKey()+" "+selectedElementName);
                             synchronized(lastMoveReady)
                             {
