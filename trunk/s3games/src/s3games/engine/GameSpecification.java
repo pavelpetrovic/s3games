@@ -12,6 +12,7 @@ import s3games.io.GameLogger;
 import s3games.io.GameSpecificationParser;
 import s3games.engine.expr.Expr;
 import s3games.engine.expr.Expression;
+import s3games.robot.CameraObjectType;
 
 /**
  *
@@ -31,6 +32,8 @@ public class GameSpecification
     public Map<Expr,Expr> terminationConditions;
     public ArrayList<GameScoring> scorings;
     public Map<String,GameRule> rules;
+    
+    public ArrayList<CameraObjectType> cameraObjectTypes;
 
     public String playerNames[];
     public int initialPlayerScore;
@@ -48,6 +51,7 @@ public class GameSpecification
         terminationConditions = new HashMap<Expr,Expr>();
         scorings = new ArrayList<GameScoring>();
         rules = new HashMap<String, GameRule>();
+        cameraObjectTypes = new ArrayList<CameraObjectType>();
         this.config = config;
         initialPlayerScore = 0;
     }
@@ -56,5 +60,21 @@ public class GameSpecification
     {        
         GameSpecificationParser parser = new GameSpecificationParser(config, logger);
         return parser.load(gameName, this);
+    }
+    
+    public Location findClosestCameraLocation(int x, int y)
+    {
+        double minDist = Double.POSITIVE_INFINITY;
+        Location minLoc = null;
+        for(Location loc: locations.values())
+        {
+            double d1 = loc.camera.distanceSq(x, y);
+            if (d1 < minDist)
+            {
+                minDist = d1;
+                minLoc = loc;
+            }
+        }
+        return minLoc;
     }
 }

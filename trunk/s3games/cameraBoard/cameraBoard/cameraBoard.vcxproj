@@ -73,7 +73,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\a\libs\pthreads\Pre-built.2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\a\libs\pthreads\Pre-built.2\lib\x86;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..</OutDir>
+    <OutDir>..\..\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -82,7 +82,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\a\libs\pthreads\Pre-built.2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\a\libs\pthreads\Pre-built.2\lib\x86;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..</OutDir>
+    <OutDir>..\..\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

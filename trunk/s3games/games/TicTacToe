@@ -38,124 +38,109 @@ point=1,1
 [LOCATION TYPES]
 name=stackx
 image=tictacstackplace.png
+shape=rectangular(88,88)
 point=1,1
 
 name=stacko
 image=tictacstackplace.png
+shape=rectangular(88,88)
 point=1,1
 
 name=grid
 image=emptyplace.png
+shape=rectangular(88,88)
 point=1,1
 
 [LOCATIONS]
 name=s(1,1)
 type=grid
 point=180,190
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,1)
 type=grid
 point=180,300
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,1)
 type=grid
 point=180,410
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,2)
 type=grid
 point=300,190
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,2)
 type=grid
 point=300,300
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,2)
 type=grid
 point=300,410
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,3)
 type=grid
 point=420,190
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,3)
 type=grid
 point=420,300
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,3)
 type=grid
 point=420,410
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qo(1)
 type=stacko
 point=135,540
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qo(2)
 type=stacko
 point=235,540
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qo(3)
 type=stacko
 point=335,540
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qo(4)
 type=stacko
 point=435,540
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qx(1)
 type=stackx
 point=90,60
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qx(2)
 type=stackx
 point=190,60
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qx(3)
 type=stackx
 point=290,60
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qx(4)
 type=stackx
 point=390,60
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=qx(5)
 type=stackx
 point=490,60
-shape=rectangular(88,88)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 [PLAYER NAMES]
 1=cross

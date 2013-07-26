@@ -50,257 +50,257 @@ point=1,1
 name=b(1,1)
 type=board
 point=73,57
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(2,1)
 type=board
 point=192,57
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(3,1)
 type=board
 point=306,57
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(4,1)
 type=board
 point=425,57
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(5,1)
 type=board
 point=542,57
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(1,2)
 type=board
 point=73,168
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(2,2)
 type=board
 point=192,168
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(3,2)
 type=board
 point=306,168
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(4,2)
 type=board
 point=425,168
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(5,2)
 type=board
 point=542,168
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(1,3)
 type=board
 point=73,281
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(2,3)
 type=board
 point=192,281
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(3,3)
 type=board
 point=306,281
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(4,3)
 type=board
 point=425,281
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(5,3)
 type=board
 point=542,281
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(1,4)
 type=board
 point=73,394
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(2,4)
 type=board
 point=192,394
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(3,4)
 type=board
 point=306,394
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(4,4)
 type=board
 point=425,394
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(5,4)
 type=board
 point=542,394
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(1,5)
 type=board
 point=73,506
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(2,5)
 type=board
 point=192,506
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(3,5)
 type=board
 point=306,506
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(4,5)
 type=board
 point=425,506
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(5,5)
 type=board
 point=542,506
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(1) 
 type=stackb
 point=61,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(2) 
 type=stackb
 point=124,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(3) 
 type=stackb
 point=186,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(4) 
 type=stackb
 point=249,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(5) 
 type=stackb
 point=61,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(6) 
 type=stackb
 point=124,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(7) 
 type=stackb
 point=186,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(8) 
 type=stackb
 point=249,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(9) 
 type=stackb
 point=61,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(10) 
 type=stackb
 point=124,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(11) 
 type=stackb
 point=186,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sb(12) 
 type=stackb
 point=249,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(1) 
 type=stackw
 point=375,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(2) 
 type=stackw
 point=438,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(3) 
 type=stackw
 point=500,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(4) 
 type=stackw
 point=563,576
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(5) 
 type=stackw
 point=375,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(6) 
 type=stackw
 point=438,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(7) 
 type=stackw
 point=500,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(8) 
 type=stackw
 point=563,634
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(9) 
 type=stackw
 point=375,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(10) 
 type=stackw
 point=438,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(11) 
 type=stackw
 point=500,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sw(12) 
 type=stackw
 point=563,689
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sp(1)
 type=switchplace
 point=311,605
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=sp(2)
 type=switchplace
 point=311,655
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 [PLAYER NAMES]
 1=white

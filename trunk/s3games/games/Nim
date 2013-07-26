@@ -33,128 +33,128 @@ point=1,1
 name=s(1)
 type=active
 point=20,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2)
 type=active
 point=60,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3)
 type=active
 point=100,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(4)
 type=active
 point=140,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(5)
 type=active
 point=180,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(6)
 type=active
 point=230,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(7)
 type=active
 point=270,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(8)
 type=active
 point=310,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(9)
 type=active
 point=350,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(10)
 type=active
 point=390,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(11)
 type=active
 point=430,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(12)
 type=active
 point=470,150
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(13)
 type=active
 point=490,150
 shape=rectangular(0,0)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(1) 
 type=box
 point=600,280
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(2) 
 type=box
 point=612,285
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(3) 
 type=box
 point=624,275
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(4) 
 type=box
 point=636,280
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(5) 
 type=box
 point=648,285
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(6) 
 type=box
 point=660,275
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(7) 
 type=box
 point=672,280
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(8) 
 type=box
 point=684,285
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(9) 
 type=box
 point=696,275
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(10) 
 type=box
 point=708,290
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(11) 
 type=box
 point=720,275
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=b(12) 
 type=box
 point=732,295
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 [PLAYER NAMES]
 
