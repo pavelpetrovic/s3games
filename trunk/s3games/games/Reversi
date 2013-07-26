@@ -23,268 +23,393 @@ sizeMin=100
 sizeMax=5000
 
 [ELEMENT TYPES]
-name=black
-states=1
+name=stone
+states=2
+image=revwhite.png
+real=green
+point=1,1
 image=revblack.png
 real=red
 point=1,1
 
-name=white
-states=1
-image=revwhite.png
-real=green
-point=1,1
-
-[LOCATION TYPES]
+[LOCATION TYPES]  
 
 name=grid
 image=emptyplace.png
+shape=rectangular(55,55)
 point=1,1
 
 name=stackb
-image = cross.png
+image=revblack.png
+shape=circle(32,32)
 point=1,1
 irrelevant=yes
 
 name=stackw
-image = circle.png
+image=revwhite.png
+shape=circle(32,32)
 point=1,1
 irrelevant=yes
 
-[LOCATIONS]
-name=s(1,1)
+[LOCATIONS]   
+
+name=stb(1)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(2)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(3)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(4)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(5)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(6)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(7)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(8)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(9)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(10)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(11)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(12)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(13)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(14)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(15)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stb(16)
+type=stackb
+point=532,337
+robot=10,20,30,40,50
+
+name=stw(1)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(2)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(3)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(4)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(5)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(6)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(7)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(8)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(9)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(10)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(11)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(12)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(13)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(14)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(15)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=stw(16)
+type=stackw
+point=532,184
+robot=10,20,30,40,50
+
+name=b(1,1)
 type=grid
 point=60,63
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(2,1)
+name=b(2,1)
 type=grid
 point=138,63
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(3,1)
+name=b(3,1)
 type=grid
 point=214,63
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(4,1)
+name=b(4,1)
 type=grid
 point=292,63
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(5,1)
+name=b(5,1)
 type=grid
 point=370,63
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(6,1)
+name=b(6,1)
 type=grid
 point=452,63
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(1,2)
+name=b(1,2)
 type=grid
 point=60,141
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(2,2)
+name=b(2,2)
 type=grid
 point=138,141
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(3,2)
+name=b(3,2)
 type=grid
 point=214,141
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(4,2)
+name=b(4,2)
 type=grid
 point=292,141
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(5,2)
+name=b(5,2)
 type=grid
 point=370,141
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(6,2)
+name=b(6,2)
 type=grid
 point=452,141
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(1,3)
+name=b(1,3)
 type=grid
 point=60,222
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(2,3)
+name=b(2,3)
 type=grid
 point=138,222
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(3,3)
+name=b(3,3)
 type=grid
 point=214,222
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(4,3)
+name=b(4,3)
 type=grid
 point=292,222
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(5,3)
+name=b(5,3)
 type=grid
 point=370,222
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(6,3)
+name=b(6,3)
 type=grid
 point=452,222
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(1,4)
+name=b(1,4)
 type=grid
 point=60,299
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(2,4)
+name=b(2,4)
 type=grid
 point=138,299
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(3,4)
+name=b(3,4)
 type=grid
 point=214,299
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(4,4)
+name=b(4,4)
 type=grid
 point=292,299
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(5,4)
+name=b(5,4)
 type=grid
 point=370,299
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(6,4)
+name=b(6,4)
 type=grid
 point=452,299
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(1,5)
+name=b(1,5)
 type=grid
 point=60,375
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(2,5)
+name=b(2,5)
 type=grid
 point=138,375
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(3,5)
+name=b(3,5)
 type=grid
 point=214,375
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(4,5)
+name=b(4,5)
 type=grid
 point=292,375
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(5,5)
+name=b(5,5)
 type=grid
 point=370,375
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(6,5)
+name=b(6,5)
 type=grid
 point=452,375
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(1,6)
+name=b(1,6)
 type=grid
 point=60,454
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(2,6)
+name=b(2,6)
 type=grid
 point=138,454
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
-name=s(3,6)
+name=b(3,6)
 type=grid
 point=214,454
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(4,6)
+name=b(4,6)
 type=grid
 point=292,454
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(5,6)
+name=b(5,6)
 type=grid
 point=370,454
-shape=rectangular(55,55)
 robot=10,20,30,40,50
 
 
-name=s(6,6)
+name=b(6,6)
 type=grid
 point=452,454
-shape=rectangular(55,55)
-robot=10,20,30,40,50
+robot=10,20,30,40,50          
 
 [PLAYER NAMES]
 1=white
@@ -292,28 +417,184 @@ robot=10,20,30,40,50
 
 [MOVABLE ELEMENTS]
 
-name=w(1)
-type=white
+name=s(1)
+type=stone
+location=b(3,3)
+
+name=s(2)
+type=stone
 player=1
-location=s(3,3)
+location=b(4,4)
 
+name=s(3)
+type=stone
+location=b(3,4)
+state=2
 
-name=w(2)
-type=white
-player=1
-location=s(4,4)
+name=s(4)
+type=stone
+location=b(4,3)
+state=2
 
-name=b(1)
-type=black
-player=1
-location=s(3,4)
+name=s(5)
+type=stone
+location=stb(1)
+state=2
 
+name=s(6)
+type=stone
+location=stb(2)
+state=2
 
-name=b(2)
-type=black
-player=1
-location=s(4,3)
+name=s(7)
+type=stone
+location=stb(3)
+state=2
 
+name=s(8)
+type=stone
+location=stb(4)
+state=2
+
+name=s(9)
+type=stone
+location=stb(5)
+state=2
+
+name=s(10)
+type=stone
+location=stb(6)
+state=2
+
+name=s(11)
+type=stone
+location=stb(7)
+state=2
+
+name=s(12)
+type=stone
+location=stb(8)
+state=2
+
+name=s(13)
+type=stone
+location=stb(9)
+state=2
+
+name=s(14)
+type=stone
+location=stb(10)
+state=2
+
+name=s(15)
+type=stone
+location=stb(11)
+state=2
+
+name=s(16)
+type=stone
+location=stb(12)
+state=2
+
+name=s(17)
+type=stone
+location=stb(13)
+state=2
+
+name=s(18)
+type=stone
+location=stb(14)
+state=2
+
+name=s(19)
+type=stone
+location=stb(15)
+state=2
+
+name=s(20)
+type=stone
+location=stb(16)
+state=2
+
+name=s(21)
+type=stone
+location=stw(1)
+state=1
+
+name=s(22)
+type=stone
+location=stw(2)
+state=1
+
+name=s(23)
+type=stone
+location=stw(3)
+state=1
+
+name=s(24)
+type=stone
+location=stw(4)
+state=1
+
+name=s(25)
+type=stone
+location=stw(5)
+state=1
+
+name=s(26)
+type=stone
+location=stw(6)
+state=1
+
+name=s(27)
+type=stone
+location=stw(7)
+state=1
+
+name=s(28)
+type=stone
+location=stw(8)
+state=1
+
+name=s(29)
+type=stone
+location=stw(9)
+state=1
+
+name=s(30)
+type=stone
+location=stw(10)
+state=1
+
+name=s(31)
+type=stone
+location=stw(11)
+state=1
+
+name=s(32)
+type=stone
+location=stw(12)
+state=1
+
+name=s(33)
+type=stone
+location=stw(13)
+state=1
+
+name=s(34)
+type=stone
+location=stw(14)
+state=1
+
+name=s(35)
+type=stone
+location=stw(15)
+state=1
+
+name=s(36)
+type=stone
+location=stw(16)
+state=1
 
 [EXPRESSIONS]
 
@@ -327,16 +608,16 @@ location=s(4,3)
 
 [GAME RULES]
 
-name=xstep
-element=px($J)
+name=wstep
+element=s($J)
 player=1
-from=qx($K)
-to=s($L,$M)  
+from=stw($K)
+to=b($L,$M)
 followup=NEXTPLAYER
 
-name=ostep
-element=po($J)
+name=bstep
+element=s($J)
 player=2
-from=qo($K)
-to=s($L,$M)
+from=stb($K)
+to=b($L,$M)  
 followup=NEXTPLAYER
