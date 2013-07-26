@@ -43,7 +43,8 @@ public class Operators
             (op == Expr.operatorType.MOD))
         {
             Expr a0 = args[0].eval(context);
-            if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("numeric operator with first arg non-numeric type");
+            if (!(a0 instanceof Expr_NUM_CONSTANT)) 
+                throw new Exception("numeric operator with first arg non-numeric type");
             Expr a1 = args[1].eval(context);
             if (!(a1 instanceof Expr_NUM_CONSTANT)) 
                 throw new Exception("operator " + op + " with second arg non-numeric type");

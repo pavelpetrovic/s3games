@@ -194,11 +194,8 @@ END
 
 timeOf($PLACE)
   $WHO=ELTYPE(CONTENT($PLACE))
-  $PTS=0
-  PtsMother($WHO)
-  PtsFather($WHO)
-  PtsEmily($WHO)
-  PtsBob($WHO)
+  $PTS=0  
+  PtsMother($WHO) OR PtsFather($WHO) OR PtsEmily($WHO) OR PtsBob($WHO) OR true
   $PTS
 END
 
@@ -213,12 +210,12 @@ PtsFather($W)
 END
 
 PtsEmily($W)
-  $W = "emily" 
+  $W == "emily" 
   $PTS = (-5)
 END
 
 PtsBob($W)
-  $W = "bob"
+  $W == "bob"
   $PTS = (-1)
 END
 
