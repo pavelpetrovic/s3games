@@ -56,235 +56,235 @@ name=s(1,1)
 type=grid
 point=60,63
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,1)
 type=grid
 point=138,63
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,1)
 type=grid
 point=214,63
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(4,1)
 type=grid
 point=292,63
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(5,1)
 type=grid
 point=370,63
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(6,1)
 type=grid
 point=452,63
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,2)
 type=grid
 point=60,141
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,2)
 type=grid
 point=138,141
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,2)
 type=grid
 point=214,141
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(4,2)
 type=grid
 point=292,141
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(5,2)
 type=grid
 point=370,141
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(6,2)
 type=grid
 point=452,141
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,3)
 type=grid
 point=60,222
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,3)
 type=grid
 point=138,222
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,3)
 type=grid
 point=214,222
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(4,3)
 type=grid
 point=292,222
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(5,3)
 type=grid
 point=370,222
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(6,3)
 type=grid
 point=452,222
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,4)
 type=grid
 point=60,299
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,4)
 type=grid
 point=138,299
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,4)
 type=grid
 point=214,299
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(4,4)
 type=grid
 point=292,299
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(5,4)
 type=grid
 point=370,299
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(6,4)
 type=grid
 point=452,299
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,5)
 type=grid
 point=60,375
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,5)
 type=grid
 point=138,375
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,5)
 type=grid
 point=214,375
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(4,5)
 type=grid
 point=292,375
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(5,5)
 type=grid
 point=370,375
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(6,5)
 type=grid
 point=452,375
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(1,6)
 type=grid
 point=60,454
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(2,6)
 type=grid
 point=138,454
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 name=s(3,6)
 type=grid
 point=214,454
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(4,6)
 type=grid
 point=292,454
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(5,6)
 type=grid
 point=370,454
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 
 name=s(6,6)
 type=grid
 point=452,454
 shape=rectangular(55,55)
-angles=10,20,30,40,50
+robot=10,20,30,40,50
 
 [PLAYER NAMES]
 1=white

@@ -17,25 +17,7 @@ import s3games.gui.CameraWindow;
  *
  * @author petrovic
  */
-class DetectedObject
-{
-    String type;
-    int x;
-    int y;
-    
-    public DetectedObject(String type, int x, int y)
-    {
-        this.type = type;
-        this.x = x;
-        this.y = y;
-    }
-    
-    @Override
-    public String toString()
-    {        
-        return type + " " + x + " " + y;
-    }
-}
+
 
 /**
  *
@@ -43,7 +25,28 @@ class DetectedObject
  */
 public class Camera implements Runnable
 {
-    GameSpecification specs;
+    public class DetectedObject
+    {
+        public String type;
+        public int state;
+        public int x;
+        public int y;
+
+        public DetectedObject(String type, int x, int y)
+        {
+            this.type = type;
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString()
+        {        
+            return type + "(" + state + ") " + x + " " + y;
+        }
+    }
+    
+    GameSpecification specs;    
     CameraWindow win;
     Thread commThread;
     boolean showDebuggingMessages;
@@ -64,13 +67,24 @@ public class Camera implements Runnable
         this.specs = specs;
         win = new CameraWindow(this);
         commThread = new Thread(this);
-        commThread.start();
+        init();        
     }
-
-    @Override
-    public void run()
+        
+    private void sendObjectParametersToCamera()
     {
-        try {
+        ArrayList<CameraObjectType> params = specs.cameraObjectTypes;
+        out.println("2");
+        out.println(params.size());
+        for (CameraObjectType o: params)                    
+            o.printTo(out);        
+        out.flush();
+    }
+    
+    private void init()
+    {
+        try 
+        {
+            win.addMessage("Connecting to camera...");
             ProcessBuilder pb = new ProcessBuilder(CAMERA_PROGRAM);
             Process p = pb.start();
             in = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -80,13 +94,26 @@ public class Camera implements Runnable
             try { terminated = p.exitValue(); } 
             catch (IllegalThreadStateException e) { hasTerminated = false; }
             if (hasTerminated) throw new Exception("The camera program has terminated with exit code " + terminated);
-            try { Thread.sleep(5000); } catch (Exception e) {}
             String header = in.readLine();
             if (header == null) throw new Exception("Could not start talking with the camera program");
             if (!header.equals("S:S3 Games Camera"))
                 throw new Exception("Camera program did not respond properly");
+            win.addMessage("Camera there. Sending object types...");
+            sendObjectParametersToCamera();
+            commThread.start();
+            Thread.sleep(700);
+        } 
+        catch (Exception e) { win.addMessage(e.getMessage()); }
+        
+    }
+    
+    @Override
+    public void run()
+    {
+        try {
             do {
                 String ln = in.readLine();
+                System.out.println("cam:" + ln);
                 if (ln == null) throw new Exception("Camera disconnected");
                 if (ln.charAt(0) == 'F') throw new Exception("Camera program stoped with error " + ln.substring(2));
                 else if (ln.charAt(0) == 'D') 
@@ -98,11 +125,14 @@ public class Camera implements Runnable
                 else if (ln.charAt(0) == 'O') addObject(ln.substring(2));
                 else if (ln.charAt(0) == '=') objectsTransmitted();
             } while (!terminating);
+            
+            win.close();            
         } catch (Exception e)
         {
             if (!terminating) win.addMessage(e.getMessage());
             e.printStackTrace();
         }
+        win = null;
     }
     
     private void addObject(String objDesc) throws Exception
@@ -114,27 +144,44 @@ public class Camera implements Runnable
     
     private void objectsTransmitted()
     {
-        win.addMessage(objects.toString());
-        objects.clear();
+        //win.addMessage(objects.toString());
+        win.addMessage("Received " + objects.size() + " objects from camera.");
         synchronized(notificator) { notificator.notify(); }
     }
     
-    public void detectSituation()
+    public void requestObjectsFromCamera()
     {
+        objects.clear();
         out.println("1");
+        out.flush();
     }
     
-    public Move waitForUserMove() 
+    public ArrayList<DetectedObject> waitForUserMove() 
     {
+        win.addMessage("It is your turn: move one stone and click the button below.");
         try { synchronized(notificator) {             
             notificator.wait(); 
         } } catch (Exception e) {}
-        return null;
+        return objects;
     }    
+    
+    public void msgToUser(String msg)
+    {
+        win.addMessage(msg);
+    }
 
     public void close()
     {
         terminating = true;
-        if (out != null) out.println("0");
+        if (out != null) 
+        {
+            out.println("0");
+            out.flush();
+        }        
+        out.close();
+        try { 
+            Thread.sleep(2000);
+            in.close(); 
+        } catch (Exception e) {}
     }
 }

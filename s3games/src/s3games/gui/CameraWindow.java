@@ -41,8 +41,7 @@ public class CameraWindow implements ActionListener
         win.add(panel, BorderLayout.SOUTH);                
         win.pack();
         win.setVisible(true);
-        goButton.addActionListener(this);
-        addMessage("Connecting to camera...");
+        goButton.addActionListener(this);        
     }
     
     public void addMessage(String msg)
@@ -60,8 +59,13 @@ public class CameraWindow implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        camera.detectSituation();
-        throw new UnsupportedOperationException("Not supported yet.");
+        camera.requestObjectsFromCamera();        
     }
     
+    public void close()
+    {
+       win.dispose();
+       win = null;
+       camera = null;
+    }
 }

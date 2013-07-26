@@ -40,9 +40,10 @@ private:
 
 public:
 	char *elementTypeName;
+	int state;
 	int index;
 	
-	ElementType(double hueMin, double hueMax, double satMin, double satMax, double valueMin, double valueMax, int sizeMin, int sizeMax, char *elementTypeName, int index)
+	ElementType(double hueMin, double hueMax, double satMin, double satMax, double valueMin, double valueMax, int sizeMin, int sizeMax, char *elementTypeName, int state, int index)
 	{
 		this->hueMin = (float)hueMin;
 		this->hueMax = (float)hueMax;
@@ -53,6 +54,7 @@ public:
 		this->sizeMin = sizeMin;
 		this->sizeMax = sizeMax;
 		this->elementTypeName = elementTypeName;		
+		this->state = state;
 		this->index = index;
 	}
 
@@ -67,8 +69,8 @@ public:
 	}
 
 	bool matchesSize(int size)
-	{				
-		return (size >= sizeMin) && (size <= sizeMax);
+	{	
+		return ((size >= sizeMin) && (size <= sizeMax));
 	}
 
 	void visualize(Vec3f &pt)
@@ -165,13 +167,15 @@ class Location
 {
 public:
 	int x, y;
-	char *elementType;	
+	char *elementType;
+	int state;
 
-	Location(int x, int y, char *elementType)
+	Location(int x, int y, char *elementType, int state)
 	{
 		this->x = x;
 		this->y = y;
-		this->elementType = elementType;		
+		this->elementType = elementType;
+		this->state = state;
 	}
 };
 
@@ -318,7 +322,7 @@ public:
 					ElementMatcher elo(**it, findingImg, x, y);
 					int cx, cy;
 					if ((*it)->matchesSize(elo.size(cx, cy)))
-						locations.push_back(new Location(cx, cy, (*it)->elementTypeName));
+						locations.push_back(new Location(cx, cy, (*it)->elementTypeName, (*it)->state));
 				}
 	}
 
@@ -359,13 +363,59 @@ void visualize(Mat &img, Mat &vis, vector<ElementType *> &ets)
 }
 
 bool detectObjects;
+bool terminating;
+
+static vector<ElementType *> elementTypes;
+void deallocateElementTypes()
+{
+	for (vector<ElementType *>::iterator it = elementTypes.begin(); it < elementTypes.end(); it++)
+	{
+		delete (*it)->elementTypeName;
+		delete (*it);
+	}
+	elementTypes.clear();
+}
+
+void readObjectDescriptions()
+{
+	int nobjs;
+	cin >> nobjs;
+	
+	deallocateElementTypes();	
+
+	char objName[200];
+	char *name;
+	for (int i = 0; i < nobjs; i++)
+	{		
+		cin.ignore(100, '\n'); //do you "love" cin too?
+		cin.getline(objName, 200);		
+		int nameSize = strlen(objName) + 1;
+		name = new char[nameSize];
+		strncpy_s(name, nameSize, objName, nameSize);
+		double hueMin, hueMax, satMin, satMax, valueMin, valueMax;
+		long sizeMin, sizeMax;
+		int state;
+		cin >> hueMin >> hueMax >> satMin >> satMax >> valueMin >> valueMax >> sizeMin >> sizeMax >> state;
+		valueMin *= 255.0;
+		valueMax *= 255.0;	
+		ElementType *et = new ElementType(hueMin, hueMax, satMin, satMax, valueMin, valueMax, sizeMin, sizeMax, name, state, i);
+		elementTypes.push_back(et);		
+	}
+	cout << "I:Camera learned about " << nobjs << " object types." << endl;
+	cout.flush();
+}
+
 void *readerThreadEntryPoint(void *data)
 {
 	int n;
 	do {
 		cin >> n;
 		if (n == 1) detectObjects = 1;
+		else if (n == 2) readObjectDescriptions();		
 	} while (n > 0);
+	terminating = 1;
+	cout << "I:Camera terminating.\n";
+	cout.flush();
 	return 0;
 }
 
@@ -377,16 +427,9 @@ static void launchReaderThread()
 
 int main( int argc, char** argv )
 {
-	vector<Location *> locations;
-	vector<ElementType *> elementTypes;
+	vector<Location *> locations;	
 	int selectedElement = 0;
 	detectObjects = 0;
-
-	FILE *f;
-	fopen_s(&f, "camera.log", "w+");
-	fprintf(f, "cameraBoard started.\n");
-	fflush(f);
-	fclose(f);
 
 	cout << "S:S3 Games Camera" << endl;
 	cout.flush();
@@ -395,13 +438,14 @@ int main( int argc, char** argv )
 	Mat image;
 
 	bool show = false;
+	terminating = false;
 	
-	ElementType t1(82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 500, 5000, "green", 0);
+	//ElementType t1(82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 200, 5000, "green", 0);
 	//ElementType t1(12.0, 347.0, 0.3, 1.0, 76.0, 230.0, 100, 5000, "green", 1, 0);
-	ElementType t2(343.0, 19.0, 0.5, 1.0, 100.0, 255.0, 10, 5000, "red", 1);
+	//ElementType t2(343.0, 19.0, 0.5, 1.0, 100.0, 255.0, 200, 5000, "red", 1);
 
-	elementTypes.push_back(&t1);
-	elementTypes.push_back(&t2);
+	//elementTypes.push_back(&t1);
+	//elementTypes.push_back(&t2);
 
 	if (!cap->isOpened())
 	{
@@ -586,7 +630,7 @@ int main( int argc, char** argv )
 			if (!show)
 			{				
 				for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
-					cout << "O:" << (*it)->elementType << "\t" << (*it)->x << "\t" << (*it)->y << endl;
+					cout << "O:" << (*it)->elementType << "\t" << (*it)->state << (*it)->x << "\t" << (*it)->y << endl;
 				cout << '=' << endl;
 				cout.flush();
 			}
@@ -602,6 +646,9 @@ int main( int argc, char** argv )
 			}
 			key = -1;
 		}
+
+		if (key != 'q') key = -1;
+		if (terminating) key = 'q';
 
 	} while (key == -1);
 	

@@ -6,10 +6,7 @@ package s3games.player;
 
 
 import java.util.*;
-
-import s3games.engine.GameSpecification;
-import s3games.engine.GameState;
-import s3games.engine.Move;
+import s3games.engine.*;
 import s3games.robot.Camera;
 
 /**
@@ -31,9 +28,41 @@ public class CameraPlayer extends Player
     
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves)
+    {       
+        Move move;
+        do {
+            ArrayList<Camera.DetectedObject> objs = camera.waitForUserMove();        
+            move = determineUserMove(state, objs);
+        } while (move == null);
+        return move;
+    }
+    
+    private Move determineUserMove(GameState state, ArrayList<Camera.DetectedObject> objs) 
     {
-        Move userMove = camera.waitForUserMove();
-        return allowedMoves.iterator().next();
+        String movedFrom, movedTo = null, elem;
+        
+        HashSet<String> formerlyOccupiedLocations = new HashSet<String>();
+        for(Map.Entry<String,String> loel: state.locationElements.entrySet())
+            if (loel.getValue() != null) 
+                formerlyOccupiedLocations.add(loel.getKey());
+        
+        for(Camera.DetectedObject obj: objs)
+        {
+            Location loc = specs.findClosestCameraLocation(obj.x, obj.y);
+            if (state.locationElements.get(loc.name.fullName) == null)
+                movedTo = loc.name.fullName;
+            else formerlyOccupiedLocations.remove(loc.name.fullName);
+        }
+        if ((movedTo == null) || (formerlyOccupiedLocations.size() != 1))
+        {
+            camera.msgToUser("You can only move exactly one stone at a time. Try again.");        
+            return null;
+        }
+        movedFrom = formerlyOccupiedLocations.iterator().next();
+        
+        elem = state.locationElements.get(movedFrom);       
+        
+        return new Move(movedFrom, movedTo, elem, specs);
     }
 
     @Override

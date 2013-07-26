@@ -20,6 +20,7 @@ public class Location
     public IndexedName name;
     public String type;
     public Point point;
+    public Point camera;
     public RobotLocation robot;
     public boolean relevant;
 

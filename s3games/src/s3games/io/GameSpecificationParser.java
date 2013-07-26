@@ -12,6 +12,7 @@ import s3games.engine.expr.*;
 import s3games.gui.Circular;
 import s3games.gui.ImageWithHotSpot;
 import s3games.gui.Rectangular;
+import s3games.robot.CameraObjectType;
 import s3games.robot.RobotLocation;
 import s3games.util.*;
 
@@ -25,7 +26,7 @@ public class GameSpecificationParser
     GameLogger logger;
     GameSpecification specs;
 
-    enum sections { BOARD, REAL_ELEMENT_TYPES, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
+    enum sections { BOARD, REALBOARD_ELEMENT_TYPES, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
                         PLAYER_NAMES, MOVABLE_ELEMENTS, EXPRESSIONS,
                         SCORINGS, END_OF_GAME, GAME_RULES };
 
@@ -33,7 +34,7 @@ public class GameSpecificationParser
     {
         sectionName=sectionName.toUpperCase();
         if (sectionName.equals("BOARD")) return sections.BOARD;
-        if (sectionName.equals("REALBOARD ELEMENT TYPES")) return sections.REAL_ELEMENT_TYPES;
+        if (sectionName.equals("REALBOARD ELEMENT TYPES")) return sections.REALBOARD_ELEMENT_TYPES;
         if (sectionName.equals("ELEMENT TYPES")) return sections.ELEMENT_TYPES;
         if (sectionName.equals("LOCATION TYPES")) return sections.LOCATION_TYPES;
         if (sectionName.equals("LOCATIONS")) return sections.LOCATIONS;
@@ -75,6 +76,35 @@ public class GameSpecificationParser
         if (var.equals("image")) specs.boardBackgroundFileName = config.imagePath + "/" + val;
     }
 
+    CameraObjectType cot;
+    private void realElementTypeSetting(String var, String val)
+    {
+        var = var.toLowerCase();
+        if (var.equals("name"))
+        {
+            cot = new CameraObjectType(val);
+            specs.cameraObjectTypes.add(cot);            
+        }
+        else if (var.equals("state"))
+            cot.state = Integer.parseInt(val);
+        else if (var.equals("huemin"))
+            cot.hueMin = Double.parseDouble(val);
+        else if (var.equals("huemax"))
+            cot.hueMax = Double.parseDouble(val);
+        else if (var.equals("saturationmin"))
+            cot.satMin = Double.parseDouble(val);
+        else if (var.equals("saturationmax"))
+            cot.satMax = Double.parseDouble(val);
+        else if (var.equals("valuemin"))
+            cot.valueMin = Double.parseDouble(val);
+        else if (var.equals("valuemax"))
+            cot.valueMax = Double.parseDouble(val);
+        else if (var.equals("sizemin"))
+            cot.sizeMin = Integer.parseInt(val);
+        else if (var.equals("sizemax"))
+            cot.sizeMax = Integer.parseInt(val);
+    }
+        
     ElementType et;
     int state;
     String imageName;
@@ -90,13 +120,10 @@ public class GameSpecificationParser
         {
             et.numStates = Integer.parseInt(val);
             et.images = new ImageWithHotSpot[et.numStates];
-            et.realShapes = new String[et.numStates];
             state = 0;
         }
         else if (var.equals("image"))
             imageName = val;
-        else if (var.equals("real"))
-            et.realShapes[state] = val;
         else if (var.equals("point"))
         {
             String[] hotspot = val.split(",");
@@ -171,7 +198,12 @@ public class GameSpecificationParser
             String[] coord = val.split(",");
             location.point = new Point(Integer.parseInt(coord[0].trim()), Integer.parseInt(coord[1].trim()));
         }
-        else if (var.equals("angles"))
+        else if (var.equals("camera"))
+        {
+            String[] coord = val.split(",");
+            location.camera = new Point(Integer.parseInt(coord[0].trim()), Integer.parseInt(coord[1].trim()));
+        }
+        else if (var.equals("robot"))
             try { location.robot = new RobotLocation(val); }
             catch (Exception e)
             {                
@@ -286,6 +318,7 @@ public class GameSpecificationParser
         switch (section)
         {
             case BOARD: boardSetting(var, val); break;
+            case REALBOARD_ELEMENT_TYPES: realElementTypeSetting(var, val); break;
             case ELEMENT_TYPES: elementTypeSetting(var, val); break;
             case LOCATION_TYPES: locationTypeSetting(var, val); break;
             case LOCATIONS: locationSetting(var, val); break;
@@ -319,14 +352,10 @@ public class GameSpecificationParser
                 String ln = r.readLine().trim();
                 if (ln.length() < 2) continue;
                 if ((ln.charAt(0) == '/') && (ln.charAt(1)=='/')) continue;
-                if (ln.charAt(0) == '[')
-                {
-                    section = getSection(ln.substring(1, ln.length() - 1));
-                }
-                else if (section == sections.EXPRESSIONS)
-                {
-                    addExpressionLine(ln);
-                }
+                if (ln.charAt(0) == '[')                
+                    section = getSection(ln.substring(1, ln.length() - 1));                
+                else if (section == sections.EXPRESSIONS)                
+                    addExpressionLine(ln);                
                 else
                 {
                     String[] setting = ln.split("=", 2);
