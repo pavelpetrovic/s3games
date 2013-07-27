@@ -85,7 +85,7 @@ public:
 	char *toString()
 	{
 		static char str[200];
-		sprintf_s(str, 199, "Hue: %d - %d, Sat: %.2f - %.2f, Val: %d - %d\n", f2i(hueMin), f2i(hueMax), satMin, satMax, f2i(valueMin), f2i(valueMax));
+		sprintf_s(str, 199, "Hue: %d - %d, Sat: %.2f - %.2f, Val: %.2f - %.2f Siz: %d - %d\n", f2i(hueMin), f2i(hueMax), satMin, satMax, valueMin / 255.0, valueMax / 255.0, sizeMin, sizeMax);
 		return str;
 	}
 
@@ -161,6 +161,29 @@ public:
 		if (valueMax > 255.0f) valueMax = 255.0f;
 	}
 
+	void decSizeMin()
+	{
+		sizeMin--;
+		if (sizeMin <= 0) sizeMin = 1;
+	}
+
+	void incSizeMin()
+	{
+		sizeMin++;
+		if (sizeMin > 100000) sizeMin = 100000;
+	}
+
+	void decSizeMax()
+	{
+		sizeMax--;
+		if (sizeMax <= 0) sizeMax = 1;
+	}
+
+	void incSizeMax()
+	{
+		sizeMax++;
+		if (sizeMax > 100000) sizeMax = 100000;
+	}
 };
 
 class Location 
@@ -405,6 +428,25 @@ void readObjectDescriptions()
 	cout.flush();
 }
 
+int nlocs;
+int *locsx, *locsy;
+
+void readLocations()
+{
+	cin >> nlocs;
+	if (locsx != 0) 
+	{
+		delete locsx;
+		delete locsy;
+	}
+	locsx = new int[nlocs];
+	locsy = new int[nlocs];
+	for (int i = 0; i < nlocs; i++)	
+		cin >> locsx[i] >> locsy[i];
+	cout << "I:read " << nlocs << " locations." << endl;
+	cout.flush();
+}
+
 void *readerThreadEntryPoint(void *data)
 {
 	int n;
@@ -412,6 +454,7 @@ void *readerThreadEntryPoint(void *data)
 		cin >> n;
 		if (n == 1) detectObjects = 1;
 		else if (n == 2) readObjectDescriptions();		
+		else if (n == 3) readLocations();
 	} while (n > 0);
 	terminating = 1;
 	cout << "I:Camera terminating.\n";
@@ -425,11 +468,23 @@ static void launchReaderThread()
 	pthread_create(&readerThread, 0, readerThreadEntryPoint, 0);
 }
 
+static void drawLocs(Mat &img)
+{
+	if (locsx == 0) return;
+	for (int i = 0; i < nlocs; i++)	
+		for (int dy = -3; dy < 4; dy++)
+			for (int dx = -3; dx < 4; dx++)
+				img.at<Vec3b>(locsy[i] + dy, locsx[i] + dx)[0] = 127;
+}
+
 int main( int argc, char** argv )
 {
 	vector<Location *> locations;	
 	int selectedElement = 0;
 	detectObjects = 0;
+	nlocs = 0;
+	locsx = locsy = 0;
+	int showinglocs = 0;
 
 	cout << "S:S3 Games Camera" << endl;
 	cout.flush();
@@ -494,16 +549,17 @@ int main( int argc, char** argv )
 
 		double tm2 = usec();
 
+		if (showinglocs) drawLocs(image);
 		imshow( camera, image );
 				
 		if (mouseClicked)
 		{
 			image.convertTo(image32, CV_32FC3);
-			cvtColor(image32, hsv32, CV_RGB2HSV);
+			cvtColor(image32, hsv32, CV_BGR2HSV);
 			cout << "I:[" << mouseX << "," << mouseY << "]: ";
 			cout << "hue=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[0] << " ";
 			cout << "sat=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[1] << " ";
-			cout << "val=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[2] << endl;
+			cout << "val=" << hsv32.at<cv::Vec3f>(mouseY,mouseX)[2] / 255.0 << endl;
 			cout.flush();
 			mouseClicked = false;
 			key = -1;
@@ -514,98 +570,115 @@ int main( int argc, char** argv )
 			elementTypes.at(selectedElement)->decHueMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'j')
 		{
 			elementTypes.at(selectedElement)->decHueMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'H')
 		{
 			elementTypes.at(selectedElement)->incHueMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'J')
 		{
 			elementTypes.at(selectedElement)->incHueMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 's')
 		{
 			elementTypes.at(selectedElement)->decSatMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'd')
 		{
 			elementTypes.at(selectedElement)->decSatMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'S')
 		{
 			elementTypes.at(selectedElement)->incSatMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'D')
 		{
 			elementTypes.at(selectedElement)->incSatMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'v')
 		{
 			elementTypes.at(selectedElement)->decValMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'b')
 		{
 			elementTypes.at(selectedElement)->decValMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'V')
 		{
 			elementTypes.at(selectedElement)->incValMin();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
 		}
 		else if (key == 'B')
 		{
 			elementTypes.at(selectedElement)->incValMax();
 			cout << "I:" << elementTypes.at(selectedElement)->toString();
 			cout.flush();
-			key = ' ';
+		}
+		else if (key == '1')
+		{
+			elementTypes.at(selectedElement)->decSizeMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
+		}
+		else if (key == '2')
+		{
+			elementTypes.at(selectedElement)->incSizeMin();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
+		}
+		else if (key == '8')
+		{
+			elementTypes.at(selectedElement)->decSizeMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
+		}
+		else if (key == '9')
+		{
+			elementTypes.at(selectedElement)->incSizeMax();
+			cout << "I:" << elementTypes.at(selectedElement)->toString();
+			cout.flush();
 		}
 		else if (key == '+')
 		{
 			selectedElement++;
 			if (selectedElement >= (int)(elementTypes.size())) selectedElement = elementTypes.size() - 1;		
-			cout << "I:Selected element " << selectedElement << '=' + elementTypes.at(selectedElement)->elementTypeName;
+			cout << "I:Selected element " << selectedElement << '=' << elementTypes.at(selectedElement)->elementTypeName << '/' << elementTypes.at(selectedElement)->state << endl;
 			cout.flush();
 		}
 		else if (key == '-')
 		{
 			selectedElement--;
 			if (selectedElement < 0) selectedElement = 0;				
-			cout << "I:Selected element " << selectedElement << '=' + elementTypes.at(selectedElement)->elementTypeName;
+			cout << "I:Selected element " << selectedElement << '=' << elementTypes.at(selectedElement)->elementTypeName << '/' << elementTypes.at(selectedElement)->state << endl;
 			cout.flush();
+		}
+		else if (key == 'l') 
+		{			
+			showinglocs = !showinglocs;
+			cout << "I:showing locs: " << showinglocs << endl;
 		}
 
 		if (key == 13)
@@ -630,7 +703,7 @@ int main( int argc, char** argv )
 			if (!show)
 			{				
 				for (vector<Location *>::iterator it = locations.begin(); it < locations.end(); it++)
-					cout << "O:" << (*it)->elementType << "\t" << (*it)->state << (*it)->x << "\t" << (*it)->y << endl;
+					cout << "O:" << (*it)->elementType << '\t' << (*it)->state << '\t' << (*it)->x << '\t' << (*it)->y << endl;
 				cout << '=' << endl;
 				cout.flush();
 			}

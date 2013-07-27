@@ -4,21 +4,21 @@ image=frogsbackground.png
 [REALBOARD ELEMENT TYPES]
 name=greenFrog
 state=1
-hueMin=82
-hueMax=167
-saturationMin=0.3
+hueMin=71
+hueMax=192
+saturationMin=0.27
 saturationMax=1.0
-valueMin=0.3
+valueMin=0.09
 valueMax=0.9
 sizeMin=200
 sizeMax=5000
 
 name=redFrog
-hueMin=344
+hueMin=337
 hueMax=19
-saturationMin=0.5
+saturationMin=0.44
 saturationMax=1.0
-valueMin=0.6
+valueMin=0.28
 valueMax=1.0
 sizeMin=200
 sizeMax=5000
@@ -44,43 +44,43 @@ point=1,1
 name=s(1)
 type=stone
 point=40,250
-camera=40,250
+camera=20,135
 robot=10,20,30,40,50
 
 name=s(2)
 type=stone
 point=130,250
-camera=130,250
+camera=110,135
 robot=10,20,30,40,50
 
 name=s(3)
 type=stone
 point=220,250
-camera=220,250
+camera=203,135
 robot=10,20,30,40,50
 
 name=s(4)
 type=stone
 point=310,250
-camera=310,250
+camera=297,135
 robot=10,20,30,40,50
 
 name=s(5)
 type=stone
 point=400,250
-camera=400,250
+camera=385,135
 robot=10,20,30,40,50
 
 name=s(6)
 type=stone
 point=490,250
-camera=490,250
+camera=473,135
 robot=10,20,30,40,50
 
 name=s(7)
 type=stone
 point=580,250
-camera=580,250
+camera=576,135
 robot=10,20,30,40,50
 
 [PLAYER NAMES]
