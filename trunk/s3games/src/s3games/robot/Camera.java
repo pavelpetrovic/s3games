@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
+import s3games.engine.Location;
 import s3games.engine.Move;
 import s3games.gui.CameraWindow;
 
@@ -32,9 +33,10 @@ public class Camera implements Runnable
         public int x;
         public int y;
 
-        public DetectedObject(String type, int x, int y)
+        public DetectedObject(String type, int state, int x, int y)
         {
             this.type = type;
+            this.state = state;
             this.x = x;
             this.y = y;
         }
@@ -80,6 +82,15 @@ public class Camera implements Runnable
         out.flush();
     }
     
+    private void sendLocationsToCamera()
+    {
+        out.println("3");
+        out.println(specs.locations.size());
+        for (Location loc: specs.locations.values())        
+            out.println(loc.camera.x + " " + loc.camera.y);
+        out.flush();
+    }
+    
     private void init()
     {
         try 
@@ -100,6 +111,7 @@ public class Camera implements Runnable
                 throw new Exception("Camera program did not respond properly");
             win.addMessage("Camera there. Sending object types...");
             sendObjectParametersToCamera();
+            sendLocationsToCamera();
             commThread.start();
             Thread.sleep(700);
         } 
@@ -138,8 +150,8 @@ public class Camera implements Runnable
     private void addObject(String objDesc) throws Exception
     {
         String obj[] = objDesc.split("\t");
-        if (obj.length != 3) throw new Exception("Camera program output error");
-        objects.add(new DetectedObject(obj[0], Integer.parseInt(obj[1]), Integer.parseInt(obj[2])));
+        if (obj.length != 4) throw new Exception("Camera program output error");
+        objects.add(new DetectedObject(obj[0], Integer.parseInt(obj[1]), Integer.parseInt(obj[2]), Integer.parseInt(obj[3])));
     }
     
     private void objectsTransmitted()

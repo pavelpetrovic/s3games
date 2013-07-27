@@ -53,9 +53,15 @@ public class CameraPlayer extends Player
                 movedTo = loc.name.fullName;
             else formerlyOccupiedLocations.remove(loc.name.fullName);
         }
-        if ((movedTo == null) || (formerlyOccupiedLocations.size() != 1))
+        if (movedTo == null) 
         {
-            camera.msgToUser("You can only move exactly one stone at a time. Try again.");        
+            camera.msgToUser("I did not find any formerly free location having a stone now. You can only move exactly one stone at a time. Try again.");        
+            return null;
+        }
+        
+        if (formerlyOccupiedLocations.size() != 1)
+        {
+            camera.msgToUser("I did not find any formerly occupied location being free now. You can only move exactly one stone at a time. Try again.");        
             return null;
         }
         movedFrom = formerlyOccupiedLocations.iterator().next();

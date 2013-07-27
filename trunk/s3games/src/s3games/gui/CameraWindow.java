@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import s3games.robot.Camera;
 
 /**
@@ -21,6 +22,8 @@ public class CameraWindow implements ActionListener
     JFrame win;
     JTextArea out;
     JButton goButton;
+    JButton clearButton;
+    JScrollPane scroll;
     
     boolean ourTurn;
     
@@ -33,21 +36,28 @@ public class CameraWindow implements ActionListener
         win.setLayout(new BorderLayout());
         out = new JTextArea(15, 60);
         out.setEditable(false);
-        win.add(out, BorderLayout.CENTER);
+        out.setAutoscrolls(true);
+        DefaultCaret caret = (DefaultCaret)out.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        scroll = new JScrollPane (out);        
+        win.add(scroll, BorderLayout.CENTER);
         JPanel panel = new JPanel();        
         panel.setLayout(new FlowLayout());        
         goButton = new JButton("Go next player");
         panel.add(goButton); 
+        clearButton = new JButton("Clear");
+        panel.add(clearButton);
         win.add(panel, BorderLayout.SOUTH);                
         win.pack();
         win.setVisible(true);
         goButton.addActionListener(this);        
+        clearButton.addActionListener(this);
     }
     
     public void addMessage(String msg)
     {
         out.append(msg);
-        out.append(System.getProperty("line.separator"));
+        out.append(System.getProperty("line.separator"));        
     }
     
     public void moving(boolean b)
@@ -59,7 +69,10 @@ public class CameraWindow implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        camera.requestObjectsFromCamera();        
+        if (e.getSource() == goButton)
+            camera.requestObjectsFromCamera();        
+        else if (e.getSource() == clearButton)
+            out.setText("");
     }
     
     public void close()
