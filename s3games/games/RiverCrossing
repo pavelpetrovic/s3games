@@ -8,31 +8,26 @@ image=bridge.png
 name=light
 states=1
 image=bridgelight.png
-real=yellow
 point=1,1
 
 name=mother
 states=1
 image=bridgemother.png
-real=red
 point=1,1
 
 name=father
 states=1
 image=bridgefather.png
-real=blue
 point=1,1
 
 name=bob
 states=1
 image=bridgebob.png
-real=green
 point=1,1
 
 name=emily
 states=1
 image=bridgeemily.png
-real=brown
 point=1,1
 
 [LOCATION TYPES]

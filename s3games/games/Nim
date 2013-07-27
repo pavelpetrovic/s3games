@@ -14,7 +14,6 @@ valueMax=0.9
 name=match
 states=1
 image=matchSmall.png
-real=green
 point=1,1
 
 [LOCATION TYPES]
