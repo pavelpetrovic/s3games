@@ -8,13 +8,11 @@ image=millboard.png
 name=white
 states=1
 image=stonewhite.png
-real=red
 point=1,1
 
 name=black
 states=1
 image=stoneblack.png
-real=green
 point=1,1
 
 [LOCATION TYPES]
