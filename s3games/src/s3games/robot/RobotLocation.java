@@ -24,5 +24,4 @@ public class RobotLocation
         for (int i = 0; i < angles.length; i++)
             angles[i] = Integer.parseInt(angs[i].trim());
     }
-    //etc
 }
