@@ -17,6 +17,7 @@ import s3games.player.CameraPlayer;
 import s3games.player.MousePlayer;
 import s3games.player.Player;
 import s3games.robot.Camera;
+import s3games.robot.Robot;
 import s3games.util.Switch;
 import s3games.util.SwitchListener;
 
@@ -33,6 +34,7 @@ public class Controller implements SwitchListener
     Game game;
     Switch gameRunning;
     Camera camera;
+    Robot robot;
     
     public Controller()
     {
@@ -123,7 +125,16 @@ public class Controller implements SwitchListener
         } catch (Exception e) { gw.showException(e); }
         
         if (boardType == Player.boardType.REALWORLD)
+        {
             camera = new Camera(gameSpecification);
+            boolean robotNeeded = false;
+            for (int player = 0; player < playerTypes.length; player++)
+                if (playerTypes[player] == Player.playerType.COMPUTER)
+                    robotNeeded = true;
+            try {
+                if (robotNeeded) robot = new Robot("COM3", gameSpecification);
+            } catch (Exception e) { gw.showException(e); }
+        }
         
         ArrayList<Player> players = new ArrayList<Player>();                
         for(int player = 0; player < gameSpecification.playerNames.length; player++)
