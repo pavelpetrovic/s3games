@@ -75,8 +75,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OpenCV Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Documents and Settings\Boris\Dokumenty\NetBeansProjects\s3games\cameraBoard\cameraBoard\ptheads\Pre-built.2\include;$(OPENCV_DIR)\..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Documents and Settings\Boris\Dokumenty\NetBeansProjects\s3games\cameraBoard\cameraBoard\ptheads\Pre-built.2\lib\x86;$(OPENCV_DIR)\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Documents and Settings\Boris\Dokumenty\NetBeansProjects\pthreads\include;$(OPENCV_DIR)\..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Documents and Settings\Boris\Dokumenty\NetBeansProjects\pthreads\lib\x86;$(OPENCV_DIR)\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\..</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
