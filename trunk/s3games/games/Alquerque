@@ -513,9 +513,12 @@ NEXTPLAYER
 END
 
 Draw
-$COUNT = 0
-FORALL($X, 1, 5, FORALL($Y, 1, 5, EMPTY("s($X,$Y)") OR ($COUNT = ($COUNT + 1))))
-$COUNT == 2
+$COUNTB = 0
+$COUNTW = 0
+FORALL($X, 1, 5, FORALL($Y, 1, 5, (EMPTY("s($X,$Y)") OR (ELTYPE("s($X,$Y)") == "white")) OR ($COUNTB = ($COUNTB + 1))))
+FORALL($X, 1, 5, FORALL($Y, 1, 5, (EMPTY("s($X,$Y)") OR (ELTYPE("s($X,$Y)") == "black")) OR ($COUNTW = ($COUNTW + 1))))
+$COUNTB == 1
+#COUNTW == 1
 END
 
 [END OF GAME]
