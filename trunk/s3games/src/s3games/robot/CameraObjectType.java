@@ -11,7 +11,7 @@ import java.io.PrintWriter;
  * @author petrovic
 */
 
-// e.g. 82.0, 167.0, 0.3, 1.0, 76.0, 230.0, 200, 5000, "green"
+// e.g. 82.0 167.0 0.3 1.0 76.0 230.0 200 5000 1 green
 
 public class CameraObjectType 
 {
