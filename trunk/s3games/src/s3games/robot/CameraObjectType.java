@@ -5,6 +5,7 @@
 package s3games.robot;
 
 import java.io.PrintWriter;
+import java.util.Locale;
 
 /**
  *
@@ -30,8 +31,9 @@ public class CameraObjectType
     
     public void printTo(PrintWriter out)
     {
+        out.print('@');
         out.println(objectTypeName);
-        out.printf("%f %f %f %f %f %f %d %d %d", 
+        out.printf(Locale.US, "@%.4f %.4f %.4f %.4f %.4f %.4f %d %d %d", 
                 hueMin, hueMax, satMin, satMax, valueMin, valueMax,
                 sizeMin, sizeMax, state);
         out.println();

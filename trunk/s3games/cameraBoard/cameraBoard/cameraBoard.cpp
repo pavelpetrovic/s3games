@@ -410,14 +410,15 @@ void readObjectDescriptions()
 	char *name;
 	for (int i = 0; i < nobjs; i++)
 	{		
-		cin.ignore(100, '\n'); //do you "love" cin too?
-		cin.getline(objName, 200);		
+		cin.ignore(100, '@'); //do you "love" cin too?
+		cin.getline(objName, 200);
 		int nameSize = strlen(objName) + 1;
 		name = new char[nameSize];
 		strncpy_s(name, nameSize, objName, nameSize);
 		double hueMin, hueMax, satMin, satMax, valueMin, valueMax;
 		long sizeMin, sizeMax;
 		int state;
+		cin.ignore(100, '@'); 
 		cin >> hueMin >> hueMax >> satMin >> satMax >> valueMin >> valueMax >> sizeMin >> sizeMax >> state;
 		valueMin *= 255.0;
 		valueMax *= 255.0;	
@@ -531,7 +532,6 @@ int main( int argc, char** argv )
 	char key;
 
 	launchReaderThread();
-
 	do
 	{
 		key = waitKey(1);
