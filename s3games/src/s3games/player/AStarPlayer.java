@@ -27,10 +27,12 @@ public class AStarPlayer extends Player {
         double distanceFromRoot;
         double estimatedDistance;
         
-        Node(Node p,Move m, GameState g) {
+        Node(Node p,Move m, GameState g, double distanceFromRoot, double estimatedDistance) {
             moveToThisState = m;
             previous = p;
             gs = g;
+            this.distanceFromRoot = distanceFromRoot;
+            this.estimatedDistance = estimatedDistance;
         }      
         
         public double getEstimation() {
@@ -58,7 +60,7 @@ public class AStarPlayer extends Player {
         
         GameState activeState;
         visited.add(state);   //rooot
-        open.add(new Node(null, null, state));
+        open.add(new Node(null, null, state, 0,0));
         
         while (open.size()>0)  //while fifo stack(queue) is not empty
         {            
@@ -80,7 +82,7 @@ public class AStarPlayer extends Player {
                         return actualNode.moveToThisState;
                     }
                     if (gs.winner == -1) {  //game continues
-                        open.add(new Node(actualNode, mv,gs));  //previous state, move to this state, state
+                        open.add(new Node(actualNode, mv,gs,0,0));  //previous state, move to this state, state
                     }
                 }
             }
