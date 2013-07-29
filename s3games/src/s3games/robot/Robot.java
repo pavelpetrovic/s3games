@@ -55,7 +55,7 @@ public class Robot
     
     public void doTest() 
     {
-        System.out.print("enter angles (5 doubles, init, or home): ");
+        System.out.print("enter angles (5 doubles, init, or home, grab, put): ");
         try {
             double angles[] = new double[5];
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -71,9 +71,18 @@ public class Robot
                 System.out.println("Moving to home position");
                 goHome();
             }
-            else
+            else if (ln[0].equals("grab"))
             {
-                if (ln.length < 5) System.out.println("Did anybody said 5 doubles?");
+                System.out.println("Grabbing");
+                grab();
+            }
+            else if (ln[0].equals("put"))
+            {
+                System.out.println("Putting");
+                put();
+            } else
+            {
+                if (ln.length < 5) System.out.println("Did anybody say 5 doubles?");
                 else
                 {
                     for (int i = 0; i < 5; i++) angles[i] = Double.parseDouble(ln[i]);

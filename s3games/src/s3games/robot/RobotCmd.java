@@ -27,8 +27,8 @@ public class RobotCmd
         switch (type) 
         {
             case version: cmdString = "VER"; break;
-            case grab: cmdString = "#6 P900 T2000"; break;
-            case put: cmdString = "#6 P1600 T2000"; break;
+            case grab: cmdString = "#5 P1800 T2000"; break;
+            case put: cmdString = "#5 P1300 T2000"; break;
             case init: cmdString = "#0 P1500 #1 P1500 #2 P1500 #3 P1500 #4 P1500 T9000"; break;
             case home: cmdString = "#0 P1500 #1 P1500 #2 P1500 #3 P1500 T9000"; break;
         }
@@ -42,17 +42,37 @@ public class RobotCmd
     private void buildPositionCommand(double[] angles) 
     {
         StringBuilder result = new StringBuilder();
+        result.append("#0 P");
+        result.append(angleToPulseBase(angles[0]));
         result.append("#1 P");
-        result.append(angleToPulseWirst(angles[1]));
+        result.append(angleToPulseWrist(angles[1]));
         result.append(" #2 P");
         result.append(angleToPulseElbow(angles[2]));
         result.append(" #3 P");
         result.append(angleToPulseShoulder(angles[3]));
+        result.append(" #4 P");
+        result.append(angleToPulseHand(angles[4]));
         result.append(" T3000");
         cmdString = result.toString();
     }
+    
+    private int angleToPulseBase(double deg)
+    {
+        int r = (int) (1500 + (10 * deg));
+        if (r > 2400) 
+        {
+            System.out.println("Pulse too long");
+            r = 2400;
+        }
+        if (r < 600) 
+        {
+            System.out.println("Pulse too long");
+            r = 600;
+        }
+        return r;        
+    }
 
-    private int angleToPulseWirst(double deg) 
+    private int angleToPulseWrist(double deg) 
     {
         int r = (int) (1500 + (10 * deg));
         if (r > 2400) 
@@ -98,5 +118,21 @@ public class RobotCmd
             r = 600;
         }
         return r;
+    }
+    
+    private int angleToPulseHand(double deg)
+    {
+        int r = (int) (1500 + (10 * deg));
+        if (r > 2400) 
+        {
+            System.out.println("Pulse too long");
+            r = 2400;
+        }
+        if (r < 600) 
+        {
+            System.out.println("Pulse too long");
+            r = 600;
+        }
+        return r;        
     }
 }
