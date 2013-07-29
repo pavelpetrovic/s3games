@@ -227,8 +227,11 @@ public class GameState
     {
         context.setState(this);
         for (Map.Entry<Expr,Expr> cond: context.specs.terminationConditions.entrySet())
-            if (cond.getKey().eval(context).isTrue())
+        {
+            Expr evalResult = cond.getKey().eval(context);
+            if (evalResult.isTrue())
                 return cond.getValue().eval(context).getInt();        
+        }
         return -1;
     }
     

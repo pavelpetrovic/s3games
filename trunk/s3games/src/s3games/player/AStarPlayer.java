@@ -5,6 +5,7 @@
 package s3games.player;
 
 import java.util.*;
+import s3games.ai.Heuristic;
 import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
@@ -18,20 +19,25 @@ public class AStarPlayer extends Player {
     private GameSpecification specs;
     private PriorityQueue<Node> open; 
     private HashSet<GameState> visited;
+    private Heuristic heuristic;
      
     class Node implements Comparable{
         Move moveToThisState;
         GameState gs;
         Node previous;
         
+        
         double distanceFromRoot;
         double estimatedDistance;
         
-        Node(Node p,Move m, GameState g, double distanceFromRoot, double estimatedDistance) {
+        Node(Node p,Move m, GameState g,  double estimatedDistance) {
             moveToThisState = m;
             previous = p;
             gs = g;
-            this.distanceFromRoot = distanceFromRoot;
+            if (p!=null)
+                this.distanceFromRoot = p.distanceFromRoot + 1;
+            else
+                distanceFromRoot = 0;
             this.estimatedDistance = estimatedDistance;
         }      
         
@@ -48,8 +54,9 @@ public class AStarPlayer extends Player {
             return (this.getEstimation()==n.getEstimation())?0:-1;
         }
     }
-    public AStarPlayer(GameSpecification specs) {
+    public AStarPlayer(GameSpecification specs, Heuristic heuristic) {
         this.specs = specs;
+        this.heuristic = heuristic;
     }
     
     @Override
@@ -60,7 +67,7 @@ public class AStarPlayer extends Player {
         
         GameState activeState;
         visited.add(state);   //rooot
-        open.add(new Node(null, null, state, 0,0));
+        open.add(new Node(null, null, state, heuristic.heuristic(state, number)));
         
         while (open.size()>0)  //while fifo stack(queue) is not empty
         {            
@@ -82,7 +89,7 @@ public class AStarPlayer extends Player {
                         return actualNode.moveToThisState;
                     }
                     if (gs.winner == -1) {  //game continues
-                        open.add(new Node(actualNode, mv,gs,0,0));  //previous state, move to this state, state
+                        open.add(new Node(actualNode, mv,gs,heuristic.heuristic(gs, number)));  //previous state, move to this state, state
                     }
                 }
             }
