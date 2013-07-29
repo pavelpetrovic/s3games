@@ -27,7 +27,7 @@ public abstract class Heuristic
             
     public static String[] availableHeuristics(String gameName) 
     {
-         return new String[] {"Zero", "MoreStones", "DistanceFromGoal"};
+         return new String[] {"Zero", "MoreStones", "DistanceFromGoal","Puzzle8Heuristic"};
     }
     
     public static Heuristic getHeuristic(String name, GameSpecification specs)
@@ -38,6 +38,8 @@ public abstract class Heuristic
             return new MoreStonesHeuristic(specs);
         if (name.equals("DistanceFromGoal"))
             return new DistanceFromGoalHeuristic();
+        if (name.equals("Puzzle8Heuristic"))
+            return new Puzzle8Heuristic();
         return null;
     }
     

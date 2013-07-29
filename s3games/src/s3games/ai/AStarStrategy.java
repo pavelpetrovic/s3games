@@ -22,7 +22,7 @@ public class AStarStrategy extends Strategy {
     
     @Override
     public Player getPlayer(GameSpecification specs) {
-       return new AStarPlayer(specs);
+       return new AStarPlayer(specs,heuristic);
     }
 
     @Override

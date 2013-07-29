@@ -27,9 +27,9 @@ public class RobotCmd
         switch (type) 
         {
             case version: cmdString = "VER"; break;
-            case grab: cmdString = "#5 P1800 T2000"; break;
-            case put: cmdString = "#5 P1300 T2000"; break;
-            case init: cmdString = "#0 P1500 #1 P1500 #2 P1500 #3 P1500 #4 P1500 T9000"; break;
+            case grab: cmdString = "#5 P1000 T2000"; break;
+            case put: cmdString = "#5 P2300 T2000"; break;
+            case init: cmdString = "#0 P1500 T9000 #1 P1500 T9000 #2 P1500 T9000 #3 P1500 T9000 #4 P1500 T9000"; break;
             case home: cmdString = "#0 P1500 #1 P1500 #2 P1500 #3 P1500 T9000"; break;
         }
     }
