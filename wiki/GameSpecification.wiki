@@ -30,20 +30,22 @@ The game is specified by:
 	initial state  // optional
 	initial z-index  // optional
  * expressions - consisting of name, optional arguments, and multiple lines 
-		if a line evaluates to false, the evaluation stops, and the result is false, 
-otherwise, the result of the last line is the result of the expression
+		if a line evaluates to false, the evaluation stops, and the result is false, otherwise, the result of the last line is the result of the expression
+
 	syntax:
+<pre>
 		// comment
 		// header:
 		EXPRESSION
+                // alternate:
 		EXPRESSION($ARG1, …, $ARGN)
 		// end of expression:
 		END
 		// white space within the line is ignored, parentheses can be used arbitrarily
-// string, integer, set, logic
+                // string, integer, set, logic
 		value1 == value2        // result: logic value
 		value2 != value2	// result: logic value
-		constant		// result: value of that type: “hello”, 3, {1,2,”hello”}, true/false, “”, {}
+		constant		// result: value of that type: "hello", 3, {1,2,”hello”}, true/false, “”, {}
 		// integer
 		value1 < value1	// result: logic value
 		value1 <= value1	// result: logic value
@@ -93,15 +95,19 @@ IF(value1, value2, value3)   // result: value2 or value3
 		//variables (they are all global)
 		$VAR = value		// assignment, result: true
 		$VAR			// value, result: value of the variable
-		“name($VAR)”		// using variable as index, also “name($VAR1,$VAR2)”
+		"name($VAR)"		// using variable as index, also 
+                "name($VAR1,$VAR2)"
+
 // side effects (use only if needed)
-MOVE(element, location1, location2)   // result: true or false - if occupied, or not present
-SETOWNER(element, player)  // result: true
-SETSTATE(element, state) // result: true
-SETZINDEX(element, value)	// result: true
-NEXTPLAYER
+                MOVE(element, location1, location2)   // result: true or false - if occupied, or not present
+                SETOWNER(element, player)  // result: true
+                SETSTATE(element, state) // result: true
+                SETZINDEX(element, value)	// result: true
+                NEXTPLAYER
+</pre>
 
  * scorings
+
 expression
 scores to add/subtract for all players (playername, score) - can be expressions
 
