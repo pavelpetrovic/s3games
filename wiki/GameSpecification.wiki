@@ -8,7 +8,7 @@ image=frogsbackground.png
 
  * realboard element types
 	element type name, state, hueMin, hueMax, saturationMin, satMax, valueMin, valueMax, sizeMin, sizeMax (in pixels)
-<pre>
+<font color="brown"><pre>
 [REALBOARD ELEMENT TYPES]
 name=greenFrog
 state=1
@@ -20,7 +20,7 @@ valueMin=0.09
 valueMax=0.9
 sizeMin=200
 sizeMax=5000
-</pre>
+</pre></font>
 	
  * movable elements types
 	type name
@@ -28,17 +28,48 @@ sizeMax=5000
 	images for all states
 	realboard element types for all states
 	reference points for images of all states
+<font color="brown"><pre>
+[ELEMENT TYPES]
+name=greenFrog
+states=1
+image=greenFrog.png
+point=1,1
+</pre></font>
+
  * location types
 	type name
 	image
 	reference point
         shape (shape=rectangle/circle and size=a,b/radius)
+
+<font color="brown"><pre>
+[LOCATION TYPES]
+name=stone
+image=stone.png
+shape=circle(30)
+point=1,1
+</pre></font>
+
  * locations
 	name (+ optionally one or two indexes, e.g. “place(1)”, place(2,3)” )
 	type
 	coordinates, on the playing field 
 	robot arm servos angles to reach the location on real board
+
+<font color="brown"><pre>
+[LOCATIONS]
+name=s(1)
+type=stone
+point=40,250
+camera=20,135
+robot=10,20,30,40,50
+</pre></font>
+
  * players names
+<font color="brown"><pre>
+[PLAYER NAMES]
+1=p1
+
  * movable elements
 	name (+ optional index)
 	type
@@ -46,6 +77,16 @@ sizeMax=5000
 	initial location name
 	initial state  // optional
 	initial z-index  // optional
+
+<font color="brown"><pre>
+[MOVABLE ELEMENTS]
+
+name=gf(1)
+type=greenFrog
+player=1
+location=s(1)
+</pre></font>
+
  * expressions - consisting of name, optional arguments, and multiple lines 
 		if a line evaluates to false, the evaluation stops, and the result is false, otherwise, the result of the last line is the result of the expression
 
@@ -122,6 +163,14 @@ IF(value1, value2, value3)   // result: value2 or value3
                 SETZINDEX(element, value)	// result: true
                 NEXTPLAYER
 </pre>
+<font color="brown"><pre>
+[EXPRESSIONS]
+
+FrogsAtHome
+  FORALL($J,1,3,ELTYPE(CONTENT("s($J)")) == "redFrog")  
+  FORALL($J,5,7,ELTYPE(CONTENT("s($J)")) == "greenFrog")
+END
+</pre></font>
 
  * scorings
 
@@ -131,6 +180,12 @@ scores to add/subtract for all players (playername, score) - can be expressions
  * end of game conditions
 expression
 winning player name - can be expression
+
+<font color="brown"><pre>
+[END OF GAME]
+situation=FrogsAtHome
+winner=1
+</pre></font>
 
  * game rules
 	rule name (can have one index)
@@ -142,3 +197,19 @@ winning player name - can be expression
 	expression that must evaluate to true to allow this move
 	scores to add/subtract for all players (playerNumber, score) (can be expressions)  //optional
 	resulting action - expression to invoke automatically //optional
+
+<font color="brown"><pre>
+[GAME RULES]
+
+name=greenStep
+element=gf($J)
+from=s($K)
+to=s($L)
+condition=$L==$K+1
+
+name=greenJump
+element=gf($J)
+from=s($K)
+to=s($L)
+condition=StoneOccupied($K+1) AND ($L==$K+2)
+</pre></font>
