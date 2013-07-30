@@ -23,11 +23,7 @@ sizeMax=5000
 </pre></font>
 	
  * movable elements types
-	type name
-	number of states for this type
-	images for all states
-	realboard element types for all states
-	reference points for images of all states
+	type name, number of states for this type, images for all states,	reference points for images of all states
 <font color="brown"><pre>
 [ELEMENT TYPES]    
 name=greenFrog
@@ -37,10 +33,7 @@ point=1,1
 </pre></font>
 
  * location types
-	type name
-	image
-	reference point
-        shape (shape=rectangle/circle and size=a,b/radius)
+	type name, image, reference point,shape (shape=rectangle/circle and size=a,b/radius)
 
 <font color="brown"><pre>
 [LOCATION TYPES]    
@@ -51,10 +44,7 @@ point=1,1
 </pre></font>
 
  * locations
-	name (+ optionally one or two indexes, e.g. “place(1)”, place(2,3)” )
-	type
-	coordinates, on the playing field 
-	robot arm servos angles to reach the location on real board
+	name (+ optionally one or two indexes, e.g. "place(1)", "place(2,3)" ),	type, coordinates, on the playing field, robot arm servos angles to reach the location on real board
 
 <font color="brown"><pre>
 [LOCATIONS]    
@@ -72,12 +62,7 @@ robot=10,20,30,40,50
 </pre></font>
 
  * movable elements
-	name (+ optional index)
-	type
-	initial player name
-	initial location name
-	initial state  // optional
-	initial z-index  // optional
+	name (+ optional index), type, initial player name, initial location name, initial state (optional), initial z-index (optional)
 
 <font color="brown"><pre>
 [MOVABLE ELEMENTS]    
@@ -187,15 +172,7 @@ winner=1
 </pre></font>
 
  * game rules
-	rule name (can have one index)
-	element to move (can contain var in index) - unbound vars are bound to values
-	state of element  (can be var) // optional
-	current player //optional (if not specified anybody can do that, can be var)
-	location from   (can contain vars in indexes) - can contain unbound variables
-	location to 	(can contain vars in indexes) - can contain unbound variables
-	expression that must evaluate to true to allow this move
-	scores to add/subtract for all players (playerNumber, score) (can be expressions)  //optional
-	resulting action - expression to invoke automatically //optional
+	rule name (can have one index),	element to move (can contain var in index) - unbound vars are bound to values, state of element  (can be var) (optional), current player (optional, if not specified anybody can do that, can be var), location from (can contain vars in indexes) - can contain unbound variables, location to (can contain vars in indexes) - can contain unbound variables, expression that must evaluate to true to allow this move, scores to add/subtract for all players (playerNumber, score) (can be expressions), resulting action - expression to invoke automatically (optional)
 
 <font color="brown"><pre>
 [GAME RULES]    
