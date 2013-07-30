@@ -9,9 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import s3games.engine.GameSpecification;
-import s3games.engine.GameState;
 import s3games.engine.Location;
-import s3games.engine.Move;
 import s3games.gui.CameraWindow;
 
 /**
