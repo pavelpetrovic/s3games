@@ -76,4 +76,4 @@ Example of stochastic algoritm:
 
 calculating the sum of the area:
 
-<img src="montecarlo.png">
+[http://./montecarlo.png]
