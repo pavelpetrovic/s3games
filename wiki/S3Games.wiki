@@ -8,9 +8,9 @@ The framework allows to specify rules of any game that is based on pick and plac
 The project allows connecting to a Lynxmotion robotic arm with SSC-32 servo controller and a usual webcamera for playing games on real-world game board.
 
 The framework is written in Java programming language.
-It was created for group project at Summer School of Science (S3) in Pozega, Croatia, July/August 2013.
+It was created for group project at [http://www.drustvo-evo.hr/s3/ Summer School of Science] (S3) in Pozega, Croatia, July/August 2013.
 
 Further reading:
 
-[Information] - some educational information on the topic
-[GameSpecification] - how to specify a new game
+ * [Information] - some educational information on the topic<
+ * [GameSpecification] - how to specify a new game
