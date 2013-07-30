@@ -117,7 +117,7 @@ public class Controller implements SwitchListener
            System.out.println(strategyHeuristics[i]+" ");
          }
         gw.setVisible(true);
-        game = new Game(config, logger, gw, gameRunning);
+        game = new Game(config, logger, gw, gameRunning, robot);
         
         GameSpecification gameSpecification = new GameSpecification(config, logger);
         try {
