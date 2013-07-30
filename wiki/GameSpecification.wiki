@@ -30,6 +30,14 @@ name=greenFrog
 states=1
 image=greenFrog.png
 point=1,1
+</pre>
+<pre>
+name=anotherElementType
+states=2
+image=imageForFirstState.png
+point=10,10
+image=imageForSecondState.png
+point=5,-3
 </pre></font>
 
  * location types
@@ -70,7 +78,8 @@ name=gf(1)
 type=greenFrog
 player=1
 location=s(1)
-</pre></font>
+</pre>
+</font>
 
  * expressions - consisting of name, optional arguments, and multiple lines 
 		if a line evaluates to false, the evaluation stops, and the result is false, otherwise, the result of the last line is the result of the expression
