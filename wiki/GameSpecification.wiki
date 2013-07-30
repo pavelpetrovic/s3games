@@ -1,35 +1,35 @@
 The game is specified by:
 
-* image of the playing field (board)
-* realboard element types
+ * image of the playing field (board)
+ * realboard element types
 	type name
 	hueMin, hueMax, saturationMin, satMax, valueMin, valueMax
 	sizeMin, sizeMax (in pixels)
-* movable elements types
+ * movable elements types
 	type name
 	number of states for this type
 	images for all states
 	realboard element types for all states
 	reference points for images of all states
-* location types
+ * location types
 	type name
 	image
 	reference point
-shape (shape=rectangle/circle and size=a,b/radius)
-* locations
-	name (+ optionally one or two indexes, e.g. “place(1)”, “place(2,3)” )
+        shape (shape=rectangle/circle and size=a,b/radius)
+ * locations
+	name (+ optionally one or two indexes, e.g. “place(1)”, place(2,3)” )
 	type
 	coordinates, on the playing field 
 	robot arm servos angles to reach the location on real board
-* players names
-* movable elements
+ * players names
+ * movable elements
 	name (+ optional index)
 	type
 	initial player name
 	initial location name
 	initial state  // optional
 	initial z-index  // optional
-* expressions - consisting of name, optional arguments, and multiple lines 
+ * expressions - consisting of name, optional arguments, and multiple lines 
 		if a line evaluates to false, the evaluation stops, and the result is false, 
 otherwise, the result of the last line is the result of the expression
 	syntax:
@@ -100,13 +100,16 @@ SETOWNER(element, player)  // result: true
 SETSTATE(element, state) // result: true
 SETZINDEX(element, value)	// result: true
 NEXTPLAYER
-8. scorings
+
+ * scorings
 expression
 scores to add/subtract for all players (playername, score) - can be expressions
-9. end of game conditions
+
+ * end of game conditions
 expression
 winning player name - can be expression
-10. game rules
+
+ * game rules
 	rule name (can have one index)
 	element to move (can contain var in index) - unbound vars are bound to values
 	state of element  (can be var) // optional
