@@ -63,3 +63,17 @@ http://www.cs.ucla.edu/~rosen/161/notes/alphabeta.html
 http://en.wikipedia.org/wiki/Color_vision
 http://en.wikipedia.org/wiki/RGB_color_model
 https://en.wikipedia.org/wiki/HSL_and_HSV
+
+Time and space complexity
+
+Deterministic and stochastic algorithms
+
+Deterministic = result is always the same (finds the best solution, for instance)
+
+Stochastic = results is different each time you run it, because it is based on random search (although it can search in a smart way)
+
+Example of stochastic algoritm:
+
+calculating the sum of the area:
+
+<img src="montecarlo.png">
