@@ -10,8 +10,7 @@ http://kempelen.ii.fmph.uniba.sk/S3GroupWork/
 
 *Artificial intelligence (AI)* is a field of computer science that studies and develops intelligent machines and software. Central goals of AI research include reasoning, planning,  learning, knowledge,  problem solving
 
-Aims are:  to describe human’s intelligence that can be simulated by a machine. 
-	Create a system that acts logically/reasonably.
+Aims are:  to describe human’s intelligence that can be simulated by a machine, create a system that acts logically/reasonably.
 
 *Environment* -  Area in where agent operates and takes his actions. It is an abstraction over  the real world. Environment is simplified according to the problem, and doesn’t  contain irrelevant information. 
 -	can be fully observable or partially observable  for agent (accessible or inaccessible). In games we work with fully observable environment. 
