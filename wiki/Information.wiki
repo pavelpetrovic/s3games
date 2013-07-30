@@ -76,4 +76,4 @@ Example of stochastic algoritm:
 
 calculating the sum of the area:
 
-https://code.google.com/p/s3games/source/browse/wiki/montecarlo.png
+https://s3games.googlecode.com/svn/wiki/montecarlo.png
