@@ -13,4 +13,5 @@ It was created for group project at [http://www.drustvo-evo.hr/s3/ Summer School
 Further reading:
 
  * [Information] - some educational information on the topic<
- * [GameSpecification] - how to specify a new game
+ * [GameSpecification] - how to specify a new game 
+ * [GamesWePlayed] - list of games that we played
