@@ -29,7 +29,7 @@ public abstract class Strategy
 
     public static String[] availableStrategies(String gameName)
     {
-        return new String[] {"Random","DFS","BFS","AStar", "MiniMax"};
+        return new String[] {"Random","DFS","BFS","AStar", "MiniMax", "MonteCarlo"};
     }
 
     public static boolean learnable(String strategyName)
@@ -54,6 +54,8 @@ public abstract class Strategy
             return new MiniMaxStrategy(h);
         if (name.equals("AStar"))
             return new AStarStrategy(h);
+        if (name.equals("MonteCarlo"))
+            return new MonteCarloStrategy();
         return null;
     }
   
