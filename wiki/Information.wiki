@@ -64,9 +64,11 @@ In games for two or more players, it is not sufficient to search the state space
 *Minimax Search*
 
 Minimax is a decision rule for minimizing the possible loss for a worst case (maximum loss) scenario. A minimax algorithm is a recursive algorithm for choosing the next move in an n-player game, usually a two player game.
-In two player game we have player called MAX (current player who is choosing his next move) and player called MIN.  Player MAX is maximizing his score but opposite player MIN is minimizing MAX’s score. 
-A value is associated with each position of the game. It indicates how good it would be for a player to reach that position. MAX will choose the option in which he obtains a maximum possible score but in MIN’s move it choose the option with the minimum possible score. 
 
+In two player game we have player called MAX (current player who is choosing his next move) and player called MIN.  Player MAX is maximizing his score but opposite player MIN is minimizing MAX’s score. 
+A value is associated with each position of the game. It indicates how good it would be for a player to reach that position. MAX will choose the option in which he obtains a maximum possible score but in MIN’s move he will choose the option with the minimum possible score. 
+
+https://s3games.googlecode.com/svn/wiki/minimax.png
 
 This can be extended if we can supply a heuristic evaluation function which gives values to non-final game states without considering all possible following complete sequences. We can then limit the minimax algorithm to look only at a certain number of moves ahead.
 
