@@ -1,10 +1,10 @@
 The game is specified by:
 
  * image of the playing field (board)
-<pre>
+<font color=brown><pre>
 [BOARD]    
 image=frogsbackground.png
-</pre>
+</pre></font>
 
  * realboard element types
 	element type name, state, hueMin, hueMax, saturationMin, satMax, valueMin, valueMax, sizeMin, sizeMax (in pixels)
