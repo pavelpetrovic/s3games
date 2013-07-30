@@ -199,7 +199,6 @@ winner=1
 
 <font color="brown"><pre>
 [GAME RULES]    
-
 name=greenStep
 element=gf($J)
 from=s($K)
