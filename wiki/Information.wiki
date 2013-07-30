@@ -66,9 +66,9 @@ http://www.cs.ucla.edu/~rosen/161/notes/alphabeta.html
 
 *Color representation/models*
 
-http://en.wikipedia.org/wiki/Color_vision
-http://en.wikipedia.org/wiki/RGB_color_model
-https://en.wikipedia.org/wiki/HSL_and_HSV
+http://en.wikipedia.org/wiki/Color_vision <br />
+http://en.wikipedia.org/wiki/RGB_color_model <br />
+https://en.wikipedia.org/wiki/HSL_and_HSV 
 
 Time and space complexity
 
