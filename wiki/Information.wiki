@@ -40,7 +40,7 @@ Solution -> Sequence of actions – all actions from initial state to final stat
 
 Searching the state space:
 
-agent searches the state space for the solution, the goal is to find path from the current state to the goal state. It has a list of states that were reached and need to be considered further (open), list of states that it already saw (visited). It always takes and removes one state from open list, and expands it – i.e. retrieves the set of states that are directly reachable from the expended state. These are then added to the list of open states for later investigation. As soon as a final state is found, the path from the current state to the goal state is reconstructed. To be able to do that, we store a reference to the previous state and the move that was taken to arrive to the current state.
+agent searches the state space for the solution, the goal is to find path from the current state to the goal state. It has a list of states that were reached and need to be considered further (open), list of states that it already saw (visited). It always takes and removes one state from open list, and expands it – i.e. retrieves the set of states that are directly reachable from the expanded state. These are then added to the list of open states for later investigation. As soon as a final state is found, the path from the current state to the goal state is reconstructed. To be able to do that, we store a reference to the previous state and the move that was taken to arrive to the current state.
 
 Depending on the ordering – i.e. how do we add and how we remove the nodes to/from open list, we get different flavors of search:
 
