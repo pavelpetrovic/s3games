@@ -1,6 +1,9 @@
 opening presentation:
 https://s3games.googlecode.com/svn/wiki/s3openingpresentation.ppt
 
+group work pictures:
+http://kempelen.ii.fmph.uniba.sk/S3GroupWork/
+
 *Artificial intelligence (AI)* is a field of computer science that studies and develops intelligent machines and software. Central goals of AI research include reasoning, planning,  learning, knowledge,  problem solving
 
 Aims are:  to describe human’s intelligence that can be simulated by a machine. 
