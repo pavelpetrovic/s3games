@@ -176,7 +176,7 @@ winning player name - can be expression
 
 <font color="brown"><pre>
 [END OF GAME]    
-situation=FrogsAtHome
+situation=FrogsAtHome    
 winner=1
 </pre></font>
 
