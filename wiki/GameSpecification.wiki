@@ -69,6 +69,7 @@ robot=10,20,30,40,50
 <font color="brown"><pre>
 [PLAYER NAMES]
 1=p1
+</pre></font>
 
  * movable elements
 	name (+ optional index)
