@@ -1,7 +1,7 @@
 The game is specified by:
 
  * image of the playing field (board)
-<font color=brown><pre>
+<font color="brown"><pre>
 [BOARD]    
 image=frogsbackground.png
 </pre></font>
