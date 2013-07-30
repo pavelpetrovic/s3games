@@ -1,3 +1,7 @@
+== Description of specification of game format ==
+
+( [S3Games return to main wiki page] )
+
 The game is specified by:
 
  * image of the playing field (board)
