@@ -138,20 +138,42 @@ location=b(6)
 name=t(7)
 type=seven
 player=1
-location=b(5)
+location=b(8)
 
 name=t(8)
 type=eight
 player=1
-location=b(8)
+location=b(5)
 
 [EXPRESSIONS]
 
 checkPosTile($W) 
+ NOT EMPTY("b($W)")
  $N = CONTENT("b($W)")
- NOT EMPTY($N)
  $I = INDEX($N)
  $I == $W
+END
+
+moveUp
+   $M == $K - 3  
+END
+
+moveDown
+   $M == $K + 3
+END
+
+moveLeft
+   $M == $K - 1
+   ($K % 3) != 1
+END
+
+moveRight
+   $M == $K + 1
+   ($K % 3) != 0
+END
+
+checkMove
+   moveUp OR moveDown OR moveLeft OR moveRight
 END
 
 
@@ -166,6 +188,8 @@ element=t($J)
 player=1
 from=b($K)
 to=b($M)
+condition=checkMove
+
 
 
 
