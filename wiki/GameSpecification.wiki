@@ -1,10 +1,27 @@
 The game is specified by:
 
  * image of the playing field (board)
+<pre>
+[BOARD]    
+image=frogsbackground.png
+</pre>
+
  * realboard element types
-	type name
-	hueMin, hueMax, saturationMin, satMax, valueMin, valueMax
-	sizeMin, sizeMax (in pixels)
+	element type name, state, hueMin, hueMax, saturationMin, satMax, valueMin, valueMax, sizeMin, sizeMax (in pixels)
+<pre>
+[REALBOARD ELEMENT TYPES]
+name=greenFrog
+state=1
+hueMin=71
+hueMax=192
+saturationMin=0.27
+saturationMax=1.0
+valueMin=0.09
+valueMax=0.9
+sizeMin=200
+sizeMax=5000
+</pre>
+	
  * movable elements types
 	type name
 	number of states for this type
