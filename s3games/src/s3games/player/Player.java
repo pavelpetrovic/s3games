@@ -25,6 +25,11 @@ public abstract class Player
     public abstract Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception;   
     public abstract void otherMoved(Move move, GameState newState);
     
+    public boolean isComputer()
+    {
+        return true;
+    }
+    
     public void setPlayerNumber(int pn) 
     {
         number =  pn;

@@ -10,6 +10,7 @@ import s3games.gui.GameWindow;
 import s3games.io.Config;
 import s3games.io.GameLogger;
 import s3games.player.Player;
+import s3games.robot.Robot;
 import s3games.util.Switch;
 
 /**
@@ -28,14 +29,17 @@ public class Game extends Thread
     
     public Player[] players;
     
+    private Robot robot;
+    
     private Switch gameRuns;
 
-    public Game(Config config, GameLogger logger, GameWindow window, Switch gameRuns)
+    public Game(Config config, GameLogger logger, GameWindow window, Switch gameRuns, Robot robot)
     {
         this.config = config;
         this.logger = logger;
         this.window = window;
         this.gameRuns = gameRuns;
+        this.robot = robot;
     }
 
     public void setGameAndPlayers(GameSpecification gameSpecification, Player[] players)
@@ -82,6 +86,9 @@ public class Game extends Thread
                 break;
             }
     
+            if (robot != null)
+                robot.moveRobot(nextMove);
+            
             state.performMove(nextMove);
             
             for (int p = 0; p < numberOfPlayers; p++)

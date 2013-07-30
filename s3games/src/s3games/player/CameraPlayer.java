@@ -27,6 +27,12 @@ public class CameraPlayer extends Player
     }
     
     @Override
+    public boolean isComputer()
+    {
+        return false;
+    }
+    
+    @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves)
     {       
         Move move;
