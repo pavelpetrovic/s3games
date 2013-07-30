@@ -1,0 +1,118 @@
+The game is specified by:
+
+* image of the playing field (board)
+* realboard element types
+	type name
+	hueMin, hueMax, saturationMin, satMax, valueMin, valueMax
+	sizeMin, sizeMax (in pixels)
+* movable elements types
+	type name
+	number of states for this type
+	images for all states
+	realboard element types for all states
+	reference points for images of all states
+* location types
+	type name
+	image
+	reference point
+shape (shape=rectangle/circle and size=a,b/radius)
+* locations
+	name (+ optionally one or two indexes, e.g. “place(1)”, “place(2,3)” )
+	type
+	coordinates, on the playing field 
+	robot arm servos angles to reach the location on real board
+* players names
+* movable elements
+	name (+ optional index)
+	type
+	initial player name
+	initial location name
+	initial state  // optional
+	initial z-index  // optional
+* expressions - consisting of name, optional arguments, and multiple lines 
+		if a line evaluates to false, the evaluation stops, and the result is false, 
+otherwise, the result of the last line is the result of the expression
+	syntax:
+		// comment
+		// header:
+		EXPRESSION
+		EXPRESSION($ARG1, …, $ARGN)
+		// end of expression:
+		END
+		// white space within the line is ignored, parentheses can be used arbitrarily
+// string, integer, set, logic
+		value1 == value2        // result: logic value
+		value2 != value2	// result: logic value
+		constant		// result: value of that type: “hello”, 3, {1,2,”hello”}, true/false, “”, {}
+		// integer
+		value1 < value1	// result: logic value
+		value1 <= value1	// result: logic value
+		value1 > value2	// result: logic value
+		value1 >= value2	// result: logic value
+		value1 + value2	// result: int value
+		value1 - value2	// result: int value
+		value1 * value2	// result: int value
+		value1 / value2	// result: int value
+		value1 % value2	// result: int value
+ABS value		// result: int value
+		// set
+		set1 ISPARTOF set2	// subset, result: logic value		
+		value IN set		// member, result: logic value
+		set1 EXCEPTOF set2	// set difference, result: set
+		set1 UNION set2		// set union, result: set
+		set1 INTERSECT set2	// set intersection, result: set
+		// logic
+		value1 AND value2	// result: logic
+		value1 OR value2	// result: logic
+		NOT value		// result: logic
+IF(value1, value2, value3)   // result: value2 or value3
+// same as
+// IF value1 THEN value2 ELSE value3
+		FORALL($VAR,valueFrom,valueTo,value)    // value is true for all values, result: logic
+		// same as
+		// FORALL $VAR=valueFrom TO valueTo value
+		FORSOME($VAR,valueFrom,valueTo,value)   // value is true at least one time, result: logic
+		// calling other expressions:
+		EXPRESSION3	// result: value of evaluating the expression
+		EXPRESSION5(3,5)	// result: value of evaluating the expression
+		// built-in operators
+		LOCTYPE(location)	// type of location, result: string / “”
+		ELTYPE(element)	// type of movable element, result: string / “”
+		STATE(element)	// state of movable element, result: number / -1
+		LOCATION(element)	// current location of movable element, result: string / “”
+		CONTENT(location)	// name of element placed on specified location, result: string/””
+		EMTPY(location)	// true, if location with no element on it  / false if not location
+		INDEX(string)		// obtain first index in “name(123)”, result: integer
+		INDEXA(i, string)	// obtain i-th (1,2,..) index in “name(1,2)”, result:  integer
+		UNINDEX(string)	// obtain name without indexes, e.g. “name(2,3)” => “name”	
+		OWNER(element)	// current owner of the element, result: string / -1
+		PLAYER		// player on the move, result: number 1..
+		SCORE(player)	// current score of some player, result: integer
+		// only for visualization purposes
+		ZINDEX(element)	// current ZINDEX of the specified element, result: intenger
+		//variables (they are all global)
+		$VAR = value		// assignment, result: true
+		$VAR			// value, result: value of the variable
+		“name($VAR)”		// using variable as index, also “name($VAR1,$VAR2)”
+// side effects (use only if needed)
+MOVE(element, location1, location2)   // result: true or false - if occupied, or not present
+SETOWNER(element, player)  // result: true
+SETSTATE(element, state) // result: true
+SETZINDEX(element, value)	// result: true
+NEXTPLAYER
+8. scorings
+expression
+scores to add/subtract for all players (playername, score) - can be expressions
+9. end of game conditions
+expression
+winning player name - can be expression
+10. game rules
+	rule name (can have one index)
+	element to move (can contain var in index) - unbound vars are bound to values
+	state of element  (can be var) // optional
+	current player //optional (if not specified anybody can do that, can be var)
+	location from   (can contain vars in indexes) - can contain unbound variables
+	location to 	(can contain vars in indexes) - can contain unbound variables
+	expression that must evaluate to true to allow this move
+	scores to add/subtract for all players (playerNumber, score) (can be expressions)  //optional
+	resulting action - expression to invoke automatically //optional
