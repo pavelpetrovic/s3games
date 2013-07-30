@@ -1,4 +1,6 @@
 #labels Featured
+== S3 Games Wiki ==
+
 Welcome to S3 Games project
 
 The aim is to provide an educational framework about playing various games using standard and more advanced Search and Artificial Intelligence algorithms.
