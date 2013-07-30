@@ -42,8 +42,10 @@ Depending on the ordering – i.e. how do we add and how we remove the nodes to/
 
 *Depth-first search*: adding nodes to the END of open, retrieving nodes from the END. This kind of structure is LIFO – last in first out (also called STACK – similar to a stack of plates in the school canteens). This kind of search is searching as much to the depth as possible until no new (unvisited) state can be found, and then continues further with all states that remain in the stack, eventually searching through the whole state space. DFS will find a path to the goal state that is not necessarily the shortest.
 
-*A* search*: the nodes are stored in priority queue, i.e. when retrieving the next node, we always take the node with the highest priority (= lowest number). The priority depends on the function
-f(state) = h(state) + g(state)
+*AStar search*: the nodes are stored in priority queue, i.e. when retrieving the next node, we always take the node with the highest priority (= lowest number). The priority depends on the function
+
+  f(state) = h(state) + g(state)
+
 where h(state) is a heuristic evaluation of the state of that node, i.e. the expected distance to the goal state, however it must comply with the restriction h(state) <= real distance to the goal state, h(state) > 0. And g(state) is the distance from the root state, i.e. the number of moves we would have to make from the state where we started searching. In this way, the algorithm will always find the optimal (shortest) path to the goal state, and depending on the quality of the heuristic,  it is likely to search much smaller space than the BFS. If heuristic always returns the same number, it is equivalent to BFS.
 
 An alternative way to select move in a state is to avoid searching the state space completely, and just select one of the possible moves. This can either be a random move (resulting in completely random player), or a greedy algorithm that uses a heuristic and always selects the move with the best heuristic value.
