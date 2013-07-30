@@ -59,8 +59,7 @@ An alternative way to select move in a state is to avoid searching the state spa
 In games for two or more players, it is not sufficient to search the state space. We need to take into   account that each it is the oponent ‘s turn, he or she can take any of the possible moves, and we cannot influence it. Therefore we cannot plan the complete path to the goal state, the opponent is not obliged to follow it!
 
 *Minimax Search*
-
-MiniMax with *Alfa-beta prunning*
+Minimax with *Alfa-beta prunning*
 
 http://www.cs.ucla.edu/~rosen/161/notes/alphabeta.html
 
