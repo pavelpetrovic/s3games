@@ -1,3 +1,7 @@
+= Information relevant for the S3 Games project = 
+
+( [S3Games return to main wiki page] )
+
 opening presentation:
 https://s3games.googlecode.com/svn/wiki/s3openingpresentation.ppt
 
