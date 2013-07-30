@@ -108,7 +108,7 @@ location=s(1)
 		value1 * value2	// result: int value
 		value1 / value2	// result: int value
 		value1 % value2	// result: int value
-ABS value		// result: int value
+                ABS value		// result: int value
 		// set
 		set1 ISPARTOF set2	// subset, result: logic value		
 		value IN set		// member, result: logic value
@@ -119,9 +119,9 @@ ABS value		// result: int value
 		value1 AND value2	// result: logic
 		value1 OR value2	// result: logic
 		NOT value		// result: logic
-IF(value1, value2, value3)   // result: value2 or value3
-// same as
-// IF value1 THEN value2 ELSE value3
+                IF(value1, value2, value3)   // result: value2 or value3
+                // same as
+                // IF value1 THEN value2 ELSE value3
 		FORALL($VAR,valueFrom,valueTo,value)    // value is true for all values, result: logic
 		// same as
 		// FORALL $VAR=valueFrom TO valueTo value
@@ -150,7 +150,7 @@ IF(value1, value2, value3)   // result: value2 or value3
 		"name($VAR)"		// using variable as index, also 
                 "name($VAR1,$VAR2)"
 
-// side effects (use only if needed)
+                // side effects (use only if needed)
                 MOVE(element, location1, location2)   // result: true or false - if occupied, or not present
                 SETOWNER(element, player)  // result: true
                 SETSTATE(element, state) // result: true
