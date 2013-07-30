@@ -9,7 +9,7 @@ image=frogsbackground.png
  * realboard element types
 	element type name, state, hueMin, hueMax, saturationMin, satMax, valueMin, valueMax, sizeMin, sizeMax (in pixels)
 <font color="brown"><pre>
-[REALBOARD ELEMENT TYPES]
+[REALBOARD ELEMENT TYPES]    
 name=greenFrog
 state=1
 hueMin=71
