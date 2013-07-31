@@ -52,72 +52,72 @@ point=1,1
 name=lightLeft
 type=lightplace
 point=454,275
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=lightRight
 type=lightplace
 point=862,275
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=left(1)
 type=place
 point=40,215
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=left(2)
 type=place
 point=135,215
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=left(3)
 type=place
 point=225,215
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=left(4)
 type=place
 point=315,215
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=right(1)
 type=place
 point=995,210
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=right(2)
 type=place
 point=1085,210
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=right(3)
 type=place
 point=1185,210
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=right(4)
 type=place
 point=1280,210
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=leftstack(1)
 type=stack
 point=380,201
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=leftstack(2)
 type=stack
 point=420,201
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=rightstack(1)
 type=stack
 point=890,201
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=rightstack(2)
 type=stack
 point=930,201
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 [PLAYER NAMES]

@@ -53,7 +53,7 @@ public class Game extends Thread
     {
         try { 
         
-        state = new GameState(gameSpecification);
+        state = new GameState(gameSpecification, robot);
         int numberOfPlayers = gameSpecification.playerNames.length;
         window.setGame(this, gameRuns);
         
@@ -87,7 +87,8 @@ public class Game extends Thread
             }
     
             if (robot != null)
-                robot.moveRobot(nextMove);
+                if (playerOnMove.isComputer())
+                    robot.moveRobot(nextMove);
             
             state.performMove(nextMove);
             

@@ -37,212 +37,212 @@ point=1,1
 name=b(1,1)
 type=board
 point=144,54
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,1)
 type=board
 point=448,54
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(7,1)
 type=board
 point=754,54
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,2)
 type=board
 point=245,155
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,2)
 type=board
 point=446,155
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(6,2)
 type=board
 point=652,155
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,3)
 type=board
 point=347,257
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,3)
 type=board
 point=448,257
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(5,3)
 type=board
 point=550,257
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,4)
 type=board
 point=144,360
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,4)
 type=board
 point=244,360
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,4)
 type=board
 point=346,360
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(5,4)
 type=board
 point=550,360
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(6,4)
 type=board
 point=652,360
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(7,4)
 type=board
 point=755,360
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,5)
 type=board
 point=347,460
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,5)
 type=board
 point=448,460
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(5,5)
 type=board
 point=550,460
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,6)
 type=board
 point=245,562
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,6)
 type=board
 point=448,562
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(6,6)
 type=board
 point=651,562
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,7)
 type=board
 point=144,664
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,7)
 type=board
 point=448,664
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(7,7)
 type=board
 point=754,664
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(1)
 type=stackw
 point=50,50
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(2)
 type=stackw
 point=50,125
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(3)
 type=stackw
 point=50,200
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(4)
 type=stackw
 point=50,275
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(5)
 type=stackw
 point=50,350
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(6)
 type=stackw
 point=50,425
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(7)
 type=stackw
 point=50,500
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(8)
 type=stackw
 point=50,575
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sw(9)
 type=stackw
 point=50,650
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(1)
 type=stackb
 point=850,50
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(2)
 type=stackb
 point=850,125
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(3)
 type=stackb
 point=850,200
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(4)
 type=stackb
 point=850,275
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(5)
 type=stackb
 point=850,350
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(6)
 type=stackb
 point=850,425
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(7)
 type=stackb
 point=850,500
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(8)
 type=stackb
 point=850,575
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=sb(9)
 type=stackb
 point=850,650
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 [PLAYER NAMES]
 1=white
