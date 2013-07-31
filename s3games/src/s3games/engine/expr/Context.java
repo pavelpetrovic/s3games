@@ -7,6 +7,7 @@ package s3games.engine.expr;
 
 import java.util.*;
 import s3games.engine.*;
+import s3games.robot.Robot;
 
 /**
  *
@@ -16,13 +17,15 @@ public class Context
 {
     Map<String, Expr> vars;
     GameState gameState;
+    public Robot robot;
     public GameSpecification specs;
     
-    public Context(GameState state, GameSpecification specs)
+    public Context(GameState state, GameSpecification specs, Robot robot)
     {
         this.gameState = state;
         this.specs = specs;
         vars = new TreeMap<String, Expr>();        
+        this.robot = robot;
     }
     
     public void setState(GameState state)

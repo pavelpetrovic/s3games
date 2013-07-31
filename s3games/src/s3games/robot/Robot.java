@@ -8,6 +8,7 @@ import s3games.engine.GameSpecification;
 import s3games.engine.Move;
 import s3games.gui.RobotWindow;
 import java.io.*;
+import java.util.Arrays;
 
 /**
  *
@@ -48,11 +49,24 @@ public class Robot
         win.addMessage("A new move " + move + " has been requested, click [Perform move] to perform it.");        
     }
  
-    public void performMove()
+    public void performMove() throws Exception
     {
-        //todo
+        goTo(requestedMove.from);
+        grab();
+        goTo(requestedMove.to);
+        put();
+        goHome();
     }
     
+    private void goTo(String locationName) throws Exception
+    {
+        double[] angles = specs.locations.get(locationName).robot.angles;
+        double[] place1 = Arrays.copyOfRange(angles, 0, 5);
+        double[] place2 = Arrays.copyOfRange(angles, 5, 10);
+        goTo(place1);
+        Thread.sleep(700);
+        goTo(place2);        
+    }
     public void doTest() 
     {
         System.out.print("enter angles (5 doubles, init, or home, grab, put): ");

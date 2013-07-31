@@ -11,17 +11,17 @@ package s3games.robot;
  */
 public class RobotLocation
 {
-    public static final int NUMBER_OF_ROBOT_ANGLES = 5;
+    public static final int NUMBER_OF_ROBOT_ANGLES = 10;
 
-    int angles[];
+    double angles[];
 
     public RobotLocation(String locations) throws Exception
     {
-        angles = new int[NUMBER_OF_ROBOT_ANGLES];
+        angles = new double[NUMBER_OF_ROBOT_ANGLES];
         String[] angs = locations.split(",");
         if (angs.length != angles.length)
             throw new Exception("incorrect specification of robot angles: '" + locations + "'");
         for (int i = 0; i < angles.length; i++)
-            angles[i] = Integer.parseInt(angs[i].trim());
+            angles[i] = Double.parseDouble(angs[i].trim());
     }
 }

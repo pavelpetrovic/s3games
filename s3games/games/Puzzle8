@@ -58,47 +58,47 @@ point=1,1
 name=b(1)
 type=grid
 point=67,67
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2)
 type=grid
 point=168,67
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3)
 type=grid
 point=269,67
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4)
 type=grid
 point=67,168
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(5)
 type=grid
 point=168,168
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(6)
 type=grid
 point=269,168
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(7)
 type=grid
 point=67,269
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(8)
 type=grid
 point=168,269
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(9)
 type=grid
 point=269,269
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 [PLAYER NAMES]
 1=Player1
@@ -189,7 +189,3 @@ player=1
 from=b($K)
 to=b($M)
 condition=checkMove
-
-
-
-

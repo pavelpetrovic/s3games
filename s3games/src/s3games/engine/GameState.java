@@ -9,6 +9,7 @@ import java.util.*;
 import s3games.engine.expr.Context;
 import s3games.engine.expr.Expr;
 import java.util.Arrays;
+import s3games.robot.Robot;
 
 /**
  *
@@ -125,7 +126,7 @@ public class GameState
     }
     
     /** use this constructor to create a state corresponding to the start of game situation */
-    public GameState(GameSpecification specs)
+    public GameState(GameSpecification specs, Robot robot)
     {
         init();
         for (Map.Entry<String, Element> element: specs.elements.entrySet())
@@ -140,7 +141,7 @@ public class GameState
         playerScores = new int[specs.playerNames.length];
         for (int i = 0; i < playerScores.length; i++) 
             playerScores[i] = specs.initialPlayerScore;
-        context = new Context(this, specs);
+        context = new Context(this, specs, robot);
     }
     
     private void init()

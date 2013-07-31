@@ -54,360 +54,360 @@ irrelevant=yes
 name=stb(1)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(2)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(3)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(4)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(5)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(6)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(7)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(8)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(9)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(10)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(11)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(12)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(13)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(14)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(15)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stb(16)
 type=stackb
 point=532,337
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(1)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(2)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(3)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(4)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(5)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(6)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(7)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(8)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(9)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(10)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(11)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(12)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(13)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(14)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(15)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=stw(16)
 type=stackw
 point=532,184
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,1)
 type=grid
 point=60,63
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,1)
 type=grid
 point=138,63
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,1)
 type=grid
 point=214,63
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(4,1)
 type=grid
 point=292,63
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(5,1)
 type=grid
 point=370,63
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(6,1)
 type=grid
 point=452,63
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,2)
 type=grid
 point=60,141
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,2)
 type=grid
 point=138,141
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,2)
 type=grid
 point=214,141
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(4,2)
 type=grid
 point=292,141
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(5,2)
 type=grid
 point=370,141
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(6,2)
 type=grid
 point=452,141
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,3)
 type=grid
 point=60,222
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,3)
 type=grid
 point=138,222
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,3)
 type=grid
 point=214,222
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(4,3)
 type=grid
 point=292,222
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(5,3)
 type=grid
 point=370,222
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(6,3)
 type=grid
 point=452,222
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,4)
 type=grid
 point=60,299
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,4)
 type=grid
 point=138,299
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,4)
 type=grid
 point=214,299
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(4,4)
 type=grid
 point=292,299
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(5,4)
 type=grid
 point=370,299
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(6,4)
 type=grid
 point=452,299
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,5)
 type=grid
 point=60,375
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,5)
 type=grid
 point=138,375
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,5)
 type=grid
 point=214,375
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(4,5)
 type=grid
 point=292,375
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(5,5)
 type=grid
 point=370,375
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(6,5)
 type=grid
 point=452,375
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,6)
 type=grid
 point=60,454
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,6)
 type=grid
 point=138,454
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,6)
 type=grid
 point=214,454
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(4,6)
 type=grid
 point=292,454
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(5,6)
 type=grid
 point=370,454
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 name=b(6,6)
 type=grid
 point=452,454
-robot=10,20,30,40,50          
+robot=10,20,30,40,50,10,20,30,40,50          
 
 [PLAYER NAMES]
 1=white
