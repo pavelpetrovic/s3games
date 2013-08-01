@@ -43,14 +43,14 @@ shape=circle(22)
 point=1,1
 
 name=stackr
-image=connect4red.png
-shape=circle(22)
+image=connect4grey.png
+shape=circle(25)
 point=1,1
 irrelevant=yes
 
 name=stackw
-image=connect4white.png
-shape=circle(22)
+image=connect4grey.png
+shape=circle(25)
 point=1,1
 irrelevant=yes
 
