@@ -5,7 +5,11 @@
 
 package s3games;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import s3games.ai.Heuristic;
 import s3games.ai.Strategy;
 import s3games.engine.Game;
@@ -25,7 +29,7 @@ import s3games.util.SwitchListener;
  *
  * @author petrovic16
  */
-public class Controller implements SwitchListener
+public class Controller extends Thread implements SwitchListener
 {
     ControllerWindow cw;
     GameWindow gw;
@@ -35,9 +39,11 @@ public class Controller implements SwitchListener
     Switch gameRunning;
     Camera camera;
     Robot robot;
+    final Object notifier;
     
     public Controller()
     {
+        notifier = new Object();
         gameRunning = new Switch();
         gameRunning.addSwitchListener(this);
         
@@ -60,6 +66,10 @@ public class Controller implements SwitchListener
                 camera.close();
                 camera = null;
             }
+            synchronized(notifier)
+            {
+                notifier.notify();
+            }            
         }
     }
 
@@ -78,6 +88,8 @@ public class Controller implements SwitchListener
     public String[] getHeuristicsForGame(String strategyName) {
         return Heuristic.availableHeuristics(strategyName);
     }
+    
+   
     
     //todo
     public String[] getLearnableStrategyTypesForGame(String gameName)
@@ -104,66 +116,96 @@ public class Controller implements SwitchListener
      * @param playerTypes for each player whether it is a human or a computer
      * @param playerStrategies only for computer players, name of strategy to use
      */
-    public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String[] strategyHeuristics) 
+    public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, 
+                     String[] playerStrategies, String[] strategyHeuristics, int numberOfRuns) 
     {   
         if (gameRunning.isOn()) return;
-        gameRunning.on();
         
-        System.out.println(gameName);
-        System.out.println(boardType);
-        for (int i=0; i<playerTypes.length ; i++) {
-           System.out.print(playerTypes[i]+" ");
-           System.out.print(playerStrategies[i]+" ");
-           System.out.println(strategyHeuristics[i]+" ");
-         }
         gw.setVisible(true);
-        game = new Game(config, logger, gw, gameRunning, robot);
         
-        GameSpecification gameSpecification = new GameSpecification(config, logger);
+        gameSpecification = new GameSpecification(config, logger);
         try {
-            gameSpecification.load(gameName);
+            gameSpecification.load(gameName);                        
         } catch (Exception e) { gw.showException(e); }
-        
-        if (boardType == Player.boardType.REALWORLD)
-        {
-            camera = new Camera(gameSpecification);
-            boolean robotNeeded = false;
-            for (int player = 0; player < playerTypes.length; player++)
-                if (playerTypes[player] == Player.playerType.COMPUTER)
-                    robotNeeded = true;
-            try {
-                if (robotNeeded) robot = new Robot("COM3", gameSpecification);
-            } catch (Exception e) { gw.showException(e); }
-        }
-        
-        ArrayList<Player> players = new ArrayList<Player>();                
-        for(int player = 0; player < gameSpecification.playerNames.length; player++)
-        {
-            Player p;
-            if (playerTypes[player] == Player.playerType.HUMAN)
-            {
-                if (boardType == Player.boardType.REALWORLD)
-                    p = new CameraPlayer(gameSpecification, camera);
-                else p = new MousePlayer(gameSpecification, gw);
-            }
-            else 
-            {
-                Heuristic h = Heuristic.getHeuristic(strategyHeuristics[player], gameSpecification);
-                p = Strategy.getStrategy(playerStrategies[player], h).getPlayer(gameSpecification);
-                
-            }
-            p.setPlayerNumber(player+1);
-            // TODO setup from controller window
-            p.setMaximumNumberOfNodes(cw.getNumberOfNodesToExpand());
-            p.setMaximumCacheSize(4 * cw.getNumberOfNodesToExpand());
-            players.add(p);
-        }
-        
-        Player[] pls = new Player[players.size()];
-        game.setGameAndPlayers(gameSpecification, players.toArray(pls));
-        game.start();   
+
+        this.numberOfRuns = numberOfRuns;
+        this.boardType = boardType;
+        this.playerTypes = playerTypes;
+        this.playerStrategies = playerStrategies;
+        this.strategyHeuristics = strategyHeuristics;
+        this.start();
     }
 
+    int numberOfRuns;
+    GameSpecification gameSpecification;
+    Player.boardType boardType;    
+    Player.playerType[] playerTypes;
+    String[] playerStrategies;
+    String[] strategyHeuristics;
+    String gameName;
+    
+    @Override
+    public void run()
+    {
+        FileWriter fw = null;
+        try { fw = new FileWriter(cw.getStatisticFileName()); }
+        catch (IOException ex) { gw.showException(ex); return; }
+        
+        while (numberOfRuns-- > 0)
+        {
+            gameRunning.on();
+            game = new Game(config, logger, gw, gameRunning, robot);
+
+            if (boardType == Player.boardType.REALWORLD)
+            {
+                camera = new Camera(gameSpecification);
+                boolean robotNeeded = false;
+                for (int player = 0; player < playerTypes.length; player++)
+                    if (playerTypes[player] == Player.playerType.COMPUTER)
+                        robotNeeded = true;
+                try {
+                    if (robotNeeded) robot = new Robot("COM3", gameSpecification);
+                } catch (Exception e) { gw.showException(e); }
+            }
+
+            ArrayList<Player> players = new ArrayList<Player>();                
+            for(int player = 0; player < gameSpecification.playerNames.length; player++)
+            {
+                Player p;
+                if (playerTypes[player] == Player.playerType.HUMAN)
+                {
+                    if (boardType == Player.boardType.REALWORLD)
+                        p = new CameraPlayer(gameSpecification, camera);
+                    else p = new MousePlayer(gameSpecification, gw);
+                }
+                else 
+                {
+                    Heuristic h = Heuristic.getHeuristic(strategyHeuristics[player], gameSpecification);
+                    p = Strategy.getStrategy(playerStrategies[player], h).getPlayer(gameSpecification);
+
+                }
+                p.setPlayerNumber(player+1);
+                // TODO setup from controller window
+                p.setMaximumNumberOfNodes(cw.getNumberOfNodesToExpand());
+                p.setMaximumCacheSize(4 * cw.getNumberOfNodesToExpand());
+                players.add(p);
+            }
+
+            Player[] pls = new Player[players.size()];
+            game.setGameAndPlayers(gameSpecification, players.toArray(pls));               
+            synchronized(notifier)
+            {
+                game.start();
+                try { notifier.wait(); } catch (InterruptedException ex) {}
+            }
+            
+            try { fw.append(Integer.toString(game.state.winner) + System.getProperty("line.separator")); fw.flush(); }
+            catch (IOException ex) { gw.showException(ex); }
+        }
+        
+        try { fw.close(); } catch (IOException ex) { gw.showException(ex); }
+    }
+    
         /** starts a single game
      *
      * @param gameName name of the game to play
@@ -173,7 +215,8 @@ public class Controller implements SwitchListener
      * @param learnStrategy strategy that will be learned
      * @return the number of player who won, 0 for draw/nobody, -1 if game was interrupted
      */
-    public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, String[] playerStrategies, String[] strategyHeuristics, String learnStrategyType, String strategyFileName, int numberOfRuns)
+    public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, 
+                     String[] playerStrategies, String[] strategyHeuristics, String learnStrategyType, String strategyFileName, int numberOfRuns)
     {
         System.out.println(gameName);
         System.out.println(boardType);
