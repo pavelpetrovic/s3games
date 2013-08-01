@@ -57,7 +57,10 @@ public class RobotWindow extends ControlWindow implements ActionListener
     public void actionPerformed(ActionEvent e) 
     {
         if (e.getSource() == goButton)
-            robot.performMove();        
+        {
+            try { robot.performMove(); }
+            catch (Exception ex) { addMessage("Robot could not perform a move: " + ex.getMessage()); }
+        }
         else if (e.getSource() == clearButton)
             out.setText("");
         else if (e.getSource() == testButton)

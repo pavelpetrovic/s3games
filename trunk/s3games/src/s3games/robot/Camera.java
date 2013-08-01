@@ -122,8 +122,7 @@ public class Camera implements Runnable
     {
         try {
             do {
-                String ln = in.readLine();
-                System.out.println("cam:" + ln);
+                String ln = in.readLine();                
                 if (ln == null) throw new Exception("Camera disconnected");
                 if (ln.charAt(0) == 'F') throw new Exception("Camera program stoped with error " + ln.substring(2));
                 else if (ln.charAt(0) == 'D') 
