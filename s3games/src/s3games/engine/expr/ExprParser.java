@@ -95,7 +95,8 @@ public class ExprParser
             }
         }
                 
-        if (!lexs.isEmpty()) throw new Exception("unexpected trailing lexemes " + lexs);
+        if (!lexs.isEmpty()) 
+            throw new Exception("unexpected trailing lexemes " + lexs);
         if (lex instanceof NumberLexeme)
             return new Expr_NUM_CONSTANT(((NumberLexeme)lex).val);
         if (lex instanceof BooleanLexeme)
