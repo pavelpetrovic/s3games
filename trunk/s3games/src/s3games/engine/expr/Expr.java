@@ -43,7 +43,7 @@ public abstract class Expr
         else if (op.equals("<")) return operatorType.LOWER;
         else if (op.equals("<=")) return operatorType.LOWEREQUAL;
         else if (op.equals(">")) return operatorType.GREATER;
-        else if (op.equals("<=")) return operatorType.GREATEREQUAL;
+        else if (op.equals(">=")) return operatorType.GREATEREQUAL;
         else if (op.equals("+")) return operatorType.PLUS;
         else if (op.equals("-")) return operatorType.MINUS;
         else if (op.equals("*")) return operatorType.TIMES;

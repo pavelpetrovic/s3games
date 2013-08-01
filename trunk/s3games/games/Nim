@@ -234,7 +234,7 @@ END
 [END OF GAME]
 
 situation=EMPTY("s(1)")
-winner=(PLAYER % 2)+1
+winner=PLAYER
 
 [GAME RULES]
 
