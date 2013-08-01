@@ -150,8 +150,8 @@ public class GameSpecificationParser
         var = var.toLowerCase();
         if (var.equals("name"))
             locationType = new LocationType(val);
-        if (var.equals("irelevant"))
-            locationType.relevant = !val.toLowerCase().equals("yes");
+        if (var.equals("relevant"))
+            locationType.relevant = val.toLowerCase().equals("yes");
         else if (var.equals("image"))
             imageName = val;
         else if (var.equals("shape"))

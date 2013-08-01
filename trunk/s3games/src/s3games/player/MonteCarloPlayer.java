@@ -17,7 +17,9 @@ import s3games.engine.Move;
  * @author Nastavnik
  */
 public class MonteCarloPlayer extends Player {
-
+    private int win;
+    private int other;
+    
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
@@ -29,6 +31,7 @@ public class MonteCarloPlayer extends Player {
              GameState gs = state.getCopy();
              gs.performMove(move);
              double ratio = calculateRatio (gs,number);
+             System.out.println(move + ": " + ratio);
              if (ratio > bestRatio)
              {
                  bestRatio = ratio;
@@ -42,13 +45,36 @@ public class MonteCarloPlayer extends Player {
     public void otherMoved(Move move, GameState newState) 
     {      
     }
+    
+    protected void initializeRatio() {
+    }
+    
+    protected void addScore(GameState gs) {
+        if (gs.winner == number) win++;
+        else other++;
+    }
+    
+    protected double calculateScore() {
+        return (double)win/(double)(other + win);
+    }
 
-    private double calculateRatio(GameState gs, int number) throws Exception
+    protected void initializeScore () {
+        win   = 0;
+        other = 0;
+    }
+        
+    protected void updateRatio(GameState gs, Set<Move> moves) {
+    }    
+    
+    private double calculateRatio(GameState ogs, int number) throws Exception
     {
-        int win = 0, other = 0;
+        initializeScore();
         Random random = new Random();
-        for (int trial = 0; trial < 5000; trial++)
+        for (int trial = 0; trial < 50; trial++)
         {
+            //if (trial % 10 == 0) System.out.println("trisl " + trial);
+            GameState gs = ogs.getCopy();
+            initializeRatio();
             HashSet <GameState> visited = new HashSet <GameState>();
             visited.add(gs);
             int nodes = 1;
@@ -66,6 +92,9 @@ public class MonteCarloPlayer extends Player {
                 }
 
                 if (moves.isEmpty())  break;
+
+                updateRatio(gs, moves);
+                
                 int i = random.nextInt(moves.size());
                 it = moves.iterator();
                 while (i-- > 0) it.next();
@@ -73,9 +102,10 @@ public class MonteCarloPlayer extends Player {
                 nodes++;
                 visited.add(gs);
             }
-            if (gs.winner == number) win++;
-            else other++;
+            
+            addScore(gs);
         }
-        return (double)win/(double)(other + win);
+
+        return calculateScore();
     }
 }
