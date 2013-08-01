@@ -145,7 +145,12 @@ public class MiniMaxPlayer extends Player
                 expanded.put(mv, newState);                
             }            
             openedStates.put(state, expanded);
-            if (openedStates.size() > maxCacheSize) openedStates.keySet().iterator().remove();
+            if (openedStates.size() > maxCacheSize) 
+            {
+                Iterator<GameState> it = openedStates.keySet().iterator();
+                it.next();
+                it.remove();
+            }
         }
         return expanded;
     }
