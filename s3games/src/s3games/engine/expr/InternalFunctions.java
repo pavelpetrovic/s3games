@@ -226,7 +226,7 @@ public class InternalFunctions
         
             Move mv = new Move(locationName1, locationName2, elementName, context.specs);
             context.gameState.moveElement(mv, context.specs);
-            context.robot.moveRobot(mv);
+            if (context.robot != null) context.robot.moveRobot(mv);
             return Expr.booleanExpr(true);
         }
         
