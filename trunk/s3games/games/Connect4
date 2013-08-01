@@ -59,72 +59,72 @@ irrelevant=yes
 name=b(1,1)
 type=grid
 point=50,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,1)
 type=grid
 point=100,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,1)
 type=grid
 point=150,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,1)
 type=grid
 point=200,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(5,1)
 type=grid
 point=250,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(6,1)
 type=grid
 point=300,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(7,1)
 type=grid
 point=350,36
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(1,2)
 type=grid
 point=50,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(2,2)
 type=grid
 point=100,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(3,2)
 type=grid
 point=150,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(4,2)
 type=grid
 point=200,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(5,2)
 type=grid
 point=250,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(6,2)
 type=grid
 point=300,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=b(7,2)
 type=grid
 point=350,86
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 
 
 [PLAYER NAMES]
