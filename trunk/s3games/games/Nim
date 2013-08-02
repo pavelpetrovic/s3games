@@ -23,6 +23,7 @@ shape=rectangular(27,222)
 point=1,1
 
 name=box
+relevant=no
 image=emptyplace.png
 shape=rectangular(12,222)
 point=1,1
@@ -213,6 +214,8 @@ location=s(12)
 [EXPRESSIONS]
 
 CheckMove
+  $LL = $L - 1
+  ($L == 1) OR (NOT EMPTY("b($LL)"))
   $M=$K+1
   $N=$K+2
   $P=$K+3
