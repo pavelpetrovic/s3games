@@ -13,8 +13,13 @@ public class RobotLocation
 {
     public static final int NUMBER_OF_ROBOT_ANGLES = 10;
 
-    double angles[];
+    public double angles[];
 
+    public RobotLocation()
+    {
+        angles = new double[NUMBER_OF_ROBOT_ANGLES];
+    }
+    
     public RobotLocation(String locations) throws Exception
     {
         angles = new double[NUMBER_OF_ROBOT_ANGLES];
@@ -23,5 +28,17 @@ public class RobotLocation
             throw new Exception("incorrect specification of robot angles: '" + locations + "'");
         for (int i = 0; i < angles.length; i++)
             angles[i] = Double.parseDouble(angs[i].trim());
+    }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < NUMBER_OF_ROBOT_ANGLES / 2 ; i++)
+        {
+            b.append(angles[i]);
+            b.append(" ");
+        }
+        return b.toString();
     }
 }

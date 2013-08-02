@@ -51,22 +51,26 @@ public class Robot
  
     public void performMove() throws Exception
     {
-        goTo(requestedMove.from);
-        grab();
-        goTo(requestedMove.to);
-        put();
+        goTo(requestedMove.from, true);        
+        goTo(requestedMove.to, false);        
         goHome();
     }
     
-    private void goTo(String locationName) throws Exception
+    private void goTo(String locationName, boolean grab) throws Exception
     {
         double[] angles = specs.locations.get(locationName).robot.angles;
         double[] place1 = Arrays.copyOfRange(angles, 0, 5);
         double[] place2 = Arrays.copyOfRange(angles, 5, 10);
         goTo(place1);
         Thread.sleep(700);
-        goTo(place2);        
+        goTo(place2);
+        Thread.sleep(700);
+        if (grab) grab(); else put();
+        Thread.sleep(700);
+        goTo(place1);
+        Thread.sleep(700);
     }
+    
     public void doTest() 
     {
         System.out.print("enter angles (5 doubles, init, or home, grab, put): ");

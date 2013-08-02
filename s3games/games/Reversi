@@ -41,13 +41,13 @@ name=stackb
 image=revblack.png
 shape=circle(32,32)
 point=1,1
-irrelevant=yes
+relevant=no
 
 name=stackw
 image=revwhite.png
 shape=circle(32,32)
 point=1,1
-irrelevant=yes
+relevant=no
 
 [LOCATIONS]   
 

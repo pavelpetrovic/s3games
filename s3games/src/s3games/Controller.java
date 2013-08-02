@@ -16,6 +16,7 @@ import s3games.engine.Game;
 import s3games.engine.GameSpecification;
 import s3games.gui.ControllerWindow;
 import s3games.gui.GameWindow;
+import s3games.gui.RobotControlWindow;
 import s3games.io.*;
 import s3games.player.CameraPlayer;
 import s3games.player.MousePlayer;
@@ -230,4 +231,12 @@ public class Controller extends Thread implements SwitchListener
         gw.setVisible(true);
         return 0;
     }    
+    
+    public void controlRobot() 
+    {
+        try {
+            robot = new Robot("COM3", null);
+            RobotControlWindow rcw = new RobotControlWindow(robot);        
+        } catch (Exception e) {}
+    }
 }
