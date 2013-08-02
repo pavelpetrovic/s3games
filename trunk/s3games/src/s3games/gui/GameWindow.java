@@ -47,15 +47,20 @@ public class GameWindow extends javax.swing.JFrame {
     /**
      * Creates new form Form
      */
-    public GameWindow() {
+    public GameWindow(Switch gameSwitch) {
+        gameRuns = gameSwitch;
         initComponents();
         
-   /*     addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent e) {
+            public void windowClosing(WindowEvent e) {
                 gameRuns.off();
+                synchronized(lastMoveReady)
+                {
+                    lastMoveReady.notify();
+                }                
             }
-        });*/
+        });
         
         boardCanvas = (BoardCanvas) canvas1;
         lastMoveReady = new Object();
@@ -86,7 +91,7 @@ public class GameWindow extends javax.swing.JFrame {
 
         canvas1 = new BoardCanvas();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Board");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setPreferredSize(new java.awt.Dimension(600, 600));
@@ -201,40 +206,7 @@ public class GameWindow extends javax.swing.JFrame {
         this.formKeyPressed(evt);   //added because of varied focus on window components...
     }//GEN-LAST:event_canvas1KeyPressed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GameWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GameWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GameWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GameWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GameWindow().setVisible(true);
-            }
-        });
-    }
     public void setGame(Game g, Switch gameRuns){ //game
         this.game = g;
         winner = "";
