@@ -102,7 +102,7 @@
                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jComboBox5" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jComboBox1" alignment="0" pref="134" max="32767" attributes="0"/>
+                                  <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jComboBox6" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jTextField2" alignment="0" min="-2" pref="133" max="-2" attributes="0"/>
@@ -117,7 +117,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="16" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -196,6 +196,12 @@
         <Component class="javax.swing.JTextField" name="jTextField1">
           <Properties>
             <Property name="text" type="java.lang.String" value="statistic.txt"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[134, 20]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[134, 20]"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
@@ -231,6 +237,12 @@
         <Component class="javax.swing.JTextField" name="jTextField2">
           <Properties>
             <Property name="text" type="java.lang.String" value="StrategyXY.txt"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[133, 20]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[133, 20]"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
@@ -313,7 +325,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="44" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -417,24 +429,18 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel5" min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel5" min="-2" pref="24" max="-2" attributes="0"/>
-                  <EmptySpace pref="27" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -473,7 +479,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Number of games played:"/>
+            <Property name="text" type="java.lang.String" value="Num of games to run:"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>

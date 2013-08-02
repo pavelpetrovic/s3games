@@ -153,6 +153,7 @@ public class Controller extends Thread implements SwitchListener
         
         while (numberOfRuns-- > 0)
         {
+            cw.setNumberOfRunsToGo(numberOfRuns+1);
             gameRunning.on();
             game = new Game(config, logger, gw, gameRunning, robot);
 
@@ -198,11 +199,11 @@ public class Controller extends Thread implements SwitchListener
                 game.start();
                 try { notifier.wait(); } catch (InterruptedException ex) {}
             }
-            
+            cw.setNumberOfRunsToGo(0);
             try { fw.append(Integer.toString(game.state.winner) + System.getProperty("line.separator")); fw.flush(); }
             catch (IOException ex) { gw.showException(ex); }
         }
-        
+      //  cw.setNumberOfRunsToGo(0);
         try { fw.close(); } catch (IOException ex) { gw.showException(ex); }
     }
     
