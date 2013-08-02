@@ -55,9 +55,20 @@ public class CameraPlayer extends Player
         for(Camera.DetectedObject obj: objs)
         {
             Location loc = specs.findClosestCameraLocation(obj.x, obj.y);
-            if (state.locationElements.get(loc.name.fullName) == null)
+            String expectedElement = state.locationElements.get(loc.name.fullName);
+            if (expectedElement == null)
                 movedTo = loc.name.fullName;
-            else formerlyOccupiedLocations.remove(loc.name.fullName);
+            else 
+            {
+                formerlyOccupiedLocations.remove(loc.name.fullName);
+                Element expElement = specs.elements.get(expectedElement);
+                if ((!expElement.type.equals(obj.type)) ||
+                   (state.elementStates.get(expectedElement) != obj.state))
+                {
+                    camera.msgToUser("At some place the element has changed. You can only move exactly one stone at a time. Try again.");
+                    return null;
+                }
+            }
         }
         if (movedTo == null) 
         {
@@ -73,6 +84,7 @@ public class CameraPlayer extends Player
         movedFrom = formerlyOccupiedLocations.iterator().next();
         
         elem = state.locationElements.get(movedFrom);       
+        
         
         return new Move(movedFrom, movedTo, elem, specs);
     }
