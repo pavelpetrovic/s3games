@@ -76,6 +76,11 @@ public class Game extends Thread
             }
             
             nextMove = playerOnMove.move(state, allowedMoves);
+            if (gameRuns.isOff()) 
+            {
+                state.winner = 0;
+                break;
+            }
             System.out.println("Player moves: " + nextMove.toString());
             boolean approved = state.moveAllowed(nextMove);
             if (!approved)

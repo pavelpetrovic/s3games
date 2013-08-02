@@ -30,7 +30,7 @@ import s3games.util.SwitchListener;
  *
  * @author petrovic16
  */
-public class Controller extends Thread implements SwitchListener
+public class Controller implements SwitchListener, Runnable
 {
     ControllerWindow cw;
     GameWindow gw;
@@ -48,7 +48,7 @@ public class Controller extends Thread implements SwitchListener
         gameRunning = new Switch();
         gameRunning.addSwitchListener(this);
         
-        gw =  new GameWindow();
+        gw =  new GameWindow(gameRunning);
         cw  = new ControllerWindow(this);
         cw.setVisible(true);
         logger = new GameLogger();
@@ -134,7 +134,7 @@ public class Controller extends Thread implements SwitchListener
         this.playerTypes = playerTypes;
         this.playerStrategies = playerStrategies;
         this.strategyHeuristics = strategyHeuristics;
-        this.start();
+        new Thread(this).start();
     }
 
     int numberOfRuns;
@@ -152,7 +152,7 @@ public class Controller extends Thread implements SwitchListener
         try { fw = new FileWriter(cw.getStatisticFileName()); }
         catch (IOException ex) { gw.showException(ex); return; }
         
-        while (numberOfRuns-- > 0)
+        while ((numberOfRuns-- > 0) && (gw.isVisible())) 
         {
             cw.setNumberOfRunsToGo(numberOfRuns+1);
             gameRunning.on();
@@ -204,7 +204,7 @@ public class Controller extends Thread implements SwitchListener
             try { fw.append(Integer.toString(game.state.winner) + System.getProperty("line.separator")); fw.flush(); }
             catch (IOException ex) { gw.showException(ex); }
         }
-      //  cw.setNumberOfRunsToGo(0);
+      
         try { fw.close(); } catch (IOException ex) { gw.showException(ex); }
     }
     
