@@ -70,7 +70,7 @@ public class MonteCarloPlayer extends Player {
     {
         initializeScore();
         Random random = new Random();
-        for (int trial = 0; trial < 50; trial++)
+        for (int trial = 0; trial < 200; trial++)
         {
             //if (trial % 10 == 0) System.out.println("trisl " + trial);
             GameState gs = ogs.getCopy();
