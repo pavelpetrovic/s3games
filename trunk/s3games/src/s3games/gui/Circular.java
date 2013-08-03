@@ -25,7 +25,6 @@ public class Circular extends LocationShape
     @Override
     boolean isInside(int x, int y, Point center)
     {
-      //  System.out.println(this.x+" "+this.y+" "+x+" "+y+" "+radius+" "+Math.sqrt(Math.pow(this.y-y,2)+Math.pow(this.x-x,2)));
         return ( radius > Math.sqrt(Math.pow(center.y-y,2)+Math.pow(center.x-x,2)) );
     }
     

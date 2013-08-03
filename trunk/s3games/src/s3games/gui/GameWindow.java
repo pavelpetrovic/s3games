@@ -168,7 +168,7 @@ public class GameWindow extends javax.swing.JFrame {
                             String fromLoc= egs.elementLocations.get(selectedElementName);
                  
                             lastMove = new Move(fromLoc,entry.getKey(),selectedElementName, gs);
-                            System.out.println(fromLoc+" "+entry.getKey()+" "+selectedElementName);
+                            
                             synchronized(lastMoveReady)
                             {
                                 lastMoveReady.notify();

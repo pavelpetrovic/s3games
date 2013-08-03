@@ -31,11 +31,9 @@ public class NameWithArgs
             for (int i = 0; i < args.length; i++)
             {
                 args[i] = args[i].trim();
-                if (args[i].charAt(0) != '$')
-                {
-                    System.out.println(name);                
-                    throw new Exception("argument names should start with $");
-                }
+                if (args[i].charAt(0) != '$')                                                  
+                    throw new Exception("argument names should start with $ (" + name + ")");
+                
                 args[i] = args[i].substring(1);
             }
         }

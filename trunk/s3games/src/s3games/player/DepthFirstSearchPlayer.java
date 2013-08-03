@@ -47,8 +47,7 @@ public class DepthFirstSearchPlayer extends Player {
         history.add(state.getCopy());
         visited.add(state);
         open.add(new Node(null, null, state));
-        System.out.println(history.size());
-       
+               
         while (open.size()>0) 
         {
                 Node actualNode = open.get(open.size()-1);

@@ -11,7 +11,7 @@ import gnu.io.SerialPort;
 import java.io.*;
 import java.io.BufferedReader;
 
-public class RobotSerialPort implements Runnable
+public class RobotSerialPort
 {    
     String port;
     
@@ -41,7 +41,7 @@ public class RobotSerialPort implements Runnable
                 out = serialPort.getOutputStream();                
                 if (in == null) throw new Exception("RobotSerialPort: cannot obtain input stream");
                 if (out == null) throw new Exception("RobotSerialPort: cannot obtain output stream");
-                new Thread(this).start();                
+                         
         } else throw new Exception("RobotSerialPort: " + port + " is not a serial port.");
     }
     
@@ -52,21 +52,6 @@ public class RobotSerialPort implements Runnable
             in.close();
             out.close();
         } catch (Exception e) {}
-    }
-
-    @Override
-    public void run () 
-    {
-        System.out.println("reading serial");
-        char line;/*
-        try{
-           while (true) {
-               System.out.print( (char)in.read());
-           }
-        }
-        catch ( IOException e ) {
-            e.printStackTrace();
-        }            */
     }
 
     void print(String s) throws IOException
