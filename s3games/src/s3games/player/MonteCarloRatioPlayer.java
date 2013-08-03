@@ -15,52 +15,58 @@ import s3games.engine.Move;
  *
  * @author Nastavnik
  */
-public class MonteCarloRatioPlayer extends AbstractMonteCarloPlayer {
+public class MonteCarloRatioPlayer extends AbstractMonteCarloPlayer 
+{
     private double q;
     private Map<Integer, Double> winning;
     private Map<Integer, Double> losing;
     private Map<Integer, Double> other;
    
-    public MonteCarloRatioPlayer () {
+    public MonteCarloRatioPlayer () 
+    {
         winning = new HashMap<Integer, Double>();
         losing = new HashMap<Integer, Double>();
         other = new HashMap<Integer, Double>();
     }
    
     @Override
-    protected void initializeRatio() {
+    protected void initializeRatio() 
+    {
         q = 1.0;
     }
 
     @Override
-    protected void updateRatio(GameState gs, Set<Move> moves) {
-        if (gs.currentPlayer != number) {                 
+    protected void updateRatio(GameState gs, Set<Move> moves) 
+    {
+        if (gs.currentPlayer != number)         
             q *= 1.0/(double)moves.size();
-        }        
     }    
 
     @Override
-    protected void initializeScore (int i) {
+    protected void initializeScore (int i) 
+    {
         winning.put(i, 0.0);
         losing.put(i, 0.0);
         other.put(i, 0.0);
     }
 
     @Override
-    protected void addScore(GameState gs, int i) {
-        if (gs.winner == number) {
+    protected void addScore(GameState gs, int i) 
+    {
+        if (gs.winner == number) 
             winning.put(i, winning.get(i)+q);
-        }
-        else if (gs.winner > 0) {
+        else if (gs.winner > 0) 
             losing.put(i, losing.get(i)+q);
-        }
-        else {
-            other.put(i, other.get(i)+q);
-        }
+        else other.put(i, other.get(i)+q);
     }
 
     @Override
-    protected double calculateScore(int i) {
-        return (winning.get(i)-losing.get(i))/(winning.get(i)+losing.get(i)+other.get(i));
+    protected double calculateScore(int i) 
+    {
+        double wn = winning.get(i);
+        double lo = losing.get(i);
+        double ot = other.get(i);
+        if (ot + lo + wn == 0) return 0.0;
+        return (wn - lo) / (wn + lo + ot);
     }
 }

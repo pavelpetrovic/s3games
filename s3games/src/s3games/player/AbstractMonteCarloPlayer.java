@@ -27,7 +27,9 @@ public abstract class AbstractMonteCarloPlayer extends Player{
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
         startMove();
+        
         ArrayList<Move> moves = new ArrayList<Move>(state.possibleMoves()); 
+        if (moves.size() == 1) return allowedMoves.get(0);
 
         GameState[] gss = new GameState[moves.size()];
         
@@ -37,24 +39,21 @@ public abstract class AbstractMonteCarloPlayer extends Player{
              gss[i] = state.getCopy();
              gss[i].performMove(moves.get(i));
         }
-
+        
         calculateRatio(gss);
 
         double bestRatio = Double.NEGATIVE_INFINITY;
-        Move bestMove = null ;
+        Move bestMove = null;
 
-        for(int i = 0; i < moves.size(); ++i)             
+        for(int i = 0; i < moves.size(); ++i)
         {
             double score = calculateScore(i);
-            System.out.println(bestMove + ": " + score);
-            
             if (score > bestRatio)
             {
                 bestRatio = score;
                 bestMove = moves.get(i);
             }
         }
-
         return bestMove;
     }
     
@@ -67,19 +66,16 @@ public abstract class AbstractMonteCarloPlayer extends Player{
     private void calculateRatio(GameState[] ogs) throws Exception
     {
         Random random = new Random();
-//        for (int trial = 0; trial < 200; trial++)
         while (ratioTimeLeft() > 0)
         {
-            //if (trial % 10 == 0) System.out.println("trisl " + trial);
             int firstMove = random.nextInt(ogs.length);
             
             GameState gs = ogs[firstMove].getCopy();
             initializeRatio();
             HashSet <GameState> visited = new HashSet <GameState>();
             visited.add(gs);
-            int nodes = 1;
-            boolean debug=false;
-            while (nodes < maxNodes && ((ratioTimeLeft() > 0) || debug))
+            int nodes = 1;            
+            while ((nodes < maxNodes) && (ratioTimeLeft() > 0))
             {
                 if (gs.winner != -1) break;
                 Set<Move> moves = gs.possibleMoves();
@@ -91,21 +87,17 @@ public abstract class AbstractMonteCarloPlayer extends Player{
                     gs2.performMove(m);
                     if (visited.contains(gs2)) it.remove();
                 }
-
                 if (moves.isEmpty())  break;
 
                 updateRatio(gs, moves);
                 
-                int i = random.nextInt(moves.size());
-                //System.out.println(i + " of " + moves.size());
+                int i = random.nextInt(moves.size());                
                 it = moves.iterator();
                 while (i-- > 0) it.next();
                 gs.performMove(it.next());
                 nodes++;
                 visited.add(gs);
             }
-            
-            //System.out.println("adding " + gs.winner + " to " + firstMove);
             addScore(gs, firstMove);
         }
     }

@@ -103,8 +103,7 @@ public class GameState
     /** recomputes the hash code for this state using String.hasCode() */
     private void recomputeHash()
     {        
-        hash = hashString().hashCode();
-        //System.out.println("h:" + b + "=" + hash);
+        hash = hashString().hashCode();        
     }
  
     /** always call this method after modifying the state */

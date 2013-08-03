@@ -108,7 +108,6 @@ public class MiniMaxPlayer extends Player
     
     Heuristic heuristic;
     GameSpecification specs;
-    HashMap<GameState, HashMap<Move, GameState>> openedStates;
     LinkedList<Leaf> leaves;
     PriorityQueue<Node> modified;
     long nodesOpened;
@@ -116,8 +115,7 @@ public class MiniMaxPlayer extends Player
     public MiniMaxPlayer(GameSpecification specs, Heuristic heuristic)
     {
         this.specs = specs;
-        this.heuristic = heuristic;
-        openedStates = new HashMap<GameState, HashMap<Move, GameState>>();        
+        this.heuristic = heuristic; 
     }
 
     double valueOfWinner(int winner)
@@ -134,23 +132,13 @@ public class MiniMaxPlayer extends Player
 
     public HashMap<Move, GameState> expand(GameState state, HashSet<Move> moves) throws Exception
     {
-        HashMap<Move, GameState> expanded = openedStates.get(state);
-        if (expanded == null)
+        HashMap<Move, GameState> expanded = null;
+        expanded = new HashMap<Move, GameState>();
+        for (Move mv: moves)
         {
-            expanded = new HashMap<Move, GameState>();
-            for (Move mv: moves)
-            {
-                GameState newState = state.getCopy();
-                newState.performMove(mv);      
-                expanded.put(mv, newState);                
-            }            
-            openedStates.put(state, expanded);
-            if (openedStates.size() > maxCacheSize) 
-            {
-                Iterator<GameState> it = openedStates.keySet().iterator();
-                it.next();
-                it.remove();
-            }
+            GameState newState = state.getCopy();
+            newState.performMove(mv);      
+            expanded.put(mv, newState);                
         }
         return expanded;
     }
@@ -160,10 +148,12 @@ public class MiniMaxPlayer extends Player
     {
         startMove();
         nodesOpened = 0;
-        if (allowedMoves.size() == 1) return allowedMoves.get(0);
+                
+        HashSet<Move> possibleMoves = new HashSet<Move>(allowedMoves);
+        if (possibleMoves.size() == 1) return allowedMoves.get(0);
         
         HashMap<Move, Node> topMoves = new HashMap<Move, Node>();
-        HashMap<Move, GameState> newStates = expand(state, new HashSet<Move>(allowedMoves));
+        HashMap<Move, GameState> newStates = expand(state, possibleMoves);
         modified = new PriorityQueue<Node>();
         leaves = new LinkedList<Leaf>();
         
@@ -206,6 +196,7 @@ public class MiniMaxPlayer extends Player
                 bestMove = mv.getKey();
             }
         }
+        System.out.println("Minimax - total nodes: " + nodesOpened);                  
         return bestMove;
     }
 

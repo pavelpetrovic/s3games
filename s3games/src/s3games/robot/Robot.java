@@ -46,6 +46,7 @@ public class Robot
             sb.append((char)ch);
         } while (ch != 13);
         win.addMessage("Robot Firmware version: " + sb.toString());
+        win.addMessage("You can move the robot away from the camera frame and click [Init] twice.");
     }
     
     public void close()
@@ -168,9 +169,11 @@ public class Robot
         link.print(new RobotCmd(RobotCmd.Command.put).getCommand());        
     } 
    
-    public void initArm() throws Exception
+    public void initArm() 
     {
-        link.print(new RobotCmd(RobotCmd.Command.init).getCommand());
+        try {
+            link.print(new RobotCmd(RobotCmd.Command.init).getCommand());
+        } catch (Exception e) { win.addMessage("Could not init robot arm: " + e.getMessage()); }
     }
      
     public void goHome() throws Exception
