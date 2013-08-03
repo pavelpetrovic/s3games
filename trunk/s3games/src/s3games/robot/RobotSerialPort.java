@@ -78,6 +78,8 @@ public class RobotSerialPort implements Runnable
     
     int read() throws IOException
     {
-        return in.read();
+        int ch = -1;
+        while ((ch == -1) || (ch == 255)) ch = in.read();
+        return ch;
     }
 }

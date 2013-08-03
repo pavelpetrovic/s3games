@@ -16,71 +16,70 @@ import s3games.engine.Move;
  *
  * @author Nastavnik
  */
-public class MonteCarloPlayer extends Player {
-    private int win;
-    private int other;
-    
+public abstract class AbstractMonteCarloPlayer extends Player{
+        
+    @Override
+    public void otherMoved(Move move, GameState newState) 
+    {
+    }
+
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
         startMove();
+        ArrayList<Move> moves = new ArrayList<Move>(state.possibleMoves()); 
+
+        GameState[] gss = new GameState[moves.size()];
+        
+        for(int i = 0; i < moves.size(); ++i)             
+        {
+             initializeScore(i);
+             gss[i] = state.getCopy();
+             gss[i].performMove(moves.get(i));
+        }
+
+        calculateRatio(gss);
+
         double bestRatio = Double.NEGATIVE_INFINITY;
         Move bestMove = null ;
-        Set<Move> moves = state.possibleMoves(); 
-        for(Move move: moves)             
+
+        for(int i = 0; i < moves.size(); ++i)             
         {
-            GameState gs = state.getCopy();
-             gs.performMove(move);
-             double ratio = calculateRatio (gs,number);
-             System.out.println(move + ": " + ratio);
-             if (ratio > bestRatio)
-             {
-                 bestRatio = ratio;
-                 bestMove = move;
-             }
+            double score = calculateScore(i);
+            System.out.println(bestMove + ": " + score);
+            
+            if (score > bestRatio)
+            {
+                bestRatio = score;
+                bestMove = moves.get(i);
+            }
         }
-        return bestMove;  
-    }
 
-    @Override
-    public void otherMoved(Move move, GameState newState) 
-    {      
+        return bestMove;
     }
     
-    protected void initializeRatio() {
-    }
+    protected abstract void initializeRatio();
+    protected abstract void addScore(GameState gs, int i);
+    protected abstract double calculateScore(int i);
+    protected abstract void initializeScore (int i);
+    protected abstract void updateRatio(GameState gs, Set<Move> moves);    
     
-    protected void addScore(GameState gs) {
-        if (gs.winner == number) win++;
-        else other++;
-    }
-    
-    protected double calculateScore() {
-        return (double)win/(double)(other + win);
-    }
-
-    protected void initializeScore () {
-        win   = 0;
-        other = 0;
-    }
-        
-    protected void updateRatio(GameState gs, Set<Move> moves) {
-    }    
-    
-    private double calculateRatio(GameState ogs, int number) throws Exception
+    private void calculateRatio(GameState[] ogs) throws Exception
     {
-        initializeScore();
         Random random = new Random();
 //        for (int trial = 0; trial < 200; trial++)
         while (ratioTimeLeft() > 0)
         {
             //if (trial % 10 == 0) System.out.println("trisl " + trial);
-            GameState gs = ogs.getCopy();
+            int firstMove = random.nextInt(ogs.length);
+            
+            GameState gs = ogs[firstMove].getCopy();
             initializeRatio();
             HashSet <GameState> visited = new HashSet <GameState>();
             visited.add(gs);
             int nodes = 1;
-            while (nodes < maxNodes)
+            boolean debug=false;
+            while (nodes < maxNodes && ((ratioTimeLeft() > 0) || debug))
             {
                 if (gs.winner != -1) break;
                 Set<Move> moves = gs.possibleMoves();
@@ -98,6 +97,7 @@ public class MonteCarloPlayer extends Player {
                 updateRatio(gs, moves);
                 
                 int i = random.nextInt(moves.size());
+                //System.out.println(i + " of " + moves.size());
                 it = moves.iterator();
                 while (i-- > 0) it.next();
                 gs.performMove(it.next());
@@ -105,9 +105,8 @@ public class MonteCarloPlayer extends Player {
                 visited.add(gs);
             }
             
-            addScore(gs);
+            //System.out.println("adding " + gs.winner + " to " + firstMove);
+            addScore(gs, firstMove);
         }
-
-        return calculateScore();
     }
 }

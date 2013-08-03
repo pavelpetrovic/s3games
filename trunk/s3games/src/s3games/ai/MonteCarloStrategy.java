@@ -6,7 +6,7 @@ package s3games.ai;
 
 import s3games.engine.Game;
 import s3games.engine.GameSpecification;
-import s3games.player.MonteCarloPlayer;
+import s3games.player.MonteCarloClassicPlayer;
 import s3games.player.Player;
 
 /**
@@ -17,7 +17,7 @@ public class MonteCarloStrategy extends Strategy {
 
     @Override
     public Player getPlayer(GameSpecification specs) {
-      return new MonteCarloPlayer();
+      return new MonteCarloClassicPlayer();
     }
 
     @Override
