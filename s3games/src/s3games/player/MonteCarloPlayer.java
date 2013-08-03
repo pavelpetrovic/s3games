@@ -23,12 +23,13 @@ public class MonteCarloPlayer extends Player {
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
+        startMove();
         double bestRatio = Double.NEGATIVE_INFINITY;
         Move bestMove = null ;
         Set<Move> moves = state.possibleMoves(); 
         for(Move move: moves)             
         {
-             GameState gs = state.getCopy();
+            GameState gs = state.getCopy();
              gs.performMove(move);
              double ratio = calculateRatio (gs,number);
              System.out.println(move + ": " + ratio);
@@ -70,7 +71,8 @@ public class MonteCarloPlayer extends Player {
     {
         initializeScore();
         Random random = new Random();
-        for (int trial = 0; trial < 200; trial++)
+//        for (int trial = 0; trial < 200; trial++)
+        while (ratioTimeLeft() > 0)
         {
             //if (trial % 10 == 0) System.out.println("trisl " + trial);
             GameState gs = ogs.getCopy();

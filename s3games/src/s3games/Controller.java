@@ -190,6 +190,7 @@ public class Controller implements SwitchListener, Runnable
                 // TODO setup from controller window
                 p.setMaximumNumberOfNodes(cw.getNumberOfNodesToExpand());
                 p.setMaximumCacheSize(4 * cw.getNumberOfNodesToExpand());
+                p.setMaxTime(cw.getRunningTime());
                 players.add(p);
             }
 
