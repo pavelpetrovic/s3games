@@ -37,13 +37,13 @@ public abstract class Player
         this.maxTime = maxTime;
     }
     
-    public long timeLeft() {
+    public long timeUsed() {
         long res = new Date().getTime() - startTime;
         return res;
     }
     
     public double ratioTimeLeft() {        
-        double res = 1 - (double) timeLeft() / (double) maxTime;
+        double res = 1 - (double) timeUsed() / (double) maxTime;
         return res;
     }
         
