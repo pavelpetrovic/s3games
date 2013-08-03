@@ -25,6 +25,28 @@ public abstract class Player
     public abstract Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception;   
     public abstract void otherMoved(Move move, GameState newState);
     
+    //all time is in milliseconds
+    private long startTime;
+    private long maxTime;
+    
+    public void startMove() {
+        startTime = new Date().getTime();
+    }
+    
+    public void setMaxTime(long maxTime) {
+        this.maxTime = maxTime;
+    }
+    
+    public long timeLeft() {
+        long res = new Date().getTime() - startTime;
+        return res;
+    }
+    
+    public double ratioTimeLeft() {        
+        double res = 1 - (double) timeLeft() / (double) maxTime;
+        return res;
+    }
+        
     public boolean isComputer()
     {
         return true;

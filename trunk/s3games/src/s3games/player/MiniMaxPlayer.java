@@ -158,6 +158,7 @@ public class MiniMaxPlayer extends Player
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
+        startMove();
         nodesOpened = 0;
         if (allowedMoves.size() == 1) return allowedMoves.get(0);
         
@@ -169,7 +170,8 @@ public class MiniMaxPlayer extends Player
         for(Map.Entry<Move, GameState> mv: newStates.entrySet())
             topMoves.put(mv.getKey(), newNode(null, mv.getValue()));
         
-        while ((nodesOpened < maxNodes) && (!leaves.isEmpty()))
+//        while ((nodesOpened < maxNodes) && (!leaves.isEmpty()))
+        while (ratioTimeLeft() > 0 && !leaves.isEmpty())
         {
             Leaf lf = leaves.poll();
             if (lf.gs.winner >= 0)
