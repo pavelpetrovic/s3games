@@ -156,7 +156,7 @@ public class Controller implements SwitchListener, Runnable
         {
             cw.setNumberOfRunsToGo(numberOfRuns+1);
             gameRunning.on();
-            game = new Game(config, logger, gw, gameRunning, robot);
+            
 
             if (boardType == Player.boardType.REALWORLD)
             {
@@ -169,7 +169,9 @@ public class Controller implements SwitchListener, Runnable
                     if (robotNeeded) robot = new Robot("COM3", gameSpecification);
                 } catch (Exception e) { gw.showException(e); }
             }
-
+            
+            game = new Game(config, logger, gw, gameRunning, robot);
+            
             ArrayList<Player> players = new ArrayList<Player>();                
             for(int player = 0; player < gameSpecification.playerNames.length; player++)
             {
