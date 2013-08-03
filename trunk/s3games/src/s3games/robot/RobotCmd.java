@@ -29,8 +29,8 @@ public class RobotCmd
             case version: cmdString = "VER"; break;
             case grab: cmdString = "#5 P2000 T2000"; break;
             case put: cmdString = "#5 P1000 T2000"; break;
-            case init: cmdString = "#0 P1500 T9000 #1 P1500 T9000 #2 P1500 T9000 #3 P1500 T9000 #4 P1500 T9000"; break;
-            case home: cmdString = "#0 P1500 #1 P1500 #2 P1500 #3 P1500 T9000"; break;
+            case init: buildPositionCommand(new double[] {0.0, 0.0, 0.0, 0.0, 0.0 }); break;
+            case home: buildPositionCommand(new double[] {0.0, 53.0, -76.0, -101.0, 13.0 }); break;
         }
     }
 
@@ -44,7 +44,7 @@ public class RobotCmd
         StringBuilder result = new StringBuilder();
         result.append("#0 P");
         result.append(angleToPulseBase(angles[0]));
-        result.append("#1 P");
+        result.append(" #1 P");
         result.append(angleToPulseWrist(angles[1]));
         result.append(" #2 P");
         result.append(angleToPulseElbow(angles[2]));

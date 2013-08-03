@@ -9,6 +9,7 @@ import s3games.engine.Move;
 import s3games.gui.RobotWindow;
 import java.io.*;
 import java.util.Arrays;
+import s3games.engine.Location;
 
 /**
  *
@@ -21,9 +22,11 @@ public class Robot
     GameSpecification specs;
     RobotWindow win;
     Move requestedMove;
+    Object waitForMovePerformed;
     
     public Robot(String serialPort, GameSpecification specs) throws Exception
     {
+        waitForMovePerformed = new Object();
         port = serialPort;
         this.specs = specs;
         win = new RobotWindow(this);        
@@ -36,6 +39,13 @@ public class Robot
         link = new RobotSerialPort(port);
         link.open();       
         link.print(new RobotCmd(RobotCmd.Command.version).getCommand());
+        StringBuilder sb = new StringBuilder();
+        int ch;
+        do {
+            ch = link.read();
+            sb.append((char)ch);
+        } while (ch != 13);
+        win.addMessage("Robot Firmware version: " + sb.toString());
     }
     
     public void close()
@@ -43,10 +53,14 @@ public class Robot
         link.close();        
     }
     
-    public void moveRobot(Move move)
+    public void moveRobot(Move move) throws Exception
     {
         requestedMove = move;
         win.addMessage("A new move " + move + " has been requested, click [Perform move] to perform it.");        
+        synchronized(waitForMovePerformed)
+        {
+            waitForMovePerformed.wait();
+        }
     }
  
     public void performMove() throws Exception
@@ -54,6 +68,19 @@ public class Robot
         goTo(requestedMove.from, true);        
         goTo(requestedMove.to, false);        
         goHome();
+        synchronized(waitForMovePerformed)
+        {
+            waitForMovePerformed.notify();
+        }
+    }
+    
+    private boolean moveCompleted() throws Exception
+    {
+        link.print("Q");
+        int stillMoving = link.read();
+        if (stillMoving == '.') return true;
+        if (stillMoving == '+') return false;
+        throw new Exception("Query from robot expected + or . but " + stillMoving + " was received.");
     }
     
     private void goTo(String locationName, boolean grab) throws Exception
@@ -112,19 +139,33 @@ public class Robot
         } catch (Exception e) {}
     }
     
+    public void allLocationsDemo()
+    {
+        try {
+            for (Location loc: specs.locations.values())
+            {            
+                goTo(loc.name.fullName, false);
+                Thread.sleep(5000);
+            }
+        } catch (Exception e) { win.addMessage("Problem moving to location: " + e.getMessage()); }
+    }
+    
     public void goTo(double[] angles) throws Exception
     {
-       link.print(new RobotCmd(RobotCmd.Command.position, angles).getCommand());
+        while (!moveCompleted()) { Thread.sleep(500); }        
+        link.print(new RobotCmd(RobotCmd.Command.position, angles).getCommand());
     }
 
     public void grab() throws Exception
     {
-       link.print(new RobotCmd(RobotCmd.Command.grab).getCommand());
+        while (!moveCompleted()) { Thread.sleep(500); }
+        link.print(new RobotCmd(RobotCmd.Command.grab).getCommand());
     }
    
     public void put() throws Exception
     {
-       link.print(new RobotCmd(RobotCmd.Command.put).getCommand());        
+        while (!moveCompleted()) { Thread.sleep(500); }
+        link.print(new RobotCmd(RobotCmd.Command.put).getCommand());        
     } 
    
     public void initArm() throws Exception
@@ -134,6 +175,7 @@ public class Robot
      
     public void goHome() throws Exception
     {
+        while (!moveCompleted()) { Thread.sleep(500); }
         link.print(new RobotCmd(RobotCmd.Command.home).getCommand());
     }
 }

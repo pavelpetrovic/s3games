@@ -75,4 +75,9 @@ public class RobotSerialPort implements Runnable
         out.write(0x0d);
         out.flush();
     }
+    
+    int read() throws IOException
+    {
+        return in.read();
+    }
 }

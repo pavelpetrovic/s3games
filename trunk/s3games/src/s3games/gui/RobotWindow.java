@@ -22,6 +22,7 @@ public class RobotWindow extends ControlWindow implements ActionListener
     JButton goButton;
     JButton clearButton;
     JButton testButton;
+    JButton allLocationsButton;
     
     boolean ourTurn;
     
@@ -41,10 +42,13 @@ public class RobotWindow extends ControlWindow implements ActionListener
         panel.add(clearButton);
         testButton = new JButton("Test");
         panel.add(testButton);
+        allLocationsButton = new JButton("Show all locations");
+        panel.add(allLocationsButton);
         
         goButton.addActionListener(this);            
         clearButton.addActionListener(this); 
         testButton.addActionListener(this);
+        allLocationsButton.addActionListener(this);
     }
         
     public void moving(boolean b)
@@ -65,6 +69,8 @@ public class RobotWindow extends ControlWindow implements ActionListener
             out.setText("");
         else if (e.getSource() == testButton)
             robot.doTest();
+        else if (e.getSource() == allLocationsButton)
+            robot.allLocationsDemo();
     }
     
     @Override
