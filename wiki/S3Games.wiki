@@ -17,3 +17,4 @@ Further reading:
  * [Information] - some educational information on the topic
  * [GameSpecification] - how to specify a new game 
  * [GamesWePlayed] - list of games that we played
+ * [Results] - some results from S3
