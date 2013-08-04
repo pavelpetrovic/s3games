@@ -44,12 +44,13 @@ public class CameraPlayer extends Player
     }
     
     private Move determineUserMove(GameState state, ArrayList<Camera.DetectedObject> objs) 
-    {
-        String movedFrom, movedTo = null, elem;
-        
+    {   
+        String movedFrom = null, movedTo = null, elem;
+        Camera.DetectedObject objectMovedTo = null;
         HashSet<String> formerlyOccupiedLocations = new HashSet<String>();
         for(Map.Entry<String,String> loel: state.locationElements.entrySet())
-            if (loel.getValue() != null) 
+            if (!specs.locations.get(loel.getKey()).relevant) continue; 
+            else if (loel.getValue() != null) 
                 formerlyOccupiedLocations.add(loel.getKey());
         
         for(Camera.DetectedObject obj: objs)
@@ -57,7 +58,15 @@ public class CameraPlayer extends Player
             Location loc = specs.findClosestCameraLocation(obj.x, obj.y);
             String expectedElement = state.locationElements.get(loc.name.fullName);
             if (expectedElement == null)
+            {
+                if (movedTo != null)
+                {
+                    camera.msgToUser("It seems you have moved more than one element at a time. You can only move exactly one stone at a time. Try again.");
+                    return null;
+                }    
                 movedTo = loc.name.fullName;
+                objectMovedTo = obj;
+            }
             else 
             {
                 formerlyOccupiedLocations.remove(loc.name.fullName);
@@ -75,13 +84,29 @@ public class CameraPlayer extends Player
             camera.msgToUser("I did not find any formerly free location having a stone now. You can only move exactly one stone at a time. Try again.");        
             return null;
         }
-        
-        if (formerlyOccupiedLocations.size() != 1)
+        if (formerlyOccupiedLocations.isEmpty())
+        {
+            for (Location loc : specs.locations.values())
+            {
+                if (!loc.relevant)
+                {
+                    String elName = state.locationElements.get(loc.name.fullName);
+                    if (elName == null) continue;
+                    Element element = specs.elements.get(elName);
+                    if (!element.type.equals(objectMovedTo.type)) continue;
+                    if (state.elementStates.get(elName) != objectMovedTo.state) continue;
+                    movedFrom = loc.name.fullName;
+                }
+            }
+        }
+        if ((formerlyOccupiedLocations.size() != 1) && (movedFrom == null))
+            
         {
             camera.msgToUser("I did not find any formerly occupied location being free now. You can only move exactly one stone at a time. Try again.");        
             return null;
         }
-        movedFrom = formerlyOccupiedLocations.iterator().next();
+        if (movedFrom == null)
+            movedFrom = formerlyOccupiedLocations.iterator().next();
         
         elem = state.locationElements.get(movedFrom);       
         

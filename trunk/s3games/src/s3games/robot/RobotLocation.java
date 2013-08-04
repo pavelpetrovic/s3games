@@ -29,6 +29,14 @@ public class RobotLocation
         for (int i = 0; i < angles.length; i++)
             angles[i] = Double.parseDouble(angs[i].trim());
     }
+
+    public RobotLocation getCopy()
+    {
+        RobotLocation copied = new RobotLocation();
+        for (int i = 0; i < angles.length; i++)
+            copied.angles[i] = angles[i];
+        return copied;
+    }
     
     @Override
     public String toString()

@@ -83,9 +83,16 @@ public class Camera implements Runnable
     private void sendLocationsToCamera()
     {
         out.println("3");
-        out.println(specs.locations.size());
-        for (Location loc: specs.locations.values())        
-            out.println(loc.camera.x + " " + loc.camera.y);
+        
+        int count = 0;
+        for (Location loc: specs.locations.values())    
+            if (loc.camera != null) count++;
+        out.println(count);
+        
+        for (Location loc: specs.locations.values())    
+            if (loc.camera != null)
+                out.println(loc.camera.x + " " + loc.camera.y);
+        
         out.flush();
     }
     

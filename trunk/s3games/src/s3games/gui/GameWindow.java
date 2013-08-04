@@ -77,7 +77,7 @@ public class GameWindow extends javax.swing.JFrame {
     {
         //TODO report exception to user
          e.printStackTrace();
-         JOptionPane.showMessageDialog(this, e.toString(),"Exception occured", JOptionPane.ERROR_MESSAGE);
+         JOptionPane.showMessageDialog(this, e.getMessage(), "Ops, we got a little problem", JOptionPane.ERROR_MESSAGE);
     }
     
     /**

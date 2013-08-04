@@ -68,6 +68,8 @@ public class GameSpecification
         Location minLoc = null;
         for(Location loc: locations.values())
         {
+            if (loc.camera == null) continue;
+            
             double d1 = loc.camera.distanceSq(x, y);
             if (d1 < minDist)
             {

@@ -10,12 +10,13 @@ import s3games.gui.RobotWindow;
 import java.io.*;
 import java.util.Arrays;
 import s3games.engine.Location;
+import s3games.gui.RobotControlWindow;
 
 /**
  *
  * @author petrovic
  */
-public class Robot 
+public class Robot implements Runnable
 {
     private String port;
     RobotSerialPort link;
@@ -83,7 +84,8 @@ public class Robot
         if (stillMoving == '+') return false;
         throw new Exception("Query from robot expected + or . but " + stillMoving + " was received.");
     }
-    
+
+    double[] currentLocation;
     private void goTo(String locationName, boolean grab) throws Exception
     {
         double[] angles = specs.locations.get(locationName).robot.angles;
@@ -91,9 +93,11 @@ public class Robot
         double[] place2 = Arrays.copyOfRange(angles, 5, 10);
         goTo(place1);
         Thread.sleep(700);
+        currentLocation = place2;
         goTo(place2);
         Thread.sleep(700);
         if (grab) grab(); else put();
+        if (paused) return;
         Thread.sleep(700);
         goTo(place1);
         Thread.sleep(700);
@@ -140,15 +144,49 @@ public class Robot
         } catch (Exception e) {}
     }
     
+    boolean showingLocations;
     public void allLocationsDemo()
     {
+        if (!showingLocations)
+        {
+            new Thread(this).start();
+        }
+    }
+      
+    @Override
+    public void run() 
+    {
+        showingLocations = true;
         try {
             for (Location loc: specs.locations.values())
             {            
+                if (loc.relevant == false)
+                {
+                  win.addMessage("skipped irrelevant location " + loc.name.fullName);
+                  continue;
+                }
+                win.addMessage("goTo(" + loc.name.fullName + ") = " + loc.robot.toString());
                 goTo(loc.name.fullName, false);
                 Thread.sleep(5000);
+                while (paused) Thread.sleep(1000);                    
             }
         } catch (Exception e) { win.addMessage("Problem moving to location: " + e.getMessage()); }
+        showingLocations = false;
+    }
+
+    public boolean paused;
+    public void pause()
+    {
+        paused = !paused;
+        if (paused) win.addMessage("Paused. Prese [Pause] again to continue.");
+    }
+    
+    public void control()
+    {
+        if (!paused) pause();
+        win.addMessage("Control the robot using keys q,a,w,s,e,d,r,f,t,g, quit the window with 'Q'.");
+        RobotControlWindow rcw = new RobotControlWindow(this);
+        rcw.setPosition(currentLocation);
     }
     
     public void goTo(double[] angles) throws Exception
@@ -186,4 +224,5 @@ public class Robot
         while (!moveCompleted()) { Thread.sleep(500); }
         link.print(new RobotCmd(RobotCmd.Command.home).getCommand());
     }
+
 }
