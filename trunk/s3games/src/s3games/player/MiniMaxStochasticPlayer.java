@@ -23,7 +23,7 @@ import s3games.engine.Move;
  */
 public class MiniMaxStochasticPlayer extends Player {
     public enum NodeType { MIN, MAX };
-    public static double mmRatio = 0.3;
+    public static double mmRatio = 0.7;
     
     public MiniMaxStochasticPlayer.Node newNode(MiniMaxStochasticPlayer.Node previous, GameState gs) throws Exception
     {
@@ -141,23 +141,39 @@ public class MiniMaxStochasticPlayer extends Player {
 
     public HashMap<Move, GameState> expand(GameState state, HashSet<Move> moves, double ratio) throws Exception
     {
+        if (moves.isEmpty()) return new HashMap<Move, GameState>();
         Random randomGenerator = new Random();
         
         HashMap<Move, GameState> expanded = null;
         expanded = new HashMap<Move, GameState>();
         
+        int countExpanded = 0;
         for (Move mv: moves)
         {
-            if (randomGenerator.nextDouble() < ratio) {                
+            if (randomGenerator.nextDouble() < ratio)           
+            {
                 GameState newState = state.getCopy();
                 newState.performMove(mv);
                 expanded.put(mv, newState);
+                countExpanded++;
             }
+        }
+        
+        if (countExpanded == 0)
+        { 
+            int selected = randomGenerator.nextInt(moves.size());
+            Iterator<Move> it = moves.iterator();
+            while (selected-- > 0)
+                it.next();
+            Move mv = it.next();
+            GameState newState = state.getCopy();
+            newState.performMove(mv);
+            expanded.put(mv, newState);
         }
         
         return expanded;
     }
-    
+        
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
