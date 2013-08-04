@@ -25,6 +25,8 @@ public class RobotControlWindow extends JFrame implements Runnable
     
     private boolean terminate;
     
+    double[] position;
+    
     public void respondToKey()
     {
         for (int i = 0; i < keys.length; i++)
@@ -32,11 +34,16 @@ public class RobotControlWindow extends JFrame implements Runnable
             {
                 int degreeIndex = i / 2;
                 int direction = ((i % 2) << 1) - 1;
-                position.angles[degreeIndex] += direction;
+                position[degreeIndex] += direction;
                 repaint();
-                try { robot.goToDirect(position.angles); }
+                try { robot.goToDirect(position); }
                 catch (Exception e) {}                        
             }
+    }
+    
+    public void setPosition(double[] pos)
+    {
+        position = pos;
     }
     
     public RobotControlWindow(Robot robotReference)
@@ -44,7 +51,7 @@ public class RobotControlWindow extends JFrame implements Runnable
         robot = robotReference;
         terminate = false;
         setTitle("Robot Control");     
-        position = new RobotLocation();     
+        position = new double[5];
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 key = evt.getKeyChar();                
@@ -68,10 +75,8 @@ public class RobotControlWindow extends JFrame implements Runnable
                 try { Thread.sleep(250); } catch (Exception e) {}
             }
         }        
-        dispose();        
+        dispose();          
     }
-    
-    RobotLocation position;
     
     @Override
     public void paint(Graphics g)
@@ -79,7 +84,10 @@ public class RobotControlWindow extends JFrame implements Runnable
         g.setColor(Color.white);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.magenta);
-        g.drawString("Angles: " + position.toString(), 10, 80);
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < 5; i++)
+            s.append(" " + position[i]);        
+        g.drawString("Angles: " + s.toString(), 10, 80);
     }
     
 }

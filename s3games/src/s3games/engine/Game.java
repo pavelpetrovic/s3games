@@ -75,14 +75,21 @@ public class Game extends Thread
                 break;
             }
             
-            nextMove = playerOnMove.move(state, allowedMoves);
-            if (gameRuns.isOff()) 
-            {
-                state.winner = 0;
-                break;
-            }
-            System.out.println("Player moves: " + nextMove.toString());
-            boolean approved = state.moveAllowed(nextMove);
+            boolean approved = false;
+            do {
+                nextMove = playerOnMove.move(state, allowedMoves);
+                if (gameRuns.isOff()) 
+                {
+                    state.winner = 0;
+                    break;
+                }
+                System.out.println("Player moves: " + nextMove.toString());
+                approved = state.moveAllowed(nextMove);
+                if (!approved && !playerOnMove.isComputer())
+                    window.showException(new Exception("You cannot make move " + nextMove + " according to rules. Try again."));
+                
+            } while (!approved && !playerOnMove.isComputer());
+            
             if (!approved)
             {
                 window.showException(new Exception("Player performed illegal move " + nextMove));

@@ -190,7 +190,8 @@ public class GameSpecificationParser
         {
             location.type = val;
             LocationType locType = specs.locationTypes.get(val);
-            if (locType == null) throw new Exception("Unknown location type " + val);
+            if (locType == null) 
+                throw new Exception("Unknown location type " + val);
             location.relevant = locType.relevant;
         }
         else if (var.equals("point"))
@@ -204,12 +205,16 @@ public class GameSpecificationParser
             location.camera = new Point(Integer.parseInt(coord[0].trim()), Integer.parseInt(coord[1].trim()));
         }
         else if (var.equals("robot"))
+        {
+            System.out.println(var + "=" + val);
+        
             try { location.robot = new RobotLocation(val); }
             catch (Exception e)
             {                
                 logger.error(e.toString());
                 throw e;
             }
+        }
     }
 
     private void playerNameSetting(String var, String val)
