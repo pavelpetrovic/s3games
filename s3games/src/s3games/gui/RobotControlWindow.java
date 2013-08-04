@@ -15,34 +15,60 @@ import s3games.robot.RobotLocation;
  *
  * @author Nastavnik
  */
-public class RobotControlWindow extends JFrame
+public class RobotControlWindow extends JFrame implements Runnable
 {      
     final Robot robot;
     
     private final char keys[] = { 'q', 'a', 'w', 's', 'e', 'd', 'r', 'f', 't', 'g' };
         
+    private char key;
+    
+    private boolean terminate;
+    
+    public void respondToKey()
+    {
+        for (int i = 0; i < keys.length; i++)
+           if (key == keys[i])
+            {
+                int degreeIndex = i / 2;
+                int direction = ((i % 2) << 1) - 1;
+                position.angles[degreeIndex] += direction;
+                repaint();
+                try { robot.goToDirect(position.angles); }
+                catch (Exception e) {}                        
+            }
+    }
+    
     public RobotControlWindow(Robot robotReference)
     {
         robot = robotReference;
+        terminate = false;
         setTitle("Robot Control");     
         position = new RobotLocation();     
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                char key = evt.getKeyChar();
-                for (int i = 0; i < keys.length; i++)
-                    if (key == keys[i])
-                    {
-                        int degreeIndex = i / 2;
-                        int direction = ((i % 2) << 1) - 1;
-                        position.angles[degreeIndex] += direction;
-                        repaint();
-                        try { robot.goTo(position.angles); }
-                        catch (Exception e) {}                        
-                    }
+                key = evt.getKeyChar();                
+                if (key == 'Q') terminate = true;
             }
         });
         setVisible(true);
         setSize(400,200);
+        key = ' ';
+        new Thread(this).start();
+    }
+    
+    public void run()
+    {
+        while(!terminate)
+        {
+            if (key != ' ') 
+            {
+                respondToKey();
+                key = ' ';
+                try { Thread.sleep(250); } catch (Exception e) {}
+            }
+        }        
+        dispose();        
     }
     
     RobotLocation position;
