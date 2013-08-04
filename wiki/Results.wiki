@@ -1,3 +1,5 @@
+( [S3Games return to main wiki page] )
+
 Results from comparison of algorithms:
 
 http://kempelen.ii.fmph.uniba.sk/S3GroupWork/zstatstic.zip
