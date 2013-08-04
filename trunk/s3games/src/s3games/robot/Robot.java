@@ -157,6 +157,11 @@ public class Robot
         link.print(new RobotCmd(RobotCmd.Command.position, angles).getCommand());
     }
 
+    public void goToDirect(double[] angles) throws Exception
+    {    
+        link.print(new RobotCmd(RobotCmd.Command.position, angles).getCommand());
+    }
+    
     public void grab() throws Exception
     {
         while (!moveCompleted()) { Thread.sleep(500); }
