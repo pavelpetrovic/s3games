@@ -18,3 +18,4 @@ Further reading:
  * [GameSpecification] - how to specify a new game 
  * [GamesWePlayed] - list of games that we played
  * [Results] - some results from S3
+ * Article from S3: https://s3games.googlecode.com/svn/trunk/s3games/The_Art_of_Playing_Games_ELMAR.pdf
