@@ -163,7 +163,7 @@ location=s(1)
 </pre>
 <font color="brown"><pre>
 [EXPRESSIONS]    
-FrogsAtHome
+FrogsAtHome    
   FORALL($J,1,3,ELTYPE(CONTENT("s($J)")) == "redFrog")  
   FORALL($J,5,7,ELTYPE(CONTENT("s($J)")) == "greenFrog")
 END
