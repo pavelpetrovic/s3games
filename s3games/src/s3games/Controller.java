@@ -1,47 +1,53 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import s3games.ai.Heuristic;
-import s3games.ai.Strategy;
-import s3games.engine.Game;
-import s3games.engine.GameSpecification;
-import s3games.gui.ControllerWindow;
-import s3games.gui.GameWindow;
-import s3games.gui.RobotControlWindow;
+
+import s3games.ai.*;
+import s3games.engine.*;
+import s3games.gui.*;
 import s3games.io.*;
-import s3games.player.CameraPlayer;
-import s3games.player.MousePlayer;
-import s3games.player.Player;
-import s3games.robot.Camera;
-import s3games.robot.Robot;
-import s3games.util.Switch;
-import s3games.util.SwitchListener;
+import s3games.player.*;
+import s3games.robot.*;
+import s3games.util.*;
+
 
 /**
- *
- * @author petrovic16
+ * The Controller class is the main logic of the application. It holds one
+ * ControllerWindow which is the main menu and responds to the user actions
+ * by invoking the corresponding actions. 
  */
 public class Controller implements SwitchListener, Runnable
 {
-    ControllerWindow cw;
-    GameWindow gw;
-    GameLogger logger;
-    Config config;
-    Game game;
-    Switch gameRunning;
-    Camera camera;
-    Robot robot;
-    final Object notifier;
+    /** reference to the controller window - GUI with main menu */
+    private ControllerWindow cw;
     
+    /** reference to game window - it contains the game board visualizing the current game situation */
+    private GameWindow gw;
+    
+    /** game logger is used to store log messages from the application to a file */
+    private GameLogger logger;
+    
+    /** config is intended to store configuration options in a file with serialization, it is not in much use now */
+    private Config config;
+    
+    /** instance of the game that is being currently played */
+    private Game game;
+    
+    /** if the game terminates for whatever reason, this switch will be switched off, notifying all its listeners */
+    private Switch gameRunning;
+    
+    /** singleton that communicates with the camera - i.e. a C++ application that utilizes OpenCV */
+    private Camera camera;
+    
+    /** singleton that communicates with the Lynxmotion arm using SSC-32 controller connected to a serial port */
+    private Robot robot;
+    
+    /** a synchronization object for notifying the controller thread that the game thread finished so that it can start another one (for the case of multiple games) */
+    private final Object notifier;
+
+    /** constructs and shows main window and the minimum agenda */
     public Controller()
     {
         notifier = new Object();
@@ -56,6 +62,7 @@ public class Controller implements SwitchListener, Runnable
         config.load();
     }
     
+    /** called automatically when a game starts or stops */
     @Override
     public void switchChanged(boolean newState)
     {
@@ -74,25 +81,24 @@ public class Controller implements SwitchListener, Runnable
         }
     }
 
+    /** should return the list of available games, this should probably go to some external file (?) */
     public String[] getGameNames()
     {
         return new String[] {"Connect4","Puzzle8","Reversi","RiverCrossing","Alquerque","Mill","Nim", "Frogs", "TicTacToe"};
     }
     
-    //todo
+    /** returns list of strategies that can play the specified game, we should improve this architecture somehow later */
     public String[] getStrategiesForGame(String gameName)
     {
         return Strategy.availableStrategies(gameName);
     }
 
-    //todo
+    /** returns list of heuristics that are compatible with the specified strategy - also a place for improvement */
     public String[] getHeuristicsForGame(String strategyName) {
         return Heuristic.availableHeuristics(strategyName);
     }
     
-   
-    
-    //todo
+    /** returns a list of strategies that can learn to play the specified game - improve...? */
     public String[] getLearnableStrategyTypesForGame(String gameName)
     {
         ArrayList<String> learnable = new ArrayList<String>();
@@ -104,7 +110,7 @@ public class Controller implements SwitchListener, Runnable
         return learnable.toArray(result);
     }
 
-    //todo
+    /** return the number of players for the specified game - should read the specs...fixit! */
     public int getNumberOfPlayersForGame(String gameName)
     {
         return 2;
@@ -116,6 +122,8 @@ public class Controller implements SwitchListener, Runnable
      * @param boardType real or simulated
      * @param playerTypes for each player whether it is a human or a computer
      * @param playerStrategies only for computer players, name of strategy to use
+     * @param strategyHeuristics name of heuristic to use for each computer player
+     * @param numberOfRuns how many times to play this game (normally 1, but higher when running statistical runs)
      */
     public void play(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, 
                      String[] playerStrategies, String[] strategyHeuristics, int numberOfRuns) 
@@ -137,14 +145,28 @@ public class Controller implements SwitchListener, Runnable
         new Thread(this).start();
     }
 
-    int numberOfRuns;
-    GameSpecification gameSpecification;
-    Player.boardType boardType;    
-    Player.playerType[] playerTypes;
-    String[] playerStrategies;
-    String[] strategyHeuristics;
-    String gameName;
+    /** the number of runs the controller thread should start in a sequence */
+    private int numberOfRuns;
     
+    /** the specification of the game being played */
+    private GameSpecification gameSpecification;
+    
+    /** do we play real or on-screen? */
+    private Player.boardType boardType;    
+    
+    /** do we play human/camera or computer/ai? */
+    private Player.playerType[] playerTypes;
+    
+    /** strategy for each [computer] player */
+    private String[] playerStrategies;
+    
+    /** heuristic for each [computer] player */
+    private String[] strategyHeuristics;
+    
+    /** the name of game being played */
+    private String gameName;
+    
+    /** a controller thread that plays all the games in this round - usually just one */
     @Override
     public void run()
     {
@@ -211,12 +233,15 @@ public class Controller implements SwitchListener, Runnable
         try { fw.close(); } catch (IOException ex) { gw.showException(ex); }
     }
     
-        /** starts a single game
+    /** tries to learn to play a game - not yet in use
      *
      * @param gameName name of the game to play
      * @param boardType real or simulated
      * @param playerTypes for each player whether it is a human or a computer
      * @param playerStrategies only for computer players, name of strategy to use
+     * @param strategyHeuristics name of heuristic to use for computer players
+     * @param strategyFileName where should we save the learned strategy
+     * @param numberOfRuns how many times to play the game while learning
      * @param learnStrategy strategy that will be learned
      * @return the number of player who won, 0 for draw/nobody, -1 if game was interrupted
      */
@@ -235,6 +260,7 @@ public class Controller implements SwitchListener, Runnable
         return 0;
     }    
     
+    /** opens a window that allows a direct robot arm control - can be used for finding the robot arm angles of individual positions on the field */
     public void controlRobot() 
     {
         try {
