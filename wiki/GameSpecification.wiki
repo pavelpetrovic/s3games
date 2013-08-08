@@ -56,7 +56,7 @@ point=1,1
 </pre></font>
 
  * locations
-	name (+ optionally one or two indexes, e.g. "place(1)", "place(2,3)" ),	type, coordinates, on the playing field, robot arm servos angles to reach the location on real board
+	name (+ optionally one or two indexes, e.g. "place(1)", "place(2,3)" ),	type, coordinates in window, coordinates on the playing field, robot arm servos angles to reach the location on real board (5 angles above, 5 at the location)
 
 <font color="brown"><pre>
 [LOCATIONS]    
@@ -64,7 +64,7 @@ name=s(1)
 type=stone
 point=40,250
 camera=20,135
-robot=10,20,30,40,50
+robot=10,20,30,40,50,10,20,30,40,50
 </pre></font>
 
  * players names
