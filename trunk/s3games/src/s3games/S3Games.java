@@ -1,24 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games;
 
-
-/**
- *
- * @author petrovic16
- */
+/** the startup class of the application */
 public class S3Games
 {
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-  
+    /** starts the application, command line arguments are not in use */
+    public static void main(String[] args) 
+    {
         Controller controller = new Controller();
     }
-
 }

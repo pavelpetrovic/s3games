@@ -1,30 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.ai;
 
 import java.util.Map;
-import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.util.IndexedName;
 
-/**
- *
- * @author Nastavnik
- */
+/** A heuristic class for the puzzle8 game. It calculates the sum of the Manhattan distances for all elements from their target locations. Use it with A* algorithm. */
 public class Puzzle8Heuristic extends Heuristic 
 {    
+    /** calculate the row number from the element index */
     private int getRow(int position)
     {
         return (position + 2) / 3;
     }
     
+    /** calculate the column numbner from the element index */
     private int getCol(int position)
     {
         return (position - 1) % 3 + 1;
     }
     
+    /** return a sum of distances to target locations of all elements */
     @Override
     public double heuristic(GameState gameState, int forPlayer) 
     {
