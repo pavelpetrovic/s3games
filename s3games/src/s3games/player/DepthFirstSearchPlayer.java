@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.player;
 
 import java.util.*;
@@ -9,35 +5,43 @@ import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
 
-/**
- *
- * @author zuzycka
- */
-public class DepthFirstSearchPlayer extends Player {
-    
-    private GameSpecification specs;
+/** Standard Depth-first-search player for one-player games. */
+public class DepthFirstSearchPlayer extends Player 
+{   
+    /** list of open nodes (LIFO = stack) */
     private ArrayList<Node> open; 
+    /** list of visited states */
     private HashSet<GameState> visited;
+    /** history of states visited in previous calls to this search so that we 
+     * do not generate looping moves */
     private HashSet<GameState> history;
     
-    class Node {
+    /** holds a state and previous node and move */
+    class Node 
+    {
         Move moveToThisState;
         GameState gs;
         Node previous;
         
-        Node(Node p,Move m, GameState g) {
+        Node(Node p,Move m, GameState g) 
+        {
             moveToThisState = m;
             previous = p;
             gs = g;
         }     
     }
 
-    public DepthFirstSearchPlayer(GameSpecification specs) {
-        this.specs = specs;
+    /** construct a DFS player for the specified game */
+    public DepthFirstSearchPlayer() 
+    {
         history = new HashSet<GameState>();
     }
+    
+    /** make a move using DFS strategy - search the state space in depth,
+     * when finding a first winning state, return a move that is leading towards it */
     @Override
-    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception {
+    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
+    {
         try { Thread.sleep(1000); } catch (Exception e) {};
         open = new ArrayList<Node>();
         visited = new HashSet<GameState>();
@@ -48,7 +52,7 @@ public class DepthFirstSearchPlayer extends Player {
         visited.add(state);
         open.add(new Node(null, null, state));
                
-        while (open.size()>0) 
+        while (open.size() > 0) 
         {
                 Node actualNode = open.get(open.size()-1);
                 activeState = actualNode.gs;
@@ -61,24 +65,18 @@ public class DepthFirstSearchPlayer extends Player {
                     gs.performMove(mv); //perfom move and get next state
                     if ((!visited.contains(gs)) && (!history.contains(gs))) {
                         visited.add(gs);      //to prevent adding same neighbours
-                        if (gs.winner==number)   //find a path to the first move
+                        if (gs.winner == number)   //find a path to the first move
                         {
                             if (actualNode.previous == null) return mv;
                             while(actualNode.previous.previous!=null) 
                                    actualNode = actualNode.previous;
                             return actualNode.moveToThisState;
                         }
-                        if (gs.winner==-1)   //not visited and not finished
+                        if (gs.winner == -1)   //not visited and not finished
                            open.add(new Node(actualNode,mv,gs));    
                     }
                 }
         }        
         return allowedMoves.iterator().next();
     }
-    
-    @Override
-    public void otherMoved(Move move, GameState newState) {
-    
-    }
-    
 }

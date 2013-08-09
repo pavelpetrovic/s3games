@@ -1,14 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.util;
 
-/**
- *
- * @author petrovic
- */
+/** Listeners to switch class should implement this interface. */
 public interface SwitchListener 
 {
+    /** the state of the switch has changed */
     public void switchChanged(boolean newState);    
 }

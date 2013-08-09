@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.engine;
 
 import java.util.*;
@@ -13,26 +8,37 @@ import s3games.player.Player;
 import s3games.robot.Robot;
 import s3games.util.Switch;
 
-/**
- *
- * @author petrovic16
- */
+/** The Game class represents a single instance of game - it asks players to 
+ * provide their moves, verifies if they conform with the rules and 
+ * performs all the follow-up actions, including instructing the robot arm
+ * to perform the requested actions */
 public class Game extends Thread
 {
+    /** current state of the game */
     public GameState state;
     
+    /** specification of the game */
     public GameSpecification gameSpecification;
+    
+    /** board of the game shown in window */
     public GameWindow window;
     
+    /** config can contain some configuration options */
     public Config config;
+    
+    /** logger is used to write informative messages about game progress to file */
     public GameLogger logger;
     
+    /** all players that are currently playing the game */
     public Player[] players;
     
+    /** robot arm controller */
     private Robot robot;
     
+    /** handle to a switch to turn off when the game terminates for any reason */
     private Switch gameRuns;
 
+    /** constructs a new game, saves references to the objects passed in arguments */
     public Game(Config config, GameLogger logger, GameWindow window, Switch gameRuns, Robot robot)
     {
         this.config = config;
@@ -42,12 +48,14 @@ public class Game extends Thread
         this.robot = robot;
     }
 
+    /** setup game specification and players objects */
     public void setGameAndPlayers(GameSpecification gameSpecification, Player[] players)
     {        
         this.gameSpecification = gameSpecification;
         this.players = players;
     }
     
+    /** game runs in separate thread, here */
     @Override
     public void run()  
     {
@@ -109,9 +117,6 @@ public class Game extends Thread
                     players[p].otherMoved(nextMove, state);            
             
         } while (state.winner == -1);
-        
-        for (int p = 0; p < numberOfPlayers; p++)
-            players[p].gameOver();
         
         window.setState(state);
         

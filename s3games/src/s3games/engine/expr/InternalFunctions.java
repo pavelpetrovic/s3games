@@ -1,18 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.engine.expr;
 
 import s3games.engine.*;
 import s3games.util.IndexedName;
 
-/**
- *
- * @author petrovic
- */
+/** Holds implementations of all internal functions. The class is just 
+ * a module with one long static eval() function that does the job depending
+ * on which internal function is evaluated. */
 public class InternalFunctions 
 {
+    /** Evaluates a specified internal function call with the specified arguments
+     * in a given context. The evaluation can make changes in the context, and
+     * game state and it can even move the robot arm, if needed. Whenever the
+     * argument types do not match, or some other problem is detected, an
+     * exception with the explanatory message is thrown. */
     static Expr eval(Expr.internalFunction fn, Expr[] args, Context context) throws Exception
     {
         if (fn == Expr.internalFunction.IF)
@@ -34,11 +34,11 @@ public class InternalFunctions
             Expr fromVal = args[1].eval(context);
             if (!(fromVal instanceof Expr_NUM_CONSTANT))
                 throw new Exception("FORALL/FORSOME expects 'from' value to be a number");
-            int fromValue = ((Expr_NUM_CONSTANT)fromVal).num;
+            int fromValue = ((Expr_NUM_CONSTANT)fromVal).getInt();
             Expr toVal = args[2].eval(context);
             if (!(toVal instanceof Expr_NUM_CONSTANT))
                 throw new Exception("FORALL/FORSOME expects 'to' value to be a number");            
-            int toValue = ((Expr_NUM_CONSTANT)toVal).num;
+            int toValue = ((Expr_NUM_CONSTANT)toVal).getInt();
             int delta = 1;
             if (fromValue > toValue) delta = -1;
             for (int i = fromValue; i != toValue + delta; i += delta )
@@ -87,7 +87,7 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("STATE requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer state = context.gameState.elementStates.get(elementName);
+            Integer state = context.getState().elementStates.get(elementName);
             if (state == null) return Expr.numExpr(-1);
             return Expr.numExpr(state);
         }
@@ -98,7 +98,7 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("LOCATION requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            String location = context.gameState.elementLocations.get(elementName);
+            String location = context.getState().elementLocations.get(elementName);
             if (location == null) return Expr.strExpr("");
             return Expr.strExpr(location);
         }
@@ -140,7 +140,7 @@ public class InternalFunctions
             Expr ind = args[0].eval(context);
             if (!(ind instanceof Expr_NUM_CONSTANT))
                 throw new Exception("INDEXA requires number as the first argument");
-            int index = ((Expr_NUM_CONSTANT)ind).num;
+            int index = ((Expr_NUM_CONSTANT)ind).getInt();
             Expr str = args[1].eval(context);
             if (!(str instanceof Expr_STR_CONSTANT))
                 throw new Exception("INDEXA requires string as second argument");            
@@ -165,23 +165,23 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("OWNER requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer owner = context.gameState.elementOwners.get(elementName);
+            Integer owner = context.getState().elementOwners.get(elementName);
             if (owner == null) return Expr.numExpr(-1);
             return Expr.numExpr(owner);            
         }
         
         if (fn == Expr.internalFunction.PLAYER)        
-            return Expr.numExpr(context.gameState.currentPlayer);
+            return Expr.numExpr(context.getState().currentPlayer);
         
         if (fn == Expr.internalFunction.SCORE)
         {
             Expr player = args[0].eval(context);
             if (!(player instanceof Expr_NUM_CONSTANT))
                 throw new Exception("SCORE requires player number");
-            int p = ((Expr_NUM_CONSTANT)player).num;
-            if ((p < 1 ) || (p > context.gameState.playerScores.length))
+            int p = ((Expr_NUM_CONSTANT)player).getInt();
+            if ((p < 1 ) || (p > context.getState().playerScores.length))
                 throw new Exception("unknown player " + p);
-            return Expr.numExpr(context.gameState.playerScores[p-1]);
+            return Expr.numExpr(context.getState().playerScores[p-1]);
         }
         
         if (fn == Expr.internalFunction.ZINDEX)
@@ -190,7 +190,7 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("ZINDEX requires string");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer zindex = context.gameState.elementzIndexes.get(elementName);            
+            Integer zindex = context.getState().elementzIndexes.get(elementName);            
             if (zindex == null) throw new Exception("ZINDEX(): unknown element " + elementName);
             return Expr.numExpr(zindex);
         }
@@ -212,7 +212,7 @@ public class InternalFunctions
             Location location1 = context.specs.locations.get(locationName1);
             if (location1 == null) throw new Exception("MOVE(): unknown location " + locationName1);
 
-            String currentLocation = context.gameState.elementLocations.get(elementName);
+            String currentLocation = context.getState().elementLocations.get(elementName);
             if (!currentLocation.equals(locationName1))
                 throw new Exception("MOVE(): attempt to move element " + elementName + " from location " + locationName1 + " but its current location is " + currentLocation);
             
@@ -222,10 +222,10 @@ public class InternalFunctions
             String locationName2 = ((Expr_STR_CONSTANT)locName2).str;            
             Location location2 = context.specs.locations.get(locationName2);
             if (location2 == null) throw new Exception("MOVE(): unknown location " + locationName2);
-            if (context.gameState.locationElements.get(locationName2) != null) return Expr.booleanExpr(false);
+            if (context.getState().locationElements.get(locationName2) != null) return Expr.booleanExpr(false);
         
             Move mv = new Move(locationName1, locationName2, elementName, context.specs);
-            context.gameState.moveElement(mv, context.specs);
+            context.getState().moveElement(mv, context.specs);
             if (context.robot != null) context.robot.moveRobot(mv);
             return Expr.booleanExpr(true);
         }
@@ -236,16 +236,16 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("SETOWNER requires string as first argument");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer owner = context.gameState.elementOwners.get(elementName);
+            Integer owner = context.getState().elementOwners.get(elementName);
             if (owner == null) throw new Exception("SETOWNER(): unknown element " + elementName);
             Expr ow = args[1].eval(context);
             if (!(ow instanceof Expr_NUM_CONSTANT))
                 throw new Exception("SETOWNER requires number as second argument");
-            int own = ((Expr_NUM_CONSTANT)ow).num;
-            if ((own < 0 ) || (own > context.gameState.playerScores.length))
+            int own = ((Expr_NUM_CONSTANT)ow).getInt();
+            if ((own < 0 ) || (own > context.getState().playerScores.length))
                 throw new Exception("SETOWNER requires existing player number or 0");
-            context.gameState.elementOwners.put(elementName, own);
-            context.gameState.touch();
+            context.getState().elementOwners.put(elementName, own);
+            context.getState().touch();
             return Expr.booleanExpr(true);
         }
         
@@ -261,11 +261,11 @@ public class InternalFunctions
             Expr st = args[1].eval(context);
             if (!(st instanceof Expr_NUM_CONSTANT))
                 throw new Exception("SETSTATE requires number as second argument");
-            int state = ((Expr_NUM_CONSTANT)st).num;
+            int state = ((Expr_NUM_CONSTANT)st).getInt();
             if ((state < 1 ) || (state > context.specs.elementTypes.get(element.type).numStates))
                 throw new Exception("SETSTATE on element " + elementName + " with state " + state + " is out of range");
-            context.gameState.elementStates.put(elementName, state);
-            context.gameState.touch();
+            context.getState().elementStates.put(elementName, state);
+            context.getState().touch();
             return Expr.booleanExpr(true);
         }
         
@@ -275,21 +275,21 @@ public class InternalFunctions
             if (!(elName instanceof Expr_STR_CONSTANT))
                 throw new Exception("SETZINDEX requires string as first argument");
             String elementName = ((Expr_STR_CONSTANT)elName).str;
-            Integer zindex = context.gameState.elementzIndexes.get(elementName);
+            Integer zindex = context.getState().elementzIndexes.get(elementName);
             if (zindex == null) throw new Exception("SETZINDEX(): unknown element " + elementName);
             Expr zi = args[1].eval(context);
             if (!(zi instanceof Expr_NUM_CONSTANT))
                 throw new Exception("SETZINDEX requires number as second argument");
-            zindex = new Integer(((Expr_NUM_CONSTANT)zi).num);
-            context.gameState.elementzIndexes.put(elementName, zindex);  
-            context.gameState.touch();
+            zindex = new Integer(((Expr_NUM_CONSTANT)zi).getInt());
+            context.getState().elementzIndexes.put(elementName, zindex);  
+            context.getState().touch();
             return Expr.booleanExpr(true);
         }
         
         if (fn == Expr.internalFunction.NEXTPLAYER)
         {
-            context.gameState.currentPlayer = (context.gameState.currentPlayer % context.specs.playerNames.length) + 1;
-            context.gameState.touch();
+            context.getState().currentPlayer = (context.getState().currentPlayer % context.specs.playerNames.length) + 1;
+            context.getState().touch();
             return Expr.booleanExpr(true);
         }
         

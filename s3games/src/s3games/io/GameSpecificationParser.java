@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.io;
 
 import java.awt.Point;
@@ -16,21 +11,28 @@ import s3games.robot.CameraObjectType;
 import s3games.robot.RobotLocation;
 import s3games.util.*;
 
-/**
- *
- * @author petrovic16
- */
+/** The parser of the game specification file. The file has the format similar
+ * to windows ini-files. Sections are started with [SECTION NAME], and each line
+ * is in the variable=value format. An exception is the [EXPRESSIONS] section, 
+ * which contains free-text expression definitions */
 public class GameSpecificationParser
 {
-    Config config;
-    GameLogger logger;
-    GameSpecification specs;
+    /** reference to a config that has the folder names */
+    private Config config;
+    
+    /** reference to a logger */
+    private GameLogger logger;
+    
+    /** the constructed game specification object */
+    private GameSpecification specs;
 
-    enum sections { BOARD, REALBOARD_ELEMENT_TYPES, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
-                        PLAYER_NAMES, MOVABLE_ELEMENTS, EXPRESSIONS,
-                        SCORINGS, END_OF_GAME, GAME_RULES };
+    /** list of recognized section names - here as enumeration */
+    private enum sections { BOARD, REALBOARD_ELEMENT_TYPES, ELEMENT_TYPES, LOCATION_TYPES, LOCATIONS,
+                            PLAYER_NAMES, MOVABLE_ELEMENTS, EXPRESSIONS,
+                            SCORINGS, END_OF_GAME, GAME_RULES };
 
-    sections getSection(String sectionName) throws Exception
+    /** convert a section name to respective enumeration type element */
+    private sections getSection(String sectionName) throws Exception
     {
         sectionName=sectionName.toUpperCase();
         if (sectionName.equals("BOARD")) return sections.BOARD;
@@ -48,15 +50,20 @@ public class GameSpecificationParser
         throw new Exception("unrecognized section name");
     }
 
+    /** construct an empty parser */
     public GameSpecificationParser(Config config, GameLogger logger)
     {
         this.config = config;
         this.logger = logger;
     }
 
-    boolean inExpression;
-    Expression expression;
+    /** are we parsing some named expression? */
+    private boolean inExpression;
     
+    /** the expression that is being constructed */
+    private Expression expression;
+    
+    /** add one line to the constructed expression */
     private void addExpressionLine(String ln) throws Exception
     {
         if (!inExpression)
@@ -71,12 +78,15 @@ public class GameSpecificationParser
         else expression.addLine(ln);
     }
 
+    /** process new entry in the BOARD section */
     private void boardSetting(String var, String val)
     {
         if (var.equals("image")) specs.boardBackgroundFileName = config.imagePath + "/" + val;
     }
 
-    CameraObjectType cot;
+    /** the constructed camera object type */
+    private CameraObjectType cot;
+    /** process new entry in the REAL ELEMENT TYPE section */ 
     private void realElementTypeSetting(String var, String val)
     {
         var = var.toLowerCase();
@@ -86,7 +96,7 @@ public class GameSpecificationParser
             specs.cameraObjectTypes.add(cot);            
         }
         else if (var.equals("state"))
-            cot.state = Integer.parseInt(val);
+            cot.elState = Integer.parseInt(val);
         else if (var.equals("huemin"))
             cot.hueMin = Double.parseDouble(val);
         else if (var.equals("huemax"))
@@ -105,9 +115,13 @@ public class GameSpecificationParser
             cot.sizeMax = Integer.parseInt(val);
     }
         
-    ElementType et;
-    int state;
-    String imageName;
+    /** the constructed element type */
+    private ElementType et;
+    /** the currently processed elState of that element */
+    private int state;
+    /** name of the image for the currently processed elState */
+    private String imageName;
+    /** process a new ELEMENT TYPE section entry */
     private void elementTypeSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
@@ -144,7 +158,9 @@ public class GameSpecificationParser
         }
     }
 
-    LocationType locationType;
+    /** the constructed location type object */
+    private LocationType locationType;
+    /** process a new entry in the LOCATION TYPE section */
     private void locationTypeSetting(String var, String val)
     {
         var = var.toLowerCase();
@@ -177,7 +193,9 @@ public class GameSpecificationParser
         }
     }
 
-    Location location;
+    /** the constructed location object */
+    private Location location;
+    /** process a new entry in the LOCATIONS section */
     private void locationSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
@@ -217,6 +235,7 @@ public class GameSpecificationParser
         }
     }
 
+    /** process new entry in the PLAYERS section */
     private void playerNameSetting(String var, String val)
     {
         if (var.toLowerCase().equals("score"))        
@@ -233,15 +252,9 @@ public class GameSpecificationParser
         }
     }
 
-    private int getPlayerNumber(String playerName)
-    {        
-        for (int i = 0; i < specs.playerNames.length; i++)
-            if (specs.playerNames[i].equals(playerName))                
-                return i + 1;
-        return 0;
-    }
-    
-    Element el;
+    /** the constructed element object */
+    private Element el;
+    /** process a new entry in the ELEMENTS section */
     private void movableElementSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
@@ -262,7 +275,9 @@ public class GameSpecificationParser
             el.initialZindex = Integer.parseInt(val);
     }
 
-    GameScoring scoring;
+    /** the constructed GAME SCORING object */
+    private GameScoring scoring;
+    /** process a new entry in the GAME SCORING section */
     private void scoringsSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
@@ -274,7 +289,9 @@ public class GameSpecificationParser
             scoring.amounts.add(Expr.parseExpr(val));
     }
 
-    Expr situation;
+    /** the situation condition for the constructed termination condition object */
+    private Expr situation;
+    /** process new entry in the END OF GAME section */
     private void endOfGameSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
@@ -284,12 +301,15 @@ public class GameSpecificationParser
             specs.terminationConditions.put(situation, Expr.parseExpr(val));
     }
 
+    /** put a string into quotes */
     private String stringify(String str)
     {
         return "\"" + str + "\"";
     }
     
-    GameRule rule;
+    /** the constructed game rule */
+    private GameRule rule;
+    /** process new entry in the GAME RULES section */
     private void rulesSetting(String var, String val) throws Exception
     {
         var = var.toLowerCase();
@@ -318,6 +338,7 @@ public class GameSpecificationParser
             rule.action = Expr.parseExpr(val);
     }
 
+    /** store the setting of the specified section */
     private void storeSetting(sections section, String var, String val) throws Exception
     {
         switch (section)
@@ -335,6 +356,8 @@ public class GameSpecificationParser
         }
     }
 
+    /** verify the rules - we only check that the sizes of array lists scoreAmount and scorePlayer are the same,
+     * more thorough verification would be helpful - future work */
     private void checkRules() throws Exception
     {
         for (GameRule r:specs.rules.values())        
@@ -342,6 +365,7 @@ public class GameSpecificationParser
                 throw new Exception("'player=N' and 'score=X' in game rule " + r.name + " specification is not paired");        
     }
     
+    /** load the game specification for the specified game. The provided argument will be filled with game specification details */
     public boolean load(String gameName, GameSpecification specs) throws Exception
     {
         this.specs = specs;

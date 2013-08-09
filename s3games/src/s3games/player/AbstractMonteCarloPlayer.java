@@ -1,28 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.player;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+
 import s3games.engine.GameState;
 import s3games.engine.Move;
 
-/**
- *
- * @author Nastavnik
- */
-public abstract class AbstractMonteCarloPlayer extends Player{
-        
-    @Override
-    public void otherMoved(Move move, GameState newState) 
-    {
-    }
-
+/** Holds common code shared by all monte-carlo players */
+public abstract class AbstractMonteCarloPlayer extends Player
+{
+    /** make a move. run many random game developments from the current state, 
+     * and look at which move has a higher success rate */
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
@@ -40,7 +27,7 @@ public abstract class AbstractMonteCarloPlayer extends Player{
              gss[i].performMove(moves.get(i));
         }
         
-        calculateRatio(gss);
+        performTrials(gss);
 
         double bestRatio = Double.NEGATIVE_INFINITY;
         Move bestMove = null;
@@ -56,14 +43,24 @@ public abstract class AbstractMonteCarloPlayer extends Player{
         }
         return bestMove;
     }
-    
-    protected abstract void initializeRatio();
+       
+    /** add to the scores depending on the game result of this trial */
     protected abstract void addScore(GameState gs, int i);
+    /** calculate the score of the player after all trials ended */
     protected abstract double calculateScore(int i);
+    /** initialize the scores of all players before starting the trials */
     protected abstract void initializeScore (int i);
-    protected abstract void updateRatio(GameState gs, Set<Move> moves);    
     
-    private void calculateRatio(GameState[] ogs) throws Exception
+    /** initialize ratio that is specific for one trial */
+    protected abstract void initializeRatio();
+    /** update the ratio depending on the branching in the current state */
+    protected abstract void updateRatio(GameState gs, Set<Move> moves);    
+
+    /** do the actual work - start many trials of how the game will develop
+     * from all the specified states and calculate the resulting scores for
+     * each of the specified states. this part is the same for all monte-carlo
+     * flavours. */
+    private void performTrials(GameState[] ogs) throws Exception
     {
         Random random = new Random();
         while (ratioTimeLeft() > 0)

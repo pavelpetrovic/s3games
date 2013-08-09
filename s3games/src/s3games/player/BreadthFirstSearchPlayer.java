@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.player;
 
 import java.util.*;
@@ -9,36 +5,41 @@ import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
 
-/**
- *
- * @author Zuzka
- */
-public class BreadthFirstSearchPlayer extends Player{
-    
-    private GameSpecification specs;
+/** Standard Breadth-first-search player for one-player games. */
+public class BreadthFirstSearchPlayer extends Player
+{
+    /** FIFO queue of open nodes that are waiting to be processed */
     private Queue<Node> open;
+    /** set of visited states */
     private HashSet<GameState> visited;
-    
-    
-    class Node {
-        
+     
+    /** nodes placed in the open list remember how they were formed and
+     * from where so that we can recover the path from the root state to 
+     * the winning state */
+    class Node 
+    {
+        /** a move that was performed to get to this state */
         Move moveToThisState;
+        /** the game state of this node */
         GameState gs;
+        /** node from where we got here */
         Node previous;
         
-        Node(Node p,Move m, GameState g) {
+        /** constructs a new node remembering the previous node and the move */
+        Node(Node p, Move m, GameState g) 
+        {
             moveToThisState = m;
             previous = p;
             gs = g;
         }
     }
     
-    public BreadthFirstSearchPlayer(GameSpecification specs) {
-        this.specs = specs;
-    }
-    
+    /** take a move using BFS algorithm. Runs the complete state-space search until
+     * the closest winning state is found, then returns the move that goes in that
+     * direction */
     @Override
-    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception {
+    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
+    {
         try { Thread.sleep(1000); } catch (Exception e) {}
         open = new LinkedList<Node>();
         visited = new HashSet<GameState>();
@@ -47,7 +48,7 @@ public class BreadthFirstSearchPlayer extends Player{
         visited.add(state);   //rooot
         open.add(new Node(null, null, state));
         
-        while (open.size()>0)  //while fifo stack(queue) is not empty
+        while (open.size() > 0)  //while fifo stack(queue) is not empty
         {            
             Node actualNode = open.poll();   //retrieve and remove head of the queue
             activeState = actualNode.gs;
@@ -59,7 +60,7 @@ public class BreadthFirstSearchPlayer extends Player{
                 gs.performMove(mv);
                 if (!visited.contains(gs)) {   //after move that new state  wasnt examined yet
                     visited.add(gs);  //prevent of repeating same states waiting for examination in open
-                    if (gs.winner==number)    //then find path to the first move 
+                    if (gs.winner == number)    //then find path to the first move 
                     {
                         if (actualNode.previous == null) return mv;
                         while(actualNode.previous.previous!=null) 
@@ -75,10 +76,4 @@ public class BreadthFirstSearchPlayer extends Player{
         
         return allowedMoves.iterator().next();
     }
-
-    @Override
-    public void otherMoved(Move move, GameState newState) {
-        
-    }
-    
 }

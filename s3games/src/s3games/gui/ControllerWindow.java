@@ -1,31 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
-import java.util.ArrayList;
 import javax.swing.*;
 import s3games.Controller;
 import s3games.player.Player;
-/**
- *
- * @author Boris
- */
+
+/** Main control window of the application. Communicates with the Controller
+ * class to pass all the user requests to specific components of the application. */
 public class ControllerWindow extends javax.swing.JFrame 
 {
+    /** reference to the controller object */
     Controller controller = null;
+    
+    /** list of selected player types for each player */
     Player.playerType[] playerTypes;
+    
+    /** list of selected player strategies for each player */
     String[] playerStrategies;
+    
+    /** list of selected heuristics for each player */
     String[][] strategyHeuristics;
-     /**
-     * Creates new form ControllerWindow
-     */  
+     
+    /** Creates new form ControllerWindow */  
     public ControllerWindow() 
     {
         initComponents();
     }  
     
+    /** create and display the main application control window */
     public ControllerWindow(Controller c) 
     {
          initComponents();
@@ -34,6 +35,7 @@ public class ControllerWindow extends javax.swing.JFrame
          setItems();
     }
     
+    /** show the information about the game that has finished */
     public void gameFinished(int winner, int[] playerScores)
     {    
         String info = "<html>";
@@ -452,15 +454,20 @@ public class ControllerWindow extends javax.swing.JFrame
          return 0;
     }
     
-    public String getStatisticFileName() {     
+    /** name of file where the game statistics should be saved into */
+    public String getStatisticFileName() 
+    {     
       return jTextField1.getText();
     }
     
-    public void setNumberOfRunsToGo(int n) {
+    /** visualizes the remaining number of games to be played */
+    public void setNumberOfRunsToGo(int n) 
+    {
        jLabel5.setText(n+""); 
     }
     
-    private String[] getSelectedHeuristics() {
+    private String[] getSelectedHeuristics() 
+    {
         int numOfPlayers = playerTypes.length;
         
         String[] selectedHeuristics = new String[numOfPlayers];
@@ -469,6 +476,7 @@ public class ControllerWindow extends javax.swing.JFrame
         }
         return selectedHeuristics;
     }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:  
         controller.play((String)jComboBox5.getSelectedItem(), 
@@ -516,7 +524,9 @@ public class ControllerWindow extends javax.swing.JFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
     
-    public int getNumberOfNodesToExpand() {
+    /** retrieve the user-entered value of the maximum number of nodes to expand */
+    public int getNumberOfNodesToExpand() 
+    {
         try {
             return Integer.parseInt(jTextField4.getText());
         } catch (NumberFormatException e) {
@@ -525,7 +535,9 @@ public class ControllerWindow extends javax.swing.JFrame
         }
     }
     
-        public int getRunningTime() {
+    /** retrieve the user-entered value of the maximum allowed time for one move */
+    public int getRunningTime() 
+    {
         try {
             return Integer.parseInt(jTextField6.getText());
         } catch (NumberFormatException e) {
@@ -534,7 +546,8 @@ public class ControllerWindow extends javax.swing.JFrame
         }
     }
         
-    private void setItems() {
+    private void setItems() 
+    {
         String gameName = (String)jComboBox5.getSelectedItem();
         jComboBox4.setModel(new DefaultComboBoxModel(controller.getStrategiesForGame(gameName)));
         jComboBox6.setModel(new DefaultComboBoxModel(controller.getLearnableStrategyTypesForGame(gameName))); 
@@ -565,40 +578,6 @@ public class ControllerWindow extends javax.swing.JFrame
 
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ControllerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ControllerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ControllerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ControllerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ControllerWindow().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

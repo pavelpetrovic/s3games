@@ -1,27 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.engine.expr;
 
 import java.util.*;
 import s3games.util.IndexedName;
 
-/**
- *
- * @author petrovic16
- */
+/** Abstract class for all expression types. Contains the enumerations of all 
+ * internal operators and functions. */
 public abstract class Expr
 {
+    /** list of all supported internal operators */
     public enum operatorType { EQUALS, NOTEQUALS, LOWER, LOWEREQUAL, GREATER, GREATEREQUAL,
                         PLUS, MINUS, TIMES, DIV, MOD, ABS, SUBSET, ELEMENT, SETMINUS,
                         UNION, INTERSECTION, AND, OR, NOT, ASSIGNMENT, UNKNOWN };
 
+    /** list of all supported internal functions */
     public enum internalFunction { IF, FORALL, FORSOME, LOCTYPE, ELTYPE, STATE, LOCATION,
                              CONTENT, EMPTY, INDEX, INDEXA, UNINDEX, OWNER, PLAYER,
                              SCORE, ZINDEX, MOVE, SETOWNER, SETSTATE, SETZINDEX, NEXTPLAYER, UNKNOWN }
 
+    /** Allows appending a new expression to this expression, 
+     * thus getting a Expr_LIST if it was not already. 
+     * It is used for representing multi-line named expressions. */
     public Expr append(Expr expr)
     {
         Expr el = this;
@@ -30,12 +28,16 @@ public abstract class Expr
         return el;
     }
     
+    /** Parse the expression from a string representation as appears in the 
+     * game specification file. First, the expression is broken into a list
+     * of lexemes, which are then parsed into internal expression representation */
     public static Expr parseExpr(String ln) throws Exception
     {
         ArrayList<Lexeme> lexs = Lexeme.parseLine(ln);
         return ExprParser.parseExpr(lexs);
     }
                 
+    /** convert an operator lexeme to the respective operator */
     public static operatorType getOperatorType(String op)
     {
         if (op.equals("==")) return operatorType.EQUALS;
@@ -62,6 +64,7 @@ public abstract class Expr
         else return operatorType.UNKNOWN;
     }
 
+    /* convert an internal function lexeme to the respective internal function */
     public static internalFunction getInternalFunction(String fn)
     {
         if (fn.equals("IF")) return internalFunction.IF;
@@ -88,60 +91,77 @@ public abstract class Expr
         else return internalFunction.UNKNOWN;
     }
 
+    /** constructor method - returns a numerical expression that holds the specified number */
     public static Expr numExpr(int num)
     {
         return new Expr_NUM_CONSTANT(num);
     }
     
+    /** constructor method - returns a string expression that holds the specified string */
     public static Expr strExpr(String str)
     {
         return new Expr_STR_CONSTANT(str);
     }
     
+    /** constructor method - returns a boolean expression that holds the specified logical value */
     public static Expr booleanExpr(boolean b)
     {
         return new Expr_LOG_CONSTANT(b);
     }
     
+    /** stub to be overriden by expressions that are of numeric type, otherwise throws exception */
     public int getInt() throws Exception
     {
         throw new Exception("expected numeric expression, but it's " + this + " here");
     }
     
+    /** stub to be overriden by expressions that are of string type, otherwise throws exception */
     public String getStr() throws Exception
     {
         throw new Exception("expected string expression, but it's " + this + " here");        
     }
     
+    /** stub to be overriden by expressions that are of boolean type, otherwise returns false */
     public boolean isTrue()
     {
         return false;
     }
     
+    /** stub to be overriden by expressions that are of boolean type, otherwise returns false
+     * note: here we do not use closed-world assumption: anything else than false is not false! */
     public boolean isFalse()
     {
         return false;
     }
         
+    /** stub to be overriden by expressions that are of string type - it should 
+     * set the variables in the context, if the expression contains variable references */
     public boolean matches(String s, Context context)
     {
         return false;
     }
     
+    /** stub to be overriden by expressions that are of numeric type - it should 
+     * set the variables in the context, if the expression is a variable */
     public boolean matches(int i, Context context)
     {
         return false;
     }
     
+    /** stub to be overriden by expressions that are of string type - it should 
+     * set the variables in the context, if the expression contains variable references */  
     public boolean matches(IndexedName name, Context context)
     {
         return false;
     }
     
+    /** evaluates this expression and returns the resulting value */
     public abstract Expr eval(Context context) throws Exception;
+    
+    /** compares if the values of this expression and the other expression are the same */
     public boolean equals(Expr other, Context context) throws Exception
     {
-        Expr val = eval(context);        
+        Expr val = eval(context);
         return val.equals(other, context);
     }
 }

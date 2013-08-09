@@ -1,20 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.util;
 
-/**
- *
- * @author petrovic16
- */
+/** Represents a string of a form "WHATEVER(a,b,..z)", where a..z are numbers */
 public class IndexedName
 {
+    /** the complete string, i.e. "WHATEVER(1,2,3)" */
     public String fullName;
+    /** the base string, i.e. "WHATEVER" */
     public String baseName;
+    /** the indexes, i.e. {1,2,3} */
     public int[] index;
 
+    /** construct the indexed name from the string provided */
     public IndexedName(String name)
     {
         fullName = name;
@@ -32,7 +28,5 @@ public class IndexedName
             for (int i = 0; i < index.length; i++)
                 index[i] = Integer.parseInt(args[i].trim());
         }
-
     }
-
 }

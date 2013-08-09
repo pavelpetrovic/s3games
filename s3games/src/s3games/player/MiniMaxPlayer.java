@@ -1,27 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.player;
 
 import java.util.*;
 import s3games.ai.*;
 import s3games.engine.*;
 
-/**
- *
- * @author petrovic
- */
+/** Minimax player searches the game tree in a breadth-first search manner,
+ * taking the best result on the players move and the worst result on the
+ * opponent move into account. */
 public class MiniMaxPlayer extends Player
 {
+    /** opened nodes are MAX if it is this player's turn, states when it is opponent's turn are MIN */
     public enum NodeType { MIN, MAX };
     
+    /** creates a new node that was reached by performing some move from the previous node.
+     * the method opens the nodes and adds all resulting states to the leaves list */
     public Node newNode(Node previous, GameState gs) throws Exception
     {
         NodeType type = NodeType.MIN;
         if (gs.currentPlayer == number) type = NodeType.MAX;        
         
-        double val;        
+        double val;
         if (type == NodeType.MIN) val = Double.POSITIVE_INFINITY;
         else val = Double.NEGATIVE_INFINITY;    
         
@@ -34,13 +32,21 @@ public class MiniMaxPlayer extends Player
         return node;
     }
 
+    /** holds the information about the state, the best/worst value (depending on 
+     * the node type, and the depth that is used when propagating the values
+     * from the leaf nodes up the search tree */
     public class Node implements Comparable
     {
+        /** previous node from which we got here by performing a move */
         Node previous;
+        /** the current best/worst estimate of the state value +1/-1 for winning/losing, or another value if score is involved */
         double value;
+        /** node type min/max */
         NodeType type;
+        /** nodes propagate their value up the priority queue ordered by the depth */
         int depth;
         
+        /** create a new node with the specified values */
         Node(Node previous, double value, NodeType type, int depth)
         {
             this.previous = previous;
@@ -49,6 +55,7 @@ public class MiniMaxPlayer extends Player
             this.depth = depth;
         }
         
+        /** open the game state and insert all neighboring states to list of leaves */
         void open(GameState state) throws Exception
         {            
             if (state.winner >= 0)
@@ -70,6 +77,9 @@ public class MiniMaxPlayer extends Player
                 previous.update(value);
         }
         
+        /** update the min or max value of this node, add the node to the 
+         * modified priority list, if its value has changed to update its
+         * parent nodes */
         void update(double val)
         {
             if (type == NodeType.MAX)
@@ -84,6 +94,8 @@ public class MiniMaxPlayer extends Player
             modified.add(this);
         }
 
+        /** nodes are ordered in the priority queue based on their depth so that
+         * the value updating propagates always in a bottom-up manner */
         @Override
         public int compareTo(Object o) 
         {
@@ -94,11 +106,15 @@ public class MiniMaxPlayer extends Player
         }
     }
     
+    /** leaf that is waiting to be opened */
     public class Leaf
     {
+        /** previous node from which a move was performed to obtain this game state */
         Node previous;
+        /** the game state of this leaf */
         GameState gs;        
         
+        /** construct a new leaf */
         public Leaf(GameState gs, Node previous)
         {
             this.gs = gs;
@@ -106,18 +122,27 @@ public class MiniMaxPlayer extends Player
         }
     }
     
+    /** all leaves that were not opened are evaluated using this heuristic when 
+     * the time is gone */
     Heuristic heuristic;
+    /** game we are playing */
     GameSpecification specs;
+    /** list of all nodes that are waiting to be opened */
     LinkedList<Leaf> leaves;
+    /** this queue holds all nodes in which the MIN or MAX value was modified 
+     * based on request from a child node */
     PriorityQueue<Node> modified;
+    /** number of nodes opened in this move so far */
     long nodesOpened;
     
+    /** create a minimax player for the specified game with the heuristic provided */
     public MiniMaxPlayer(GameSpecification specs, Heuristic heuristic)
     {
         this.specs = specs;
         this.heuristic = heuristic; 
     }
 
+    /** determine the value of the state if we know the number of the winning player */ 
     double valueOfWinner(int winner)
     {
         double val = Double.NaN;        
@@ -130,6 +155,8 @@ public class MiniMaxPlayer extends Player
         return val;
     }
 
+    /** performs all requested moves from the specified state obtaining 
+     * a list of new states, indexed through the moves */
     public HashMap<Move, GameState> expand(GameState state, HashSet<Move> moves) throws Exception
     {
         HashMap<Move, GameState> expanded = null;
@@ -143,6 +170,8 @@ public class MiniMaxPlayer extends Player
         return expanded;
     }
     
+    /** make one minimax move: try to expand the game tree as far as it gets,
+     * evaluating the rest with the heuristic when the time is used up */
     @Override
     public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
     {
@@ -199,9 +228,4 @@ public class MiniMaxPlayer extends Player
         System.out.println("Minimax - total nodes: " + nodesOpened);                  
         return bestMove;
     }
-
-    @Override
-    public void otherMoved(Move move, GameState newState) 
-    {
-    }    
 }

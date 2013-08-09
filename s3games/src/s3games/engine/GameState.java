@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.engine;
 
 import java.util.*;
@@ -11,10 +6,7 @@ import s3games.engine.expr.Expr;
 import java.util.Arrays;
 import s3games.robot.Robot;
 
-/**
- *
- * @author petrovic16
- */
+/** GameState contains all information that is important for the current game state */
 public class GameState
 {
     /** for each element name, the state number */
@@ -29,13 +21,19 @@ public class GameState
     public int currentPlayer;
     /** -1 until the game has finished, then 0 for draw, or 1..N player number who won */
     public int winner;
-    
+
+    /** a hash code for faster HashMap access */
     private int hash;
+    /** true indicates that hash should be recomputed */
     private boolean modified;
     
+    /** z-indexes of all the elements */
     public Map<String,Integer> elementzIndexes;
+    
+    /** scores of all players */
     public int[] playerScores;
 
+    /** reference to the current context - this is not part of state, but needed for evaluation */
     private Context context;
         
     /** return a copy of this state state */
@@ -112,6 +110,7 @@ public class GameState
         modified = true;
     }
     
+    /** determine if the state is equal to another one - while ignoring irrelevant locations */
     @Override
     public boolean equals(Object other)
     {
@@ -119,6 +118,7 @@ public class GameState
         return equals((GameState)other);
     }
         
+    /** construct a new empty game state */
     public GameState()
     {
         init();
@@ -143,6 +143,7 @@ public class GameState
         context = new Context(this, specs, robot);
     }
     
+    /** initialize all the structures */
     private void init()
     {
         elementStates = new TreeMap<String, Integer>();
@@ -155,6 +156,7 @@ public class GameState
         modified = true;
     }
 
+    /** implementation of the equals() method - we ignore irrelevant locations and look only at element types, not the element names */
     public boolean equals(GameState other)
     {
         if (hashCode() != other.hashCode()) return false;
@@ -199,7 +201,7 @@ public class GameState
         return move;
     }
     
-    /** return a list of moves that can be taken from this state */
+    /** return a list of moves that can be taken from this state - this includes ALL moves regardless that they are equal (because of irrelevance of locations or same element types) */
     public ArrayList<Move> allPossibleMoves() throws Exception
     {
         ArrayList<Move> moves = new ArrayList<Move>();
@@ -214,6 +216,7 @@ public class GameState
         return moves;
     }
 
+    /** return a list of moves that can be taken from this states - this includes only DIFFERENT moves, i.e. those leading to not equal() states */
     public HashSet<Move> possibleMoves() throws Exception
     {
         HashSet<Move> moves = new HashSet<Move>();

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.player;
 
 import java.util.*;
@@ -10,27 +6,40 @@ import s3games.engine.GameSpecification;
 import s3games.engine.GameState;
 import s3games.engine.Move;
 
-/**
- *
- * @author Zuzka
- */
+/** A* algorithm player that utilizes a heuristic */
 public class AStarPlayer extends Player {
 
+    /** local reference to the game specification */
     private GameSpecification specs;
+    /** list of open nodes */
     private PriorityQueue<Node> open; 
+    /** list of visited game states */
     private HashSet<GameState> visited;
+    /** reference to the heuristic used */
     private Heuristic heuristic;
      
-    class Node implements Comparable{
+    /** a game state that is waiting to be processed in the open list */
+    class Node implements Comparable
+    {
+        /** by which move, how did we get to this state */
         Move moveToThisState;
+        /** the current state */
         GameState gs;
-        Node previous;
+        /** from where did we get here */
+        Node previous;        
         
-        
+        /** how many steps did it take to get here */
         double distanceFromRoot;
+        /** how far do we foresee a winning end */
         double estimatedDistance;
         
-        Node(Node p,Move m, GameState g,  double estimatedDistance) {
+        /** construct a new node with the given parameters 
+         * @param p node from which we arrived to this state
+         * @param m move that we performed to get to this state
+         * @param g the state we are in
+         * @param d the estimated distance to a winning goal state */
+        Node(Node p, Move m, GameState g,  double d) 
+        {
             moveToThisState = m;
             previous = p;
             gs = g;
@@ -38,15 +47,19 @@ public class AStarPlayer extends Player {
                 this.distanceFromRoot = p.distanceFromRoot + 1;
             else
                 distanceFromRoot = 0;
-            this.estimatedDistance = estimatedDistance;
+            this.estimatedDistance = d;
         }      
         
-        public double getEstimation() {
+        /** A* value function: f(state) = h(state) + g(state) */
+        public double getEstimation() 
+        {
            return distanceFromRoot+estimatedDistance;
         }
         
+        /** priority queue will order the nodes in the open list based on the A* value function */
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(Object o) 
+        {
             Node n = (Node)o;
             if (this.getEstimation() > n.getEstimation()) {
                return 1;
@@ -54,13 +67,18 @@ public class AStarPlayer extends Player {
             return (this.getEstimation()==n.getEstimation())?0:-1;
         }
     }
-    public AStarPlayer(GameSpecification specs, Heuristic heuristic) {
+    
+    /** construct a new A* player for the specified game with the given heuristic */
+    public AStarPlayer(GameSpecification specs, Heuristic heuristic) 
+    {
         this.specs = specs;
         this.heuristic = heuristic;
     }
     
+    /** A* player makes a move - it searches all the way to find the closest winning state and performs a move that is leading towards it. */
     @Override
-    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception {
+    public Move move(GameState state, ArrayList<Move> allowedMoves) throws Exception 
+    {
         try { Thread.sleep(1000); } catch (Exception e) {};
         open = new PriorityQueue<Node>();
         visited = new HashSet<GameState>();
@@ -97,10 +115,4 @@ public class AStarPlayer extends Player {
         
         return allowedMoves.iterator().next();
     }
-
-    @Override
-    public void otherMoved(Move move, GameState newState) {
-       
-    }
-    
 }

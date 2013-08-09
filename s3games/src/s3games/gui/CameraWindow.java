@@ -1,29 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import s3games.robot.Camera;
 
-/**
- *
- * @author petrovic
- */
+/** A simple control window for letting the user control when to snap the 
+ * current game state on the real board using the camera. */
 public class CameraWindow extends ControlWindow implements ActionListener
 {
-    Camera camera;
+    /** reference to the camera interface object */
+    private Camera camera;
     
-    JButton goButton;
-    JButton clearButton;
+    /** the SNAP button */
+    private JButton goButton;
     
-    boolean ourTurn;
+    /** clear the contents of the informational text area */
+    private JButton clearButton;
     
+    /** indicates if we are waiting for the human to make a move on the real board */
+    private boolean ourTurn;
+    
+    /** construct and show the camera control window */
     public CameraWindow(Camera camera)
     {
         super("Camera control panel");
@@ -31,6 +29,8 @@ public class CameraWindow extends ControlWindow implements ActionListener
         ourTurn = false;
     }
     
+    /** configure the buttons on the panel of the window - camera panel 
+     * is simple containing only the SNAP and CLEAR actions */
     @Override
     protected void addButtonsToPanel(JPanel panel) 
     {
@@ -41,13 +41,15 @@ public class CameraWindow extends ControlWindow implements ActionListener
         goButton.addActionListener(this);        
         clearButton.addActionListener(this);        
     }
-        
+       
+    /** request the camera snapping to be allowed or not */
     public void moving(boolean b)
     {
         ourTurn = b;
         goButton.setEnabled(ourTurn);
     }
     
+    /** buttons action listener */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
@@ -57,6 +59,7 @@ public class CameraWindow extends ControlWindow implements ActionListener
             out.setText("");
     }
     
+    /** closing camera control panel window */
     @Override
     public void close()
     {

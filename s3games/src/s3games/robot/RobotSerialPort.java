@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.robot;
 
 import gnu.io.CommPort;
@@ -9,21 +5,26 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort; 
 
 import java.io.*;
-import java.io.BufferedReader;
 
+/** RobotSerialPort class is responsible for communicating with the SSC-32
+ * robot controller over the serial line. It utilizes the RXTX library */
 public class RobotSerialPort
 {    
-    String port;
+    /** name of the port, i.e. COM3 */
+    private String port;
     
-    InputStream in;
-    OutputStream out;
-    BufferedReader reader;
+    /** the reading end of the serial port */
+    private InputStream in;
+    /** the writing end of the serial port */
+    private OutputStream out;
     
+    /** construct a robot serial port object with the specified port name */
     public RobotSerialPort(String portName)
     {
         port = portName;
     }
     
+    /** open the communication link with the SSC-32 controller */
     public void open() throws Exception 
     {
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(port);
@@ -45,6 +46,7 @@ public class RobotSerialPort
         } else throw new Exception("RobotSerialPort: " + port + " is not a serial port.");
     }
     
+    /** close the communication link with the SSC-32 controller */
     public void close() 
     {
         try 
@@ -54,6 +56,7 @@ public class RobotSerialPort
         } catch (Exception e) {}
     }
 
+    /** send the packet to the SSC-32 */
     void print(String s) throws IOException
     {
         out.write(s.getBytes());
@@ -61,6 +64,7 @@ public class RobotSerialPort
         out.flush();
     }
     
+    /** read a single byte from the SSC-32 */
     int read() throws IOException
     {
         int ch = -1;

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
 import java.awt.*;
@@ -21,33 +17,45 @@ import s3games.engine.Location;
 import s3games.engine.Move;
 import s3games.util.Switch;
 
-/**
- *
- * @author Boris
- */
-public class GameWindow extends javax.swing.JFrame {
+/** Implements the window that visualizes the game progress and detects user 
+ * moves as mouse clicks */
+public class GameWindow extends javax.swing.JFrame 
+{
+    /** currently played game */
     Game game;
+    /** the board canvas that shows the game progress */
     BoardCanvas boardCanvas;
+    /** a repaint request */
     boolean repaint;
 
+    /** text that is shown to the user of various info */
     ArrayList<String> outputTexts;
+    /** the winner of the last game */
     String winner;
-    int offsetX;  //for drawing of text = distance of right gap from left side
+    /** for drawing of text = distance of right gap from left side */
+    int offsetX;  
     
+    /** determines if any element has been selected for a move */
     boolean isSelectedElement;
+    /** which element has been selected */
     String selectedElementName;
     
+    /** the move that was performed for the mouse player */
     public Move lastMove;
+    /** synchronization object for the mouse player to indicate a user has made
+     * a new move */
     public final Object lastMoveReady;
+    /** is it our turn? should we allow the user to make the move? */
     public boolean waitingForMove;
+    /** list of allowed moves */
     public ArrayList<Move> allowedMoves;
     
+    /** switch indicates whether the game is still on */
     private Switch gameRuns;
     
-    /**
-     * Creates new form Form
-     */
-    public GameWindow(Switch gameSwitch) {
+    /** Creates the game window and displays it */
+    public GameWindow(Switch gameSwitch) 
+    {
         gameRuns = gameSwitch;
         initComponents();
         
@@ -73,6 +81,7 @@ public class GameWindow extends javax.swing.JFrame {
         winner = "";
     }
 
+    /** shows a message box with the exception message to the user */
     public void showException(Exception e)
     {
         //TODO report exception to user
@@ -134,7 +143,7 @@ public class GameWindow extends javax.swing.JFrame {
     private void canvas1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvas1MousePressed
         if (waitingForMove) {
             GameSpecification gs = boardCanvas.gameSpec;
-            GameState egs = boardCanvas.egameState;
+            GameState egs = boardCanvas.gState;
             Map<String,String> elements = egs.elementLocations;
             
             int x = evt.getX();
@@ -182,16 +191,21 @@ public class GameWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_canvas1MousePressed
 
-    private boolean isElementAllowed(String element) {
-        for (Move move: allowedMoves) {
-            if (element.equals(move.element)) return true;
-        }    
+    /** returns true if the user can move this element */
+    private boolean isElementAllowed(String element) 
+    {
+        for (Move move: allowedMoves) 
+            if (element.equals(move.element)) 
+                return true;
         return false;
     }  
-    private boolean isMoveAllowed(String element, String toLocation) {
-        for (Move move: allowedMoves) {
-            if (element.equals(move.element) && toLocation.equals(move.to)) return true;
-        }
+    
+    /** returns true if the element can be moved to the specified location */
+    private boolean isMoveAllowed(String element, String toLocation) 
+    {
+        for (Move move: allowedMoves) 
+            if (element.equals(move.element) && toLocation.equals(move.to)) 
+                return true;        
         return false;
     }
     
@@ -207,7 +221,10 @@ public class GameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_canvas1KeyPressed
 
 
-    public void setGame(Game g, Switch gameRuns){ //game
+    /** set the reference to the specified game and the game running switch,
+     * show the game board in the window. */
+    public void setGame(Game g, Switch gameRuns)
+    {
         this.game = g;
         winner = "";
         GameSpecification gs = game.gameSpecification;
@@ -223,7 +240,10 @@ public class GameWindow extends javax.swing.JFrame {
         }
         boardCanvas.setGame(gs);
     }
-    public void setState(GameState egs) {         
+    
+    /** set the current state of the game and visualize it */
+    public void setState(GameState egs) 
+    {         
         //generate array of strings for output text
         int currentPlayer = egs.currentPlayer;
         synchronized(this) {
@@ -248,6 +268,7 @@ public class GameWindow extends javax.swing.JFrame {
         }
     }
     
+    /** display the contents of the window - paint the current game situation */
     @Override
     public void paint(Graphics g) {   
         g.clearRect(offsetX-12, 0, this.getWidth(), this.getHeight());  //clear last text
@@ -271,7 +292,6 @@ public class GameWindow extends javax.swing.JFrame {
             }
         }
     }
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas canvas1;
