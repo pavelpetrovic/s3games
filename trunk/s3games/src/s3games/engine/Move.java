@@ -1,20 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.engine;
 
-/**
- *
- * @author petrovic16
- */
+/** Represents a single move made by some player: what was moved, from where, to where */
 public class Move
 {
+    /** name of the element that was moved */
     public final String from;
+    /** name of the location from where the element was moved  */
     public final String to;
+    /** name of the location to where the element was moved */
     public final String element;  
+    
+    /** remembers the hashstring of this move so that it does not need to be reconstructed */
     private final String hashString;
+    /** remembers the hash value of this move */
     private final int hash;    
     
     public Move(String from, String to, String element, GameSpecification specs)
@@ -26,6 +24,7 @@ public class Move
         hash = hashString.hashCode();
     }
     
+    /** computes the hash string for this move for comparison of equality - takes into account location relevance and element types */
     private String computeHashString(GameSpecification specs)
     {
         LocationType fromType = specs.locationTypes.get(specs.locations.get(from).type);
@@ -45,6 +44,7 @@ public class Move
         return s.toString();
     }
     
+    /** for printing and debugging */
     @Override
     public String toString()
     {
@@ -58,6 +58,7 @@ public class Move
         return hash;
     }
     
+    /** compare for equality taking into account element types and location relevance, i.e. whether the moves are really different */
     @Override
     public boolean equals(Object other)
     {        

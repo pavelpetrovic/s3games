@@ -1,19 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.robot;
 
-/**
- *
- * @author petrovic
- */
+/** This class knows the details of the SSC-32 serial communication
+ * protocol, and translates the meaningful commands into low-level
+ * strings that are sent over the serial line to the SSC-32 servo controller */
 public class RobotCmd 
 {
-
-    public enum Command { init, version, position, home, grab, put };
+    /** list of available commands */
+    public enum Command { init, version, position, home, grab, put, query };
+    /** the resulting command string */
     private String cmdString;
 
+    /** construct a new command of the requested type - with arguments */
     public RobotCmd(Command type, double[] angles) 
     {
         switch (type) 
@@ -22,6 +19,7 @@ public class RobotCmd
         }
     }
 
+    /** construct a new command of the requested type - without arguments */
     public RobotCmd(Command type) 
     {
         switch (type) 
@@ -29,16 +27,31 @@ public class RobotCmd
             case version: cmdString = "VER"; break;
             case grab: cmdString = "#5 P2000 T2000"; break;
             case put: cmdString = "#5 P1000 T2000"; break;
+            case query: cmdString = "Q"; break;
             case init: buildPositionCommand(new double[] {0.0, 0.0, 0.0, 0.0, 0.0 }); break;
             case home: buildPositionCommand(new double[] {0.0, 53.0, -76.0, -101.0, 13.0 }); break;
         }
     }
 
+    /** a character sent as a response to the query command that indicates that the command has been completed */
+    public static char responseIdle()
+    {
+        return '.';
+    }
+    
+    /** a character sent as a response to the query command that indicates that the command is still being executed */
+    public static char responseBusy()
+    {
+        return '+';
+    }
+    
+    /** retrieve the command string */
     public String getCommand() 
     {
         return cmdString;
     }
 
+    /** build a command for all servos from the angles */
     private void buildPositionCommand(double[] angles) 
     {
         StringBuilder result = new StringBuilder();
@@ -56,6 +69,7 @@ public class RobotCmd
         cmdString = result.toString();
     }
     
+    /** translates the base angle to pulse */
     private int angleToPulseBase(double deg)
     {
         int r = (int) (1500 + (10 * deg));
@@ -72,6 +86,7 @@ public class RobotCmd
         return r;        
     }
 
+    /** translates the wrist angle to pulse */
     private int angleToPulseWrist(double deg) 
     {
         int r = (int) (1500 + (10 * deg));
@@ -88,6 +103,7 @@ public class RobotCmd
         return r;
     }
 
+    /** translates the elbow angle to pulse */
     private int angleToPulseElbow(double deg) 
     {
         int r = (int) (1800 - (10 * deg));
@@ -104,6 +120,7 @@ public class RobotCmd
         return r;
     }
 
+    /** translates the shoulder angle to pulse */
     private int angleToPulseShoulder(double deg) 
     {
         int r = (int) (1500 + (10 * deg));
@@ -119,7 +136,8 @@ public class RobotCmd
         }
         return r;
     }
-    
+
+    /** translates the hand angle to pulse */    
     private int angleToPulseHand(double deg)
     {
         int r = (int) (1500 + (10 * deg));

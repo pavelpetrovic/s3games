@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
 import java.awt.*;
@@ -9,16 +5,19 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
-/**
- *
- * @author petrovic
- */
+/** A general control-panel window used both by camera and robot control panel */
 public abstract class ControlWindow implements ActionListener
 {
+    /** the window */
     JFrame win;
+    
+    /** the informative text area */
     JTextArea out;
+    
+    /** scroll bar for the text area */
     JScrollPane scroll;
         
+    /** construct a new control window with the specified title */
     public ControlWindow(String title)
     {
         win = new JFrame(title);
@@ -38,15 +37,18 @@ public abstract class ControlWindow implements ActionListener
         win.setVisible(true);
     }
     
+    /** sublclasses should add their buttons to the control panel here */
     abstract protected void addButtonsToPanel(JPanel panel);
 
+    /** appends a new line to the informative text area */
     public void addMessage(String msg)
     {
         out.append(msg);
         out.append(System.getProperty("line.separator"));        
     }
         
-    public void close()
+    /** closes this window */
+    public void close()            
     {
        win.dispose();
        win = null;

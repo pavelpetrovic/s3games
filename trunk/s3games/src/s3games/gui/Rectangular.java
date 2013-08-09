@@ -1,28 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-/**
- *
- * @author petrovic16
- */
+/** Represents a rectangular clicking area */
 public class Rectangular extends LocationShape
 {
+    /** dimensions of the clicking rectangle */
     int a, b;
 
+    /** construct a rectangular clicking area with the specified dimensions */
     public Rectangular(int a, int b)
     {
         this.a = a;
         this.b = b;
     }
 
+    /** determines whether the user clicked inside the rectangular area */    
     @Override
     boolean isInside(int x, int y, Point center)
     {
@@ -32,6 +27,7 @@ public class Rectangular extends LocationShape
         return false;
     }
     
+    /** draw the clicking area to the canvas's graphics */    
     @Override 
     void paintShape(Graphics g, Point center) 
     {

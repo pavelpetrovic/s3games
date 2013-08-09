@@ -14,7 +14,7 @@ public class DepthFirstSearchStrategy extends Strategy
     @Override
     public Player getPlayer(GameSpecification specs) 
     {
-        return new DepthFirstSearchPlayer(specs);
+        return new DepthFirstSearchPlayer();
     }
 
     /** no learning for DFS yet - could learn the best path, and then play() could just follow it - future work... */

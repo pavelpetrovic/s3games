@@ -1,22 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.engine;
 
 import s3games.gui.ImageWithHotSpot;
 
-/**
- *
- * @author petrovic16
- */
+/** Every movable element must have a type. Element type specifies the number 
+ * of states and how the element is visualized on the board in each state. */
 public class ElementType
 {
+    /** name of the element type */
     public String name;
+    /** the number of states this element can take */
     public int numStates;
-    public ImageWithHotSpot images[]; // 0..n-1
+    /** images for all states, indexed from 0..numStates-1 */
+    public ImageWithHotSpot images[]; 
 
+    /** construct a new element type, fill the images manually */
     public ElementType(String name)
     {
         this.name = name;

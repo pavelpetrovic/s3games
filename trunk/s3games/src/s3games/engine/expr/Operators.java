@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.engine.expr;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-/**
- *
- * @author petrovic
- */
+/** Holds implementations of all internal operators. The class is just 
+ * a module with one long static eval() function that does the job depending
+ * on which internal operator is evaluated. */
 public class Operators 
 {
+    /** evaluate a specified internal operator with the given aguments in the context provided */
     static Expr eval(Expr.operatorType op, Expr[] args, Context context) throws Exception
     {
         switch (op)
@@ -24,13 +20,13 @@ public class Operators
         {
             Expr a0 = args[0].eval(context);
             if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("operator ABS requires number");
-            return Expr.numExpr(Math.abs(((Expr_NUM_CONSTANT)a0).num));
+            return Expr.numExpr(Math.abs(((Expr_NUM_CONSTANT)a0).getInt()));
         }
         if ((op == Expr.operatorType.MINUS) && (args.length == 1))
         {
             Expr a0 = args[0].eval(context);
             if (!(a0 instanceof Expr_NUM_CONSTANT)) throw new Exception("unary MINUS requires number");
-            return Expr.numExpr(-(((Expr_NUM_CONSTANT)a0).num));
+            return Expr.numExpr(-(((Expr_NUM_CONSTANT)a0).getInt()));
         }
         if ((op == Expr.operatorType.LOWER) || 
             (op == Expr.operatorType.LOWEREQUAL) ||
@@ -48,8 +44,8 @@ public class Operators
             Expr a1 = args[1].eval(context);
             if (!(a1 instanceof Expr_NUM_CONSTANT)) 
                 throw new Exception("operator " + op + " with second arg non-numeric type");
-            int arg0 = ((Expr_NUM_CONSTANT)a0).num;
-            int arg1 = ((Expr_NUM_CONSTANT)a1).num;
+            int arg0 = ((Expr_NUM_CONSTANT)a0).getInt();
+            int arg1 = ((Expr_NUM_CONSTANT)a1).getInt();
             switch (op)
             {
                 case LOWER: return Expr.booleanExpr(arg0 < arg1);

@@ -1,32 +1,29 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 import s3games.robot.Robot;
-import s3games.robot.RobotLocation;
 
-/**
- *
- * @author Nastavnik
- */
+/** An auxiliary window that is used to control the robot arm with the keyboard. */
 public class RobotControlWindow extends JFrame implements Runnable
 {      
+    /** handle to an object for interfacing with the robot */
     final Robot robot;
     
+    /** list of keys we respond to */
     private final char keys[] = { 'q', 'a', 'w', 's', 'e', 'd', 'r', 'f', 't', 'g' };
         
+    /** current key detected */
     private char key;
     
+    /** shall the window be closed? */
     private boolean terminate;
     
+    /** current robot arm position */
     double[] position;
     
+    /** update the current arm position and move the arm accordingly */
     public void respondToKey()
     {
         for (int i = 0; i < keys.length; i++)
@@ -41,16 +38,18 @@ public class RobotControlWindow extends JFrame implements Runnable
             }
     }
     
+    /** reset the position to a specified one */
     public void setPosition(double[] pos)
     {
         position = pos;
     }
     
+    /** construct and show the simple direct robot control window */
     public RobotControlWindow(Robot robotReference)
     {
         robot = robotReference;
         terminate = false;
-        setTitle("Robot Control");     
+        setTitle("Direct Robot Control");     
         position = new double[5];
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -64,6 +63,9 @@ public class RobotControlWindow extends JFrame implements Runnable
         new Thread(this).start();
     }
     
+    /** the window runs its own thread which responds to keys so that they 
+     * do not fill the key buffer */
+    @Override
     public void run()
     {
         while(!terminate)
@@ -78,6 +80,7 @@ public class RobotControlWindow extends JFrame implements Runnable
         dispose();          
     }
     
+    /** we let the user know the current robot configuration angles */
     @Override
     public void paint(Graphics g)
     {
@@ -86,8 +89,7 @@ public class RobotControlWindow extends JFrame implements Runnable
         g.setColor(Color.magenta);
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < 5; i++)
-            s.append(" " + position[i]);        
+            s.append(' ').append(position[i]);
         g.drawString("Angles: " + s.toString(), 10, 80);
     }
-    
 }

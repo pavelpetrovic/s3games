@@ -1,27 +1,28 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import s3games.engine.GameState;
 import s3games.engine.Move;
 
-/**
- *
- * @author yann
- */
-public class MonteCarloRatioPlayer2 extends AbstractMonteCarloPlayer {
-
+/** Monte carlo player where trials have differnt weight - depending
+ * on the depth of the trial - the deeper the trial (the more moves needed),
+ * the lower its contribution to the overall scores */
+public class MonteCarloRatioPlayer2 extends AbstractMonteCarloPlayer 
+{
+    /** current trial ratio */
     private double q;
+    
+    /** the weighted number of winning trials for all players */
     private Map<Integer, Double> winning;
+    
+    /** the weighted number of losing trials for all players */
     private Map<Integer, Double> losing;
+    
+    /** the weighted number of other trials for all players */
     private Map<Integer, Double> other;
    
+    /** construct this type of monte-carlo player */
     public MonteCarloRatioPlayer2 () 
     {
         winning = new HashMap<Integer, Double>();
@@ -29,12 +30,14 @@ public class MonteCarloRatioPlayer2 extends AbstractMonteCarloPlayer {
         other = new HashMap<Integer, Double>();
     }
    
+    /** initialize the ratio at the beginning of each trial */
     @Override
     protected void initializeRatio() 
     {
         q = 1.0;
     }
 
+    /** update the current trial ratio every time a move is made */
     @Override
     protected void updateRatio(GameState gs, Set<Move> moves) 
     {
@@ -43,6 +46,7 @@ public class MonteCarloRatioPlayer2 extends AbstractMonteCarloPlayer {
         }
     }    
 
+    /** initialize the scores before all trials are started */
     @Override
     protected void initializeScore (int i) 
     {
@@ -51,6 +55,7 @@ public class MonteCarloRatioPlayer2 extends AbstractMonteCarloPlayer {
         other.put(i, 0.0);
     }
 
+    /** add the current trial to the overall scores */
     @Override
     protected void addScore(GameState gs, int i) 
     {
@@ -61,6 +66,7 @@ public class MonteCarloRatioPlayer2 extends AbstractMonteCarloPlayer {
         else other.put(i, other.get(i)+q);
     }
 
+    /** calculate the resulting scores after all trials completed */
     @Override
     protected double calculateScore(int i) 
     {

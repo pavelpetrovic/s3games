@@ -1,25 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.gui;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author petrovic16
- */
+/** Represents an Image and a relative-displacement of where it should be displayed in the board canvas */
 public class ImageWithHotSpot
 {
+    /** the actual image */
     Image image;
+    /** relative displacement of the image location */
     Point hotSpot;
 
+    /** construct the object by loading the image from file and setting the relative displacement */
     public ImageWithHotSpot(String fileName, int x, int y) throws IOException
     {
         image = ImageIO.read(new File(fileName));

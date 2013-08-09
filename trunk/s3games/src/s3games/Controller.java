@@ -210,10 +210,8 @@ public class Controller implements SwitchListener, Runnable
                     p = Strategy.getStrategy(playerStrategies[player], h).getPlayer(gameSpecification);
 
                 }
-                p.setPlayerNumber(player+1);
-                // TODO setup from controller window
+                p.setPlayerNumber(player+1);                
                 p.setMaximumNumberOfNodes(cw.getNumberOfNodesToExpand());
-                p.setMaximumCacheSize(4 * cw.getNumberOfNodesToExpand());
                 p.setMaxTime(cw.getRunningTime());
                 players.add(p);
             }

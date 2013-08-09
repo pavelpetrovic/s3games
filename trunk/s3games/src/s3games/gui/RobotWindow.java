@@ -1,34 +1,42 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import s3games.robot.Robot;
 
-/**
- *
- * @author petrovic
- */
+/** A simple control window for letting the user control when to make a new
+ * move with the robot arm, and perhaps do some other operations on the robot */
 public class RobotWindow extends ControlWindow implements ActionListener
 {
+    /** handle to the robot interface object */
     Robot robot;
     
+    /** request the move to be performed by robot arm */
     JButton goButton;
+    
+    /** clear the informative text area */
     JButton clearButton;
+    
+    /** do test movements with the robot, such as init, home, grab, put */
     JButton testButton;
+    
+    /** make the robot show a demo of moving to all defined locations */
     JButton allLocationsButton;
+    
+    /** initialize the robot */
     JButton initButton;
+    
+    /** pause the all locations demo */
     JButton pauseButton;
+    
+    /** do a manual keyboard-control of the robot */
     JButton controlButton;
     
+    /** are we allowed to make a move */
     boolean ourTurn;
     
+    /** construct the robot control panel window */
     public RobotWindow(Robot robot)
     {
         super("Robot control panel");
@@ -36,6 +44,7 @@ public class RobotWindow extends ControlWindow implements ActionListener
         ourTurn = false;
     }
     
+    /** add the robot control panel buttons to the panel */
     @Override
     protected void addButtonsToPanel(JPanel panel) 
     {
@@ -63,12 +72,14 @@ public class RobotWindow extends ControlWindow implements ActionListener
         controlButton.addActionListener(this);
     }
         
+    /** allow performing the move now */
     public void moving(boolean b)
     {
         ourTurn = b;
         goButton.setEnabled(ourTurn);
     }
     
+    /** action listener for the buttons */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
@@ -91,6 +102,7 @@ public class RobotWindow extends ControlWindow implements ActionListener
             robot.control();
     }
     
+    /** close the robot window */
     @Override
     public void close()
     {

@@ -1,36 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.robot;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
 import s3games.gui.CameraWindow;
 
-/**
- *
- * @author petrovic
- */
-
-
-/**
- *
- * @author petrovic
- */
+/** Camera singleton is an object that communicates with the C++ application
+ * to retrieve the locations of the elements on the real board. The communication
+ * is done through a redirected standard input/output of the C++ application. */
 public class Camera implements Runnable
 {
+    /** represents an object that has been detected by the camera */
     public class DetectedObject
     {
+        /** element type */
         public String type;
+        /** element state */
         public int state;
+        /** location in the camera image: x-coordinate */
         public int x;
+        /** location in the camera image: y-coordinate */        
         public int y;
 
+        /** construct a new detected object */
         public DetectedObject(String type, int state, int x, int y)
         {
             this.type = type;
@@ -39,6 +35,7 @@ public class Camera implements Runnable
             this.y = y;
         }
 
+        /** visualize the detected object - for printing/debugging purposes */
         @Override
         public String toString()
         {        
@@ -46,18 +43,34 @@ public class Camera implements Runnable
         }
     }
     
+    /** reference to the current game specification */
     GameSpecification specs;    
+    
+    /** reference to the camera control window */
     CameraWindow win;
+    
+    /** the communication thread for talking with the C++ application */
     Thread commThread;
+    
+    /** shall the debugging messages from C++ application (D:XXXX) be shown? */
     boolean showDebuggingMessages;
+    
+    /** the list of the detected objects */
     ArrayList<DetectedObject> objects;
+    
+    /** the input link from the C++ application */
     BufferedReader in;
+    /** the output link to the C++ application */
     PrintWriter out;
+    /** shall we close all camera agenda? */
     boolean terminating;
+    /** we synchronize with the camera player about making a new move through this object */
     final Object notificator;
 
+    /** the name of the C++ application to be started */
     private static final String CAMERA_PROGRAM = "cameraBoard.exe";
     
+    /** construct a new camera controller, it will also construct a camera control window. */
     public Camera(GameSpecification specs)
     {
         notificator = new Object();
@@ -70,6 +83,7 @@ public class Camera implements Runnable
         init();        
     }
         
+    /** sends the color/size parameters of element types and states to the C++ application */
     private void sendObjectParametersToCamera()
     {
         ArrayList<CameraObjectType> params = specs.cameraObjectTypes;
@@ -80,6 +94,10 @@ public class Camera implements Runnable
         out.flush();
     }
     
+    /** sends all the location coordinates to the camera for the purpose of the 
+     * visualization - pressing 'l' key in the camera window shows them - in this
+     * way the designer of the real game board can check if she got the pixel
+     * coordinates properly. */
     private void sendLocationsToCamera()
     {
         out.println("3");
@@ -96,6 +114,8 @@ public class Camera implements Runnable
         out.flush();
     }
     
+    /** launch the camera C++ application, send all the configuration
+     * information and start the communication in a separate thread */
     private void init()
     {
         try 
@@ -124,6 +144,8 @@ public class Camera implements Runnable
         
     }
     
+    /** the communicating thread - blocking reads from the C++ application
+     * and processes the received packets */
     @Override
     public void run()
     {
@@ -151,6 +173,7 @@ public class Camera implements Runnable
         win = null;
     }
     
+    /** add a new object detected by the camera application to the list of detected objects */
     private void addObject(String objDesc) throws Exception
     {
         String obj[] = objDesc.split("\t");
@@ -158,6 +181,7 @@ public class Camera implements Runnable
         objects.add(new DetectedObject(obj[0], Integer.parseInt(obj[1]), Integer.parseInt(obj[2]), Integer.parseInt(obj[3])));
     }
     
+    /** indicates that the camera application has finished sending the detected locations - the list is now complete */
     private void objectsTransmitted()
     {
         //win.addMessage(objects.toString());
@@ -165,6 +189,8 @@ public class Camera implements Runnable
         synchronized(notificator) { notificator.notify(); }
     }
     
+    /** sends a command to the C++ application to make a snapshot 
+     * of the current game situation and send a list of detected objects */
     public void requestObjectsFromCamera()
     {
         objects.clear();
@@ -172,6 +198,9 @@ public class Camera implements Runnable
         out.flush();
     }
     
+    /** the camera player indicates to the camera object by calling this blocking
+     * method that it is interested in obtaining the current state of the game
+     * from the camera immediately */
     public ArrayList<DetectedObject> waitForUserMove() 
     {
         win.addMessage("It is your turn: move one stone and click the button below.");
@@ -181,11 +210,13 @@ public class Camera implements Runnable
         return objects;
     }    
     
+    /** appends a new message to the camera control panel window - a gateway for camera player */
     public void msgToUser(String msg)
     {
         win.addMessage(msg);
     }
 
+    /** close all the camera-related stuff */
     public void close()
     {
         terminating = true;

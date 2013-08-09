@@ -14,7 +14,7 @@ public class BreadthFirstSearchStrategy extends Strategy
     @Override
     public Player getPlayer(GameSpecification specs) 
     {
-       return new BreadthFirstSearchPlayer(specs);
+       return new BreadthFirstSearchPlayer();
     }
 
     /** no learning for BFS yet - could learn the best path, and then play() could just follow it - future work... */

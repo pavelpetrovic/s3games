@@ -19,6 +19,6 @@ public class RandomGeneralStrategy extends Strategy
     @Override
     public Player getPlayer(GameSpecification specs) 
     {
-        return new RandomGeneralPlayer(specs);        
+        return new RandomGeneralPlayer();        
     }
 }

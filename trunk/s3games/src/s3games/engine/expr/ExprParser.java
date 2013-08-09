@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.engine.expr;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- *
- * @author petrovic
- */
+/** A parser that takes a list of lexemes and constructs an internal 
+ * representation of the expression. The class contains only static methods
+ * and no fields, it is just a module to keep this code in. */
 public class ExprParser 
 {
+    /** Parses an infix operator with two arguments. */
     private static Expr parseOperator(ArrayList<Lexeme> leftArgument, ArrayList<Lexeme> rightArgument, Expr.operatorType op) throws Exception
     {
         Expr firstArgument = parseExpr(leftArgument);
@@ -20,6 +16,9 @@ public class ExprParser
         return new Expr_OPERATOR(op, new Expr[] { firstArgument, secondArgument });            
     }
         
+    /* Parses a list of expressions, returns an array of the parsed expressions. 
+     * These are typically comma-separated expressions provided as arguments to 
+     * a function call, or members of some set.  */
     private static Expr[] parseList(ArrayList<Lexeme> argLexs) throws Exception
     {
         Expr[] listOfArgs = new Expr[argLexs.size()];
@@ -33,6 +32,7 @@ public class ExprParser
         return listOfArgs;
     }
     
+    /** parse the expression from the provided list of lexemes */
     static Expr parseExpr(ArrayList<Lexeme> lexs) throws Exception
     {        
         if (lexs.isEmpty()) throw new Exception("empty expression");
@@ -118,5 +118,4 @@ public class ExprParser
             return parseExpr(((ParenthesesLexeme)lex).lexs);
         throw new Exception("unexpected lexeme" + lex);     
     }
-    
 }

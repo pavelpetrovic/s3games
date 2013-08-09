@@ -1,30 +1,31 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.robot;
+
+import java.io.*;
+import java.util.Arrays;
 
 import s3games.engine.GameSpecification;
 import s3games.engine.Move;
 import s3games.gui.RobotWindow;
-import java.io.*;
-import java.util.Arrays;
 import s3games.engine.Location;
 import s3games.gui.RobotControlWindow;
 
-/**
- *
- * @author petrovic
- */
+/** The main robot arm controller. */
 public class Robot implements Runnable
 {
+    /** serial port where the robot is connected, e.g. "COM3" */
     private String port;
+    /** object that does the low-level communication with the SSC-32 (or whatever) servo-controller device */
     RobotSerialPort link;
+    /** game specification of the game played */
     GameSpecification specs;
+    /** reference to a robot control panel window */
     RobotWindow win;
+    /** the move that is to be performed by the robot arm */
     Move requestedMove;
-    Object waitForMovePerformed;
+    /** synchronization object on which we wait until the move has been completed - before taking the next move */
+    final Object waitForMovePerformed;
     
+    /** construct the robot controller and connect to the servo controller device */
     public Robot(String serialPort, GameSpecification specs) throws Exception
     {
         waitForMovePerformed = new Object();
@@ -34,7 +35,8 @@ public class Robot implements Runnable
         open(); 
     }
     
-    public void open() throws Exception
+    /** connect to the servo-controller device */
+    private void open() throws Exception
     {
         win.addMessage("Opening robot...");
         link = new RobotSerialPort(port);
@@ -50,11 +52,14 @@ public class Robot implements Runnable
         win.addMessage("You can move the robot away from the camera frame and click [Init] twice.");
     }
     
+    /** close the communication link to the servo-controller device */
     public void close()
     {
-        link.close();        
+        link.close();
     }
     
+    /** perform a single move operation with the robot arm including picking and placing an element.
+     * this method only requests that the move be performed and waits for confirmation. */
     public void moveRobot(Move move) throws Exception
     {
         requestedMove = move;
@@ -65,6 +70,7 @@ public class Robot implements Runnable
         }
     }
  
+    /** perform a single move that was requested transporting the element to be moved */
     public void performMove() throws Exception
     {
         goTo(requestedMove.from, true);        
@@ -76,16 +82,21 @@ public class Robot implements Runnable
         }
     }
     
+    /** ask the servo-controller whether the robot has been performed */
     private boolean moveCompleted() throws Exception
     {
-        link.print("Q");
+        link.print(new RobotCmd(RobotCmd.Command.query).getCommand());
         int stillMoving = link.read();
-        if (stillMoving == '.') return true;
-        if (stillMoving == '+') return false;
+        if (stillMoving == RobotCmd.responseIdle()) return true;
+        if (stillMoving == RobotCmd.responseBusy()) return false;
         throw new Exception("Query from robot expected + or . but " + stillMoving + " was received.");
     }
 
-    double[] currentLocation;
+    /** the currently attempted arm configuration */
+    private double[] currentLocation;
+    /** move the robot arm to the specified location in two steps - first move above the location and then actually reaching it
+     * @param locationName name of the location to be reached 
+     * @param grab true indicates that we are to grab an element at this location, false indicates we are to release it there */
     private void goTo(String locationName, boolean grab) throws Exception
     {
         double[] angles = specs.locations.get(locationName).robot.angles;
@@ -103,6 +114,8 @@ public class Robot implements Runnable
         Thread.sleep(700);
     }
     
+    /** lets the user to enter a simple command for the robot on the standard 
+     * input console - this is used only for testing the robot arm */
     public void doTest() 
     {
         System.out.print("enter angles (5 doubles, init, or home, grab, put): ");
@@ -144,7 +157,11 @@ public class Robot implements Runnable
         } catch (Exception e) {}
     }
     
-    boolean showingLocations;
+    /** set to false to stop showing the locations demo */
+    private boolean showingLocations;
+    /** shows the user all locations learned by the robot arm, it does it 
+     * in a separate thread of course as this method is called from the
+     * button action listener */
     public void allLocationsDemo()
     {
         if (!showingLocations)
@@ -153,6 +170,7 @@ public class Robot implements Runnable
         }
     }
       
+    /** performs the demo of showing all locations */
     @Override
     public void run() 
     {
@@ -174,13 +192,17 @@ public class Robot implements Runnable
         showingLocations = false;
     }
 
-    public boolean paused;
+    /** set to true to pause the show all locations demo */
+    private boolean paused;
+    
+    /** invert the pause mode state */
     public void pause()
     {
         paused = !paused;
         if (paused) win.addMessage("Paused. Prese [Pause] again to continue.");
     }
     
+    /** allows a direct control of the robot using a keyboard in a separate robot control window */
     public void control()
     {
         if (!paused) pause();
@@ -189,29 +211,34 @@ public class Robot implements Runnable
         rcw.setPosition(currentLocation);
     }
     
+    /** moves the robot arm to the requested angles configuration, if the previous move has been completed */
     public void goTo(double[] angles) throws Exception
     {
         while (!moveCompleted()) { Thread.sleep(500); }        
         link.print(new RobotCmd(RobotCmd.Command.position, angles).getCommand());
     }
 
+    /** moves the robot arm to the requested angles configuration, regardless the previous move has been completed */
     public void goToDirect(double[] angles) throws Exception
     {    
         link.print(new RobotCmd(RobotCmd.Command.position, angles).getCommand());
     }
     
+    /** grab the element now */
     public void grab() throws Exception
     {
         while (!moveCompleted()) { Thread.sleep(500); }
         link.print(new RobotCmd(RobotCmd.Command.grab).getCommand());
     }
    
+    /** release the element now */
     public void put() throws Exception
     {
         while (!moveCompleted()) { Thread.sleep(500); }
         link.print(new RobotCmd(RobotCmd.Command.put).getCommand());        
     } 
    
+    /** initialize the arm to its 0 position - a quite stressful operation! */
     public void initArm() 
     {
         try {
@@ -219,6 +246,7 @@ public class Robot implements Runnable
         } catch (Exception e) { win.addMessage("Could not init robot arm: " + e.getMessage()); }
     }
      
+    /** move the arm away from the sight of the camera */
     public void goHome() throws Exception
     {
         while (!moveCompleted()) { Thread.sleep(500); }

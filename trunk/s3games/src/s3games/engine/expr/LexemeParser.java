@@ -1,21 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.engine.expr;
 
 import java.util.*;
 
-/**
- *
- * @author petrovic
- */
+/** The LexemeParser class breaks a single line string into a list of lexemes */
 class LexemeParser 
 {
+    /** here are all the lexeme separators that indicate locations where the previous lexeme terminates */
     private static final String allSeparators = "=!<=>+-*/% \t(),\"$";    
+    
+    /** resulting pre-lexemes in raw string format before they are recognized */
     private ArrayList<String> ln;
+    
+    /** for matching parentheses and braces */
     private LinkedList<Character> stack;
 
+    /** parse a single line with expression to a list of lexemes. 
+     * only splits the line to pre-lexemes and calls parseLn() to
+     * do the actual work. */
     ArrayList<Lexeme> parseLine(String line) throws Exception
     {        
         StringTokenizer st = new StringTokenizer(line, allSeparators, true);
@@ -31,12 +32,14 @@ class LexemeParser
         return parseLn();
     }
     
+    /** determine the respective closing parenthesis */
     private char closingBracketFor(String bracket)
     {
         if (bracket.charAt(0) == '(') return ')';
         return '}';
     }
 
+    /** parses a list of raw pre-lexemes into valid lexemes */
     private ArrayList<Lexeme> parseLn() throws Exception
     {
         ArrayList<Lexeme> acc = new ArrayList<Lexeme>();

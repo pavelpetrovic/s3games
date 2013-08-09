@@ -1,20 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.util;
 
-/**
- *
- * @author petrovic16
- */
+/** Represents a string of the form WHATEVER(a,b,...,z) where a..z are strings */
 public class NameWithArgs
 {
+    /** full string, e.g. "WHATEVER(car,baloon,3)" */
     public String fullName;
+    /** the base string, e.g. "WHATEVER" */
     public String baseName;
+    /** the arguments, e.g. {"car", "baloon", "3"} */
     public String[] args;
 
+    /** construct the string with arguments from the specified string */
     public NameWithArgs(String name) throws Exception
     {
         fullName = name;
@@ -38,5 +34,4 @@ public class NameWithArgs
             }
         }
     }
-
 }

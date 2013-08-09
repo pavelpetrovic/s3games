@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package s3games.gui;
 
 import java.awt.*;
@@ -13,49 +9,58 @@ import s3games.engine.GameState;
 import s3games.engine.GameSpecification;
 import s3games.engine.Location;
 
-/**
- *
- * @author Boris
- */
+/** Implements the canvas that shows the game progress in game window */
 public class BoardCanvas extends Canvas {
+
+    /** reference to game specification */
     public GameSpecification gameSpec = null;
-    GameState egameState = null;
+    
+    /** reference to current game state */
+    GameState gState = null;
+    
+    /** background image of the game board */
     Image bgImage;
+        
+    /** auxiliary variable for holding images with reference points */
     ImageWithHotSpot img;
     
+    /** we use double-buffering to avoid flickering */
     private BufferedImage buffImg;
     
+    /** remembers the element that was selected by a mouse click */
     String selectedElementName = null;
     
-    public BoardCanvas() 
-    {      
-    }
-    
+    /** controller sends the game specification to here */
     public void setGame(GameSpecification gs) 
     {        
         bgImage = Toolkit.getDefaultToolkit().getImage(gs.boardBackgroundFileName);
-        egameState = null;
+        gState = null;
         buffImg = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         gameSpec = gs;
     }
         
-    public void setState(GameState egs) {
-        egameState = egs;    
+    /** controller sends the current game state to here */
+    public void setState(GameState egs) 
+    {
+        gState = egs;    
     }
-     
-    
+        
+    /** we override the update() method to avoid the flickering */
     @Override
     public void update(Graphics g) {
         paint(g);
     }
+    
+    /** paints the current game state in the canvas's graphics object */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g) 
+    {
         if (gameSpec!=null) {
             Graphics bg = buffImg.getGraphics();
             bg.clearRect(0, 0, this.getWidth(), this.getHeight());  //clear window
             bg.drawImage(bgImage,0,0,this.getWidth(),this.getHeight(),this); //background
-            if (egameState!=null) {
-               Map<String,String> elements = egameState.elementLocations;
+            if (gState!=null) {
+               Map<String,String> elements = gState.elementLocations;
                //paint of board
                for (Map.Entry<String, Location> location: gameSpec.locations.entrySet())
                {
@@ -72,7 +77,7 @@ public class BoardCanvas extends Canvas {
                     String elementName=entry.getKey();                    
                     Element element = gameSpec.elements.get(elementName);
                     ElementType elType = gameSpec.elementTypes.get(element.type);                    
-                    Integer actualState = egameState.elementStates.get(elementName);
+                    Integer actualState = gState.elementStates.get(elementName);
                     img = elType.images[actualState-1];
                     String elementLoc = entry.getValue();
                     Location loc = gameSpec.locations.get(elementLoc);
@@ -86,15 +91,19 @@ public class BoardCanvas extends Canvas {
         }
     }
     
-    private void highlightSelected(Graphics g) {
+    /** draws a selection marker around the selected element */
+    private void highlightSelected(Graphics g) 
+    {
         if (selectedElementName != null) {
-            String elementLoc = egameState.elementLocations.get(selectedElementName);
+            String elementLoc = gState.elementLocations.get(selectedElementName);
             Location loc = gameSpec.locations.get(elementLoc);
             gameSpec.locationTypes.get(loc.type).shape.paintShape(g, loc.point);
         }
     }
     
-    public void setSelectedElement(String name) {
+    /** stores the current selected element - called from the mouse listener */
+    public void setSelectedElement(String name) 
+    {
         selectedElementName = name;
         this.repaint();
     }

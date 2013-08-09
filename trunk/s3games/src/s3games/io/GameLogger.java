@@ -1,20 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package s3games.io;
 
 import java.io.*;
 
-/**
- *
- * @author petrovic16
- */
+/** Logger is used to save information about the game progress to a file */
 public class GameLogger
 {
+    /** the name of the log file */
     private String generalLogFile = "s3games.log";
 
+    /** append the specified message to the specified  log file */
     private void appendToLog(String fileName, String message)
     {
         try {
@@ -27,14 +21,15 @@ public class GameLogger
         }
     }
 
+    /** append a warning to the log file */
     public void warning(String message)
     {
         appendToLog(generalLogFile, "warn: " + message);
     }
 
+    /** append an error message to the log file */
     public void error(String message)
     {
         appendToLog(generalLogFile, "err: " + message);
     }
-
 }
