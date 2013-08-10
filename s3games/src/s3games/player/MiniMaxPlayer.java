@@ -12,6 +12,12 @@ public class MiniMaxPlayer extends Player
     /** opened nodes are MAX if it is this player's turn, states when it is opponent's turn are MIN */
     public enum NodeType { MIN, MAX };
     
+    /** the percentage each of the moves will be used */
+    public static double mmRatio = 1.0;
+    
+    /** random generator used by this player */
+    private Random randomGenerator;
+    
     /** creates a new node that was reached by performing some move from the previous node.
      * the method opens the nodes and adds all resulting states to the leaves list */
     public Node newNode(Node previous, GameState gs) throws Exception
@@ -59,10 +65,11 @@ public class MiniMaxPlayer extends Player
         void open(GameState state) throws Exception
         {            
             if (state.winner >= 0)
-                value = valueOfWinner(state.winner);
+                value = valueOfWinner(state.winner, depth);
             else
             {
-                HashMap<Move, GameState> newStates = expand(state, state.possibleMoves()); 
+                double ratio = (state.currentPlayer == number) ? mmRatio : 1.0;
+                HashMap<Move, GameState> newStates = expand(state, state.possibleMoves(), ratio); 
                 if (newStates.isEmpty())
                     value = 0;
                 else
@@ -140,10 +147,11 @@ public class MiniMaxPlayer extends Player
     {
         this.specs = specs;
         this.heuristic = heuristic; 
+        randomGenerator = new Random();
     }
 
     /** determine the value of the state if we know the number of the winning player */ 
-    double valueOfWinner(int winner)
+    double valueOfWinner(int winner, int depth)
     {
         double val = Double.NaN;        
         if (winner == number)
@@ -151,22 +159,44 @@ public class MiniMaxPlayer extends Player
         else if (winner == 0)
             val = 0;
         else if (winner > 0)
-            val = -1;    
+            val = -1;
+        else return val;
+        val *= Math.pow(0.99, depth);
         return val;
     }
 
-    /** performs all requested moves from the specified state obtaining 
-     * a list of new states, indexed through the moves */
-    public HashMap<Move, GameState> expand(GameState state, HashSet<Move> moves) throws Exception
+    /** the only difference to standard minimax player is that here we ignore some
+     * of the moves when we expand a move */
+    public HashMap<Move, GameState> expand(GameState state, HashSet<Move> moves, double ratio) throws Exception
     {
-        HashMap<Move, GameState> expanded = null;
-        expanded = new HashMap<Move, GameState>();
+        if (moves.isEmpty()) return new HashMap<Move, GameState>();
+        
+        HashMap<Move, GameState> expanded = new HashMap<Move, GameState>();
+        
+        int countExpanded = 0;
         for (Move mv: moves)
         {
-            GameState newState = state.getCopy();
-            newState.performMove(mv);      
-            expanded.put(mv, newState);                
+            if (randomGenerator.nextDouble() < ratio)           
+            {
+                GameState newState = state.getCopy();
+                newState.performMove(mv);
+                expanded.put(mv, newState);
+                countExpanded++;
+            }
         }
+        
+        if (countExpanded == 0)
+        { 
+            int selected = randomGenerator.nextInt(moves.size());
+            Iterator<Move> it = moves.iterator();
+            while (selected-- > 0)
+                it.next();
+            Move mv = it.next();
+            GameState newState = state.getCopy();
+            newState.performMove(mv);
+            expanded.put(mv, newState);
+        }
+        
         return expanded;
     }
     
@@ -182,7 +212,7 @@ public class MiniMaxPlayer extends Player
         if (possibleMoves.size() == 1) return allowedMoves.get(0);
         
         HashMap<Move, Node> topMoves = new HashMap<Move, Node>();
-        HashMap<Move, GameState> newStates = expand(state, possibleMoves);
+        HashMap<Move, GameState> newStates = expand(state, possibleMoves, 1.0);
         modified = new PriorityQueue<Node>();
         leaves = new LinkedList<Leaf>();
         
@@ -194,7 +224,7 @@ public class MiniMaxPlayer extends Player
         {
             Leaf lf = leaves.poll();
             if (lf.gs.winner >= 0)
-                lf.previous.update(valueOfWinner(lf.gs.winner));
+                lf.previous.update(valueOfWinner(lf.gs.winner, lf.previous.depth + 1));
             else
                 newNode(lf.previous, lf.gs);
         }
@@ -202,7 +232,7 @@ public class MiniMaxPlayer extends Player
         while (!leaves.isEmpty())
         {
             Leaf lf = leaves.poll();
-            double val = valueOfWinner(lf.gs.winner);
+            double val = valueOfWinner(lf.gs.winner, lf.previous.depth + 1);
             if (Double.isNaN(val))
                 val = heuristic.heuristic(lf.gs, number);
             lf.previous.update(val);                
@@ -219,6 +249,7 @@ public class MiniMaxPlayer extends Player
         for (Map.Entry<Move, Node> mv: topMoves.entrySet())
         {
             double val = mv.getValue().value;
+            System.out.println(mv.getKey() + ": " + val);
             if (val > max)
             {
                 max = val;
