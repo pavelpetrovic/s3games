@@ -9,7 +9,7 @@ class ZeroHeuristic extends Heuristic
         @Override
         public double heuristic(GameState gameState, int forPlayer) 
         {
-            return 0;            
+            return -0.00000001;            
         }    
 }
 

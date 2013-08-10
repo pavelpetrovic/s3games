@@ -224,8 +224,6 @@ public class GameSpecificationParser
         }
         else if (var.equals("robot"))
         {
-            System.out.println(var + "=" + val);
-        
             try { location.robot = new RobotLocation(val); }
             catch (Exception e)
             {                
