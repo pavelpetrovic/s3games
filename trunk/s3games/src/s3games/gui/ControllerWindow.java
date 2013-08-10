@@ -303,6 +303,7 @@ public class ControllerWindow extends javax.swing.JFrame
                 .addGap(36, 36, 36))
         );
 
+        jTextField4.setEditable(false);
         jTextField4.setText("500");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,6 +311,7 @@ public class ControllerWindow extends javax.swing.JFrame
             }
         });
 
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
         jLabel15.setText("Number of expanded nodes:");
         jLabel15.setToolTipText("");
 

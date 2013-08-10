@@ -411,7 +411,9 @@ robot=10,20,30,40,50,10,20,30,40,50
 
 [PLAYER NAMES]
 1=white
+score=2
 2=black
+score=2
 
 [MOVABLE ELEMENTS]
 
@@ -596,14 +598,40 @@ state=1
 
 [EXPRESSIONS]
 
+Stones($DIFCOL)
+    $COUNT = 0
+    FORALL($X, 1, 6, FORALL($Y, 1, 6, (EMPTY("b($X,$Y)") OR (STATE(CONTENT("b($X,$Y)")) == $DIFCOL) ) OR ($COUNT = ($COUNT + 1))))
+    $COUNT
+END
 
 
-[SCORINGS]
+CheckMove
+  $MM = $M -1 
+  $LL = $L -1
+  $M1 = $M +1 
+  $L1 = $L +1 
+  (NOT EMPTY("b($L,$MM)"))  OR  (NOT EMPTY("b($L,$M1)"))  OR (NOT EMPTY("b($LL,$MM)")) OR (NOT EMPTY("b($L1,$M1)"))  OR (NOT EMPTY("b($LL,$M)")) OR (NOT EMPTY("b($L1,$M)")) OR (NOT EMPTY("b($LL,$M1)")) OR (NOT EMPTY("b($L1,$MM)"))
+ // $M1 = $M
+ // $M1 = $M1+CheckLeft
+END
+
+FullBoard
+    FORALL($A, 1, 6, FORALL($B, 1, 6, (NOT EMPTY("b($A,$B)")) ))
+END
+
+[SCORINGS]   
 
 [END OF GAME]
 
-
-
+    situation=FullBoard  AND SCORE(1)>SCORE(2)
+    winner=1    
+    
+    situation=FullBoard  AND SCORE(2)>SCORE(1)
+    winner=2   
+    
+    situation=FullBoard  AND SCORE(1) == SCORE(2)
+    winner=0  
+    
 [GAME RULES]
 
 name=wstep
@@ -611,6 +639,11 @@ element=s($J)
 player=1
 from=stw($K)
 to=b($L,$M)
+condition=CheckMove
+  awardPlayer=1
+  withScore=Stones(2)+1-SCORE(1)
+  awardPlayer=2
+  withScore=Stones(1)-SCORE(2)
 followup=NEXTPLAYER
 
 name=bstep
@@ -618,4 +651,9 @@ element=s($J)
 player=2
 from=stb($K)
 to=b($L,$M)  
+condition=CheckMove
+  awardPlayer=1
+  withScore=Stones(2)-SCORE(1)
+  awardPlayer=2
+  withScore=Stones(1)+1-SCORE(2)
 followup=NEXTPLAYER
