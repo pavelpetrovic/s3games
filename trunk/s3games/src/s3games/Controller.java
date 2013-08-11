@@ -84,7 +84,7 @@ public class Controller implements SwitchListener, Runnable
     /** should return the list of available games, this should probably go to some external file (?) */
     public String[] getGameNames()
     {
-        return new String[] {"Connect4","Puzzle8","Reversi","RiverCrossing","Alquerque","Mill","Nim", "Frogs", "TicTacToe"};
+        return new String[] {"Connect4","Puzzle8","Skipping","Reversi","RiverCrossing","Alquerque","Mill","Nim", "Frogs", "TicTacToe"};
     }
     
     /** returns list of strategies that can play the specified game, we should improve this architecture somehow later */
