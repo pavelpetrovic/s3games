@@ -365,7 +365,7 @@ from=s($K,$L)
 to=s($M,$N)  
 condition=CheckJumpW
 followup=NEXTPLAYER    
-//should be here NEXTPLAYER... check if can jump again with the same stone
+//NEXTPLAYER shouldnt be here... check if can jump again with the same stone
 
 name=bjump
 element=b($J)
