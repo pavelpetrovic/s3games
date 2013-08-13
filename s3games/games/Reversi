@@ -420,11 +420,12 @@ score=2
 name=s(1)
 type=stone
 location=b(3,3)
+state=1
 
 name=s(2)
 type=stone
-player=1
 location=b(4,4)
+state=1
 
 name=s(3)
 type=stone
@@ -604,22 +605,53 @@ Stones($DIFCOL)
     $COUNT
 END
 
+CheckDirection($DX,$DY)
+      $X = ($X + $DX)
+      $Y = ($Y + $DY) 
+      NOT EMPTY("b($X,$Y)")
+      IF( STATE(CONTENT("b($X,$Y)")) != PLAYER,CheckDirection($DX,$DY), IF($CHANGING == 1,ChangeDirStates($L,$M),true) )
+END
+
+CheckDirFirst($DX,$DY)
+      $X = ($L + $DX)
+      $Y = ($M + $DY) 
+      NOT EMPTY("b($X,$Y)") 
+      IF( STATE(CONTENT("b($X,$Y)")) != PLAYER,CheckDirection($DX,$DY), false)
+END
 
 CheckMove
-  $MM = $M -1 
-  $LL = $L -1
-  $M1 = $M +1 
-  $L1 = $L +1 
-  (NOT EMPTY("b($L,$MM)"))  OR  (NOT EMPTY("b($L,$M1)"))  OR (NOT EMPTY("b($LL,$MM)")) OR (NOT EMPTY("b($L1,$M1)"))  OR (NOT EMPTY("b($LL,$M)")) OR (NOT EMPTY("b($L1,$M)")) OR (NOT EMPTY("b($LL,$M1)")) OR (NOT EMPTY("b($L1,$MM)"))
- // $M1 = $M
- // $M1 = $M1+CheckLeft
+  $CHANGING = 0
+  CheckDirFirst(0,-1)  OR  CheckDirFirst(0,1)  OR CheckDirFirst(-1,-1) OR CheckDirFirst(1,1) OR CheckDirFirst(-1,0) OR CheckDirFirst(1,0) OR CheckDirFirst(-1,1) OR CheckDirFirst(1,-1)
 END
+
+
+ChangeDirStates($LL,$MM)
+    $XX = ($LL + $DX)
+    $YY = ($MM + $DY)
+    IF( ($XX != $X) OR ($YY != $Y) ,SETSTATE(CONTENT("b($XX,$YY)"), PLAYER) AND ChangeDirStates($XX,$YY) ,true)
+END
+
+ChangeStates
+   $CHANGING = 1
+   CheckDirFirst(0,-1) OR true
+   CheckDirFirst(0,1)   OR true
+   CheckDirFirst(-1,-1) OR true
+   CheckDirFirst(1,1)  OR true
+   CheckDirFirst(-1,0) OR true
+   CheckDirFirst(1,0)   OR true
+   CheckDirFirst(-1,1)  OR true
+   CheckDirFirst(1,-1)  OR true     
+END                     
 
 FullBoard
     FORALL($A, 1, 6, FORALL($B, 1, 6, (NOT EMPTY("b($A,$B)")) ))
 END
 
 [SCORINGS]   
+//  awardPlayer=1
+//  withScore=Stones(2)-SCORE(1)
+//  awardPlayer=2
+//  withScore=Stones(1)-SCORE(2)
 
 [END OF GAME]
 
@@ -640,11 +672,11 @@ player=1
 from=stw($K)
 to=b($L,$M)
 condition=CheckMove
+followup=ChangeStates AND NEXTPLAYER
   awardPlayer=1
-  withScore=Stones(2)+1-SCORE(1)
+  withScore=Stones(2)-SCORE(1)
   awardPlayer=2
   withScore=Stones(1)-SCORE(2)
-followup=NEXTPLAYER
 
 name=bstep
 element=s($J)
@@ -652,8 +684,8 @@ player=2
 from=stb($K)
 to=b($L,$M)  
 condition=CheckMove
+followup=ChangeStates AND NEXTPLAYER
   awardPlayer=1
   withScore=Stones(2)-SCORE(1)
   awardPlayer=2
-  withScore=Stones(1)+1-SCORE(2)
-followup=NEXTPLAYER
+  withScore=Stones(1)-SCORE(2)
