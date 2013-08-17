@@ -74,7 +74,7 @@ robot=10,20,30,40,50,10,20,30,40,50
 </pre></font>
 
  * movable elements
-	name (+ optional index), type, initial player name, initial location name, initial state (optional), initial z-index (optional)
+	name (+ optional index), type, initial player number, initial location name, initial state (optional), initial z-index (optional)
 
 <font color="brown"><pre>
 [MOVABLE ELEMENTS]    
@@ -171,8 +171,7 @@ END
 
  * scorings
 
-expression
-scores to add/subtract for all players (playername, score) - can be expressions
+expression, scores to add/subtract for any specified players (player number, score) - can be expressions
 
 <font color="brown"><pre>
 [SCORINGS]
@@ -183,8 +182,7 @@ score=(PLAYER*2)
 </pre></font>
 
  * end of game conditions
-expression
-winning player name - can be expression
+expression, winning player number - can be expression
 
 <font color="brown"><pre>
 [END OF GAME]    
