@@ -280,7 +280,10 @@ public class GameSpecificationParser
     {
         var = var.toLowerCase();
         if (var.equals("situation"))
+        {
             scoring = new GameScoring(Expr.parseExpr(val));
+            specs.scorings.add(scoring);
+        }
         else if (var.equals("player"))
             scoring.players.add(Expr.parseExpr(val));
         else if (var.equals("score"))

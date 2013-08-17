@@ -304,7 +304,7 @@ public class ControllerWindow extends javax.swing.JFrame
         );
 
         jTextField4.setEditable(false);
-        jTextField4.setText("500");
+        jTextField4.setText("100000");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
@@ -380,7 +380,7 @@ public class ControllerWindow extends javax.swing.JFrame
                                 .addComponent(jLabel16)
                                 .addGap(55, 55, 55)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(jButton3)
                             .addComponent(jLabel15))

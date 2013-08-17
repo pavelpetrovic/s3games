@@ -37,6 +37,9 @@ public class Game extends Thread
     
     /** handle to a switch to turn off when the game terminates for any reason */
     private Switch gameRuns;
+    
+    /** current game ID */
+    private int id;
 
     /** constructs a new game, saves references to the objects passed in arguments */
     public Game(Config config, GameLogger logger, GameWindow window, Switch gameRuns, Robot robot)
@@ -46,6 +49,7 @@ public class Game extends Thread
         this.window = window;
         this.gameRuns = gameRuns;
         this.robot = robot;
+        this.id = gameRuns.getValue();
     }
 
     /** setup game specification and players objects */
@@ -86,10 +90,10 @@ public class Game extends Thread
             boolean approved = false;
             do {
                 nextMove = playerOnMove.move(state, allowedMoves);
-                if (gameRuns.isOff()) 
+                if (gameRuns.isOff() || (gameRuns.getValue() != id))
                 {
                     state.winner = 0;
-                    break;
+                    return;
                 }
                 System.out.println("Player moves: " + nextMove.toString());
                 approved = state.moveAllowed(nextMove);
@@ -125,6 +129,6 @@ public class Game extends Thread
             e.printStackTrace();
             window.showException(e);
         }
-        finally { gameRuns.off(); }
+        gameRuns.off();
     }
 }

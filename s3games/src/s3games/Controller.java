@@ -46,10 +46,14 @@ public class Controller implements SwitchListener, Runnable
     
     /** a synchronization object for notifying the controller thread that the game thread finished so that it can start another one (for the case of multiple games) */
     private final Object notifier;
+    
+    /** each game has an ID so that it can recognize it is the one that is still being played */
+    private int currentGameID;
 
     /** constructs and shows main window and the minimum agenda */
     public Controller()
     {
+        currentGameID = 1;
         notifier = new Object();
         gameRunning = new Switch();
         gameRunning.addSwitchListener(this);
@@ -177,8 +181,8 @@ public class Controller implements SwitchListener, Runnable
         while ((numberOfRuns-- > 0) && (gw.isVisible())) 
         {
             cw.setNumberOfRunsToGo(numberOfRuns+1);
-            gameRunning.on();
-            
+            gameRunning.setValue(currentGameID++);
+            gameRunning.on();            
 
             if (boardType == Player.boardType.REALWORLD)
             {
@@ -191,7 +195,7 @@ public class Controller implements SwitchListener, Runnable
                     if (robotNeeded) robot = new Robot("COM3", gameSpecification);
                 } catch (Exception e) { gw.showException(e); }
             }
-            
+                        
             game = new Game(config, logger, gw, gameRunning, robot);
             
             ArrayList<Player> players = new ArrayList<Player>();                
@@ -240,7 +244,7 @@ public class Controller implements SwitchListener, Runnable
      * @param strategyHeuristics name of heuristic to use for computer players
      * @param strategyFileName where should we save the learned strategy
      * @param numberOfRuns how many times to play the game while learning
-     * @param learnStrategy strategy that will be learned
+     * @param learnStrategyType strategy that will be learned
      * @return the number of player who won, 0 for draw/nobody, -1 if game was interrupted
      */
     public int learn(String gameName, Player.boardType boardType, Player.playerType[] playerTypes, 
