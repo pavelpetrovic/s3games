@@ -633,6 +633,10 @@ END
 
 [SCORINGS]
 
+situation=true
+player=PLAYER
+score=(PLAYER*2)
+
 [END OF GAME]
 
 situation=Has4

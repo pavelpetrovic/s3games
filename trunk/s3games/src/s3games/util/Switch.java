@@ -9,6 +9,9 @@ public class Switch
     /** the current state of the switch */
     private boolean state;
     
+    /** the current user value of the switch */
+    private int value;
+    
     /** the listeners who are registered to receive the switch events */
     private ArrayList<SwitchListener> listeners;
     
@@ -59,4 +62,16 @@ public class Switch
     {
         return !state;
     }
+    
+    /** set new user value of this switch */
+    public void setValue(int newValue)
+    {
+       value = newValue; 
+    }
+    
+    /** retrieve the user value of this switch */
+    public int getValue()
+    {
+        return value;
+    }    
 }

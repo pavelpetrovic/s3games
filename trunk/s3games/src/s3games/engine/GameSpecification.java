@@ -78,7 +78,7 @@ public class GameSpecification
     }
 
     /** load game specification from a file
-     * @param the name of game - and the file where the specification is loaded from (in games/ folder)
+     * @param gameName the name of game, and the file where the specification is loaded from (in games/ folder)
      * @return true, if the game specification was successfully parsed and loaded */
     public boolean load(String gameName) throws Exception
     {        

@@ -253,7 +253,7 @@ public class GameState
         return false;
     }
 
-    /* performs a move after it has been verified, executes follow-up action
+    /** performs a move after it has been verified, executes follow-up action
      * of the rule that maximizes the score, adds the score, important: the
      * game is marked finished only if one of the players won, or rules 
      * specifically announced draw. when there are no more moves, you need
@@ -266,8 +266,23 @@ public class GameState
         bestRule.addScores(context);
         moveElement(move, context.specs);
         bestRule.performAction(context);
+        updateScores(context);
         winner = gameOver();
         modified = true;
+    }
+    
+    /** updates scores after a move has been performed including the follow-up action
+     * based on the current state, and the context (including variables) of that move */
+    private void updateScores(Context context) throws Exception
+    {
+        for (GameScoring scoring: context.specs.scorings)
+            if (scoring.situation.eval(context).isTrue())
+                for (int i = 0; i < scoring.players.size(); i++)
+                {
+                    int player = scoring.players.get(i).eval(context).getInt();
+                    int amount = scoring.amounts.get(i).eval(context).getInt();
+                    context.getState().playerScores[player - 1] += amount;
+                }
     }
     
     /** finds the rule that maximizes the score for the specified move  */
