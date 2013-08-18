@@ -633,7 +633,7 @@ END
 
 ChangeStates
    $CHANGING = 1
-   CheckDirFirst(0,-1) OR true
+   CheckDirFirst(0,-1) OR true    
    CheckDirFirst(0,1)   OR true
    CheckDirFirst(-1,-1) OR true
    CheckDirFirst(1,1)  OR true
@@ -648,10 +648,11 @@ FullBoard
 END
 
 [SCORINGS]   
-//  awardPlayer=1
-//  withScore=Stones(2)-SCORE(1)
-//  awardPlayer=2
-//  withScore=Stones(1)-SCORE(2)
+situation=true
+player=1
+score=Stones(2)-SCORE(1)
+player=2
+score=Stones(1)-SCORE(2)
 
 [END OF GAME]
 
@@ -673,10 +674,6 @@ from=stw($K)
 to=b($L,$M)
 condition=CheckMove
 followup=ChangeStates AND NEXTPLAYER
-  awardPlayer=1
-  withScore=Stones(2)-SCORE(1)
-  awardPlayer=2
-  withScore=Stones(1)-SCORE(2)
 
 name=bstep
 element=s($J)
@@ -685,7 +682,3 @@ from=stb($K)
 to=b($L,$M)  
 condition=CheckMove
 followup=ChangeStates AND NEXTPLAYER
-  awardPlayer=1
-  withScore=Stones(2)-SCORE(1)
-  awardPlayer=2
-  withScore=Stones(1)-SCORE(2)
