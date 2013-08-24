@@ -1,0 +1,23 @@
+#summary Rules of some implemented games
+
+( [S3Games return to main wiki page] )
+
+== A family crossing a river ==
+
+A family gets lost and arrives to a river at night, now they need to cross it. They have only 1 flashlight, but the bridge is broken, and thus not more than two people can attempt to use the bridge. The girls do not have very good shoes, and take longer to walk over the river:	
+
+ * Mother will use 10 minutes	
+ * Emily will use 5 minutes	
+ * Father will use 2 minutes	
+ * Bob will use only 1 minute	
+
+ * When two go together, they will go the speed of the more slowly one.	
+
+====Task====
+What is the shortest time the family can meet again on the other side of the river to continue walking back to the camp?	
+
+====In implementation:====
+
+ * _Locations:_  4 locations on one side, 4 locations on the other side, 2 locations for persons and 1 for flashlight on the each side next to bridge
+ * _Elements:_  Mother, Emily, Father, Bob, flashlight 
+ * _Scoring:_  negative time used (score starts at 50 after the game starts)
