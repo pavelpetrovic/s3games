@@ -1,3 +1,5 @@
+#summary Some AI theory
+
 == Information relevant for the S3 Games project ==
 
 ( [S3Games return to main wiki page] )
