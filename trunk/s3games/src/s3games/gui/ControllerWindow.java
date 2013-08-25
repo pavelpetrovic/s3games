@@ -384,7 +384,7 @@ public class ControllerWindow extends javax.swing.JFrame
                                     .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(jButton3)
                             .addComponent(jLabel15))
-                        .addGap(45, 45, 45))
+                        .addGap(34, 34, 34))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
