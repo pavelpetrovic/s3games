@@ -208,3 +208,17 @@ from=s($K)
 to=s($L)
 condition=StoneOccupied($K+1) AND ($L==$K+2)
 </pre></font>
+
+adding score to player and resulting action example _(from RiverCrossing)_
+
+<font color="brown"><pre>
+[GAME RULES]    
+name=toRight
+element=lg
+from=lightLeft
+to=lightRight
+condition=CheckStackL
+awardPlayer=1
+withScore=Min(timeOf("leftstack(2)"),timeOf("leftstack(1)"))
+followup=crossToRight
+</pre></font>
