@@ -21,3 +21,8 @@ What is the shortest time the family can meet again on the other side of the riv
  * _Locations:_  4 locations on one side, 4 locations on the other side, 2 locations for persons and 1 for flashlight on the each side next to bridge
  * _Elements:_  Mother, Emily, Father, Bob, flashlight 
  * _Scoring:_  negative time used (score starts at 50 after the game starts)
+
+==Squares==
+
+The goal of the game is to enclose so much small squares as possible. 
+A player can in one move put his stick onto dotted grid, vertically or horizontally.  Players are changing after each move, which didn’t create a new small square. The game ends when the grid is full and no other move is possible. The winner is a player with a larger score. 
