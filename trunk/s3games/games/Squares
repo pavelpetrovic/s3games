@@ -29,35 +29,35 @@ point=1,1
 
 name=gridV
 image=emptyplace.png
-shape=rectangular(30,80)
+shape=rectangular(30,68)
 point=1,1
 
 name=gridH
 image=emptyplace.png
-shape=rectangular(80,30)
+shape=rectangular(68,30)
 point=1,1
 
 name=stackRH
 image=emptyplace.png
-shape=rectangular(80,30)
+shape=rectangular(78,30)
 point=1,1
 relevant=no
 
 name=stackRV
 image=emptyplace.png
-shape=rectangular(30,80)
+shape=rectangular(30,78)
 point=1,1
 relevant=no
 
 name=stackBH
 image=emptyplace.png
-shape=rectangular(80,30)
+shape=rectangular(78,30)
 point=1,1
 relevant=no
 
 name=stackBV
 image=emptyplace.png
-shape=rectangular(30,80)
+shape=rectangular(30,78)
 point=1,1
 relevant=no
 
