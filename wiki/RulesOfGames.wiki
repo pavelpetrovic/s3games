@@ -26,3 +26,10 @@ What is the shortest time the family can meet again on the other side of the riv
 
 The goal of the game is to enclose so much small squares as possible. 
 A player can in one move put his stick onto dotted grid, vertically or horizontally.  Players are changing after each move, which didn’t create a new small square. The game ends when the grid is full and no other move is possible. The winner is a player with a larger score. 
+
+
+==Nim== 
+
+Several light matches are placed on the game board. Players are taking them and placing them into the match box in turns. Player can take only one, two or three light matches in one move. The aim of the game is not to take the last light match. Who takes the last light match is a looser.
+
+In implementation, player selects a number (e.g. _n_) of matches to remove by clicking on the _n-th_ match from the right side.   
