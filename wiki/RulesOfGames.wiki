@@ -30,6 +30,6 @@ A player can in one move put his stick onto dotted grid, vertically or horizonta
 
 ==Nim== 
 
-Several light matches are placed on the game board. Players are taking them and placing them into the match box in turns. Player can take only one, two or three light matches in one move. The aim of the game is not to take the last light match. Who takes the last light match is a looser.
+Several light matches are placed on the game board. Players are taking them and placing them into the match box in turns. Player can take only one, two or three light matches in one move. The aim of the game is not to take the last light match. Who takes the last light match is loosing the game.
 
 In implementation, player selects a number (e.g. _n_) of matches to remove by clicking on the _n-th_ match from the right side.   
