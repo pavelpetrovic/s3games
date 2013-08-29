@@ -32,4 +32,14 @@ A player can in one move put his stick onto dotted grid, vertically or horizonta
 
 Several light matches are placed on the game board. Players are taking them and placing them into the match box in turns. Player can take only one, two or three light matches in one move. The aim of the game is not to take the last light match. Who takes the last light match is loosing the game.
 
-In implementation, player selects a number (e.g. _n_) of matches to remove by clicking on the _n-th_ match from the right side.   
+In implemented solution, player selects a number (e.g. _n_) of matches to remove by clicking on the _n-th_ match from the right side.   
+
+==Frogs==
+This is one player logic game. There are green frogs on the left side and brown frogs on the right side. Frog can shift forward or jump over just one another frog to the free stone. Frogs can not go backward. 
+
+The goal of the game is to exchange the positions of green frogs and brown frogs. So problem is solved when green frogs are on the right side and brown frogs are on the left side.    
+
+==Skipping==
+There are black and white stones placed on the chessboard. This game is played only on the bright locations of the chessboard. 
+
+The goal is to get your stones to the opposite side (where opponent’s stones are situated after game starts). A player can in one move jump forward over any other stone(repeatedly with that selected stone if he has an option) or make one step forward. 
