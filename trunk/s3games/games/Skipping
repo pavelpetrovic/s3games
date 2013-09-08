@@ -25,13 +25,17 @@ sizeMax=5000
 
 [ELEMENT TYPES]
 name=white
-states=1
+states=2
 image=stonewhite.png
+point=1,1
+image=stonewhite-selected.png
 point=1,1
 
 name=black
-states=1
+states=2
 image=stoneblack.png
+point=1,1
+image=stoneblack-selected.png
 point=1,1
 
 name=switch
@@ -476,22 +480,32 @@ END
 CheckMoveW
      $L == $N + 1
      ($K == $M - 1) OR ($K == $M + 1)
+     FORALL($EL, 1, 8, STATE("w($EL)")==1) 
 END
 
 CheckMoveB
      $L == $N - 1
      ($K == $M - 1) OR ($K == $M + 1)
+     FORALL($EL, 1, 8, STATE("b($EL)")==1) 
 END
 
 CheckJumpW
       $L == $N + 2
-     (($K == $M - 2) AND StoneOccupied(-1,1)) OR (($K == $M + 2) AND StoneOccupied(1,1))   
+     (($K == $M - 2) AND StoneOccupied(-1,1)) OR (($K == $M + 2) AND StoneOccupied(1,1)) 
+     FORALL($EL, 1, 8, STATE("w($EL)")==1)  OR  (STATE("w($J)")==2) 
 END
 
 CheckJumpB
       $L == $N - 2
-     (($K == $M - 2) AND StoneOccupied(-1,-1)) OR (($K == $M + 2) AND StoneOccupied(1,-1))   
+     (($K == $M - 2) AND StoneOccupied(-1,-1)) OR (($K == $M + 2) AND StoneOccupied(1,-1))  
+     FORALL($EL, 1, 8, STATE("b($EL)")==1)  OR  (STATE("b($J)")==2) 
 END
+
+ResetAll
+   FORALL($EL, 1, 8, SETSTATE("b($EL)", 1))
+   FORALL($EL, 1, 8, SETSTATE("w($EL)", 1))
+END
+
 
 WhiteInHome
    (ELTYPE(CONTENT("s(1,1)"))=="white")  
@@ -533,7 +547,7 @@ player=1
 from=s($K,$L)  
 to=s($M,$N)  
 condition=CheckMoveW
-followup=NEXTPLAYER
+followup=NEXTPLAYER AND MOVE("switch", "switch(1)", "switch(2)")
 
 name=bstep
 element=b($J)
@@ -541,7 +555,7 @@ player=2
 from=s($K,$L)  
 to=s($M,$N) 
 condition=CheckMoveB 
-followup=NEXTPLAYER
+followup=NEXTPLAYER  AND MOVE("switch", "switch(2)", "switch(1)")
 
 name=wjump
 element=w($J)
@@ -549,8 +563,7 @@ player=1
 from=s($K,$L)  
 to=s($M,$N)  
 condition=CheckJumpW
-followup=NEXTPLAYER    
-//NEXTPLAYER shouldnt be here... check if can jump again with the same stone
+followup=SETSTATE("w($J)",2) 
 
 name=bjump
 element=b($J)
@@ -558,10 +571,11 @@ player=2
 from=s($K,$L)  
 to=s($M,$N)  
 condition=CheckJumpB
-followup=NEXTPLAYER
+followup=SETSTATE("b($J)",2) 
 
 name=switchplayer
 element=switch
 from=switch($Z)
 to=switch($P)
-followup=NEXTPLAYER
+condition=FORSOME($X,1,8, (STATE("b($X)") == 2) OR (STATE("w($X)") == 2)  ) 
+followup=ResetAll AND NEXTPLAYER
