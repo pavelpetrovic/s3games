@@ -34,19 +34,39 @@ states=1
 image=stoneblack.png
 point=1,1
 
+name=switch
+states=1
+image=mmorange.png
+point=0,0
+
 [LOCATION TYPES]
 
 name=chessW
 image=yellow2.png
-shape=rectangular(73,73)
-point=1,1
+shape=rectangular(72,72)
+point=0,0
 
 name=chessB
 image=brown.png
-shape=rectangular(73,73)
+shape=rectangular(72,72)
+point=0,0
+
+name=switchplace
+image=emptyplace.png
+shape=circle(25)
 point=1,1
 
 [LOCATIONS]
+
+name=switch(1)
+type=switchplace
+point=611,256
+robot=10,20,30,40,50,10,20,30,40,50
+
+name=switch(2)
+type=switchplace
+point=611,329
+robot=10,20,30,40,50,10,20,30,40,50
 
 name=s(1,1)
 type=chessW
@@ -377,6 +397,10 @@ robot=10,20,30,40,50,10,20,30,40,50
 
 [MOVABLE ELEMENTS]
 
+name=switch
+type=switch
+location=switch(1)
+
 name=w(1)
 type=white
 location=s(1,7)
@@ -534,4 +558,10 @@ player=2
 from=s($K,$L)  
 to=s($M,$N)  
 condition=CheckJumpB
+followup=NEXTPLAYER
+
+name=switchplayer
+element=switch
+from=switch($Z)
+to=switch($P)
 followup=NEXTPLAYER
