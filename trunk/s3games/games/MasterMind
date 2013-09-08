@@ -154,17 +154,17 @@ robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(1,6)
 type=help
-point=234,37
+point=234,38
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(2,6)
 type=help
-point=265,37
+point=265,38
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(3,6)
 type=help
-point=296,37
+point=296,38
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(1,5)
@@ -214,32 +214,32 @@ robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(1,2)
 type=help
-point=234,285
+point=234,284
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(2,2)
 type=help
-point=265,285
+point=265,284
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(3,2)
 type=help
-point=296,285
+point=296,284
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(1,1)
 type=help
-point=234,347
+point=234,344
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(2,1)
 type=help
-point=265,347
+point=265,344
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=help(3,1)
 type=help
-point=296,347
+point=296,344
 robot=10,20,30,10,50,10,20,30,40,50
 
 name=stack(1)
