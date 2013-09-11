@@ -501,6 +501,20 @@ CheckJumpB
      FORALL($EL, 1, 8, STATE("b($EL)")==1)  OR  (STATE("b($J)")==2) 
 END
 
+ //because of EMPTY() in StoneOccupied - returns true if location doesnt exist
+CheckBorders($P)  
+   $PP = $P   
+   ($PP<7) AND ($PP>2)
+END
+
+CheckIfCanJumpAgainB  
+      ( CheckBorders($N) AND ((NOT StoneOccupied(2,2))AND StoneOccupied(1,1) AND $M<7 ) OR ((NOT StoneOccupied(-2,2)) AND StoneOccupied(-1,1) AND $M>2) ) OR ( SETSTATE("b($J)",1) AND MOVE("switch", "switch(2)", "switch(1)") AND NEXTPLAYER)    
+END    
+
+CheckIfCanJumpAgainW
+      ( CheckBorders($N) AND ((NOT StoneOccupied(2,-2))AND StoneOccupied(1,-1) AND $M<7 ) OR ((NOT StoneOccupied(-2,-2)) AND StoneOccupied(-1,-1) AND $M>2) ) OR ( SETSTATE("w($J)",1) AND MOVE("switch", "switch(1)", "switch(2)") AND NEXTPLAYER)    
+END
+
 ResetAll
    FORALL($EL, 1, 8, SETSTATE("b($EL)", 1))
    FORALL($EL, 1, 8, SETSTATE("w($EL)", 1))
@@ -563,7 +577,7 @@ player=1
 from=s($K,$L)  
 to=s($M,$N)  
 condition=CheckJumpW
-followup=SETSTATE("w($J)",2) 
+followup=SETSTATE("w($J)",2) AND CheckIfCanJumpAgainW
 
 name=bjump
 element=b($J)
@@ -571,7 +585,7 @@ player=2
 from=s($K,$L)  
 to=s($M,$N)  
 condition=CheckJumpB
-followup=SETSTATE("b($J)",2) 
+followup=SETSTATE("b($J)",2) AND CheckIfCanJumpAgainB
 
 name=switchplayer
 element=switch
