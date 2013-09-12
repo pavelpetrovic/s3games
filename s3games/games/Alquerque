@@ -9,10 +9,14 @@ name=white
 states=3
 image=stonewhite.png
 point=1,1
+image=stonewhite-selected.png
+point=1,1
 
 name=black
 states=3
 image=stoneblack.png
+point=1,1
+image=stoneblack-selected.png
 point=1,1
 
 name=switchingStone
