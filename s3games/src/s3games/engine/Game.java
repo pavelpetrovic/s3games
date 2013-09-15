@@ -77,8 +77,14 @@ public class Game extends Thread
             Move nextMove;
             
             //dbg
-            System.out.println("Possible moves:");
+            System.out.println("All possible moves:");
             System.out.println(allowedMoves);
+            
+            //dbg 
+            System.out.println("Different possible moves:");
+            HashSet<Move> movesZ = new HashSet<Move>();
+            movesZ.addAll(allowedMoves);  //similar as in state.possibleMoves method
+            System.out.println(movesZ);
             
             if (allowedMoves.isEmpty())
             {
