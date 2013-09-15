@@ -38,6 +38,7 @@ shape=circle(24)
 point=1,1
 
 name=help
+relevant=no
 image=emptyplace.png
 shape=circle(15)
 point=1,1
@@ -878,29 +879,101 @@ location=stackAnsB(12)
 
 [EXPRESSIONS]
 
+FillFromLeft
+    $A = $L-1
+    IF($L>1,FORALL($Y, 1, $A, NOT EMPTY("main($Y,$M)") ) , true)
+END
+
+MoveBlack
+   NOT EMPTY("stackAnsB($P)")
+   MOVE("b($P)","stackAnsB($P)","help($XX,$M)")
+END
+
+MoveWhite
+  NOT EMPTY("stackAnsW($PP)")
+  MOVE("w($PP)","stackAnsW($PP)","help($XX,$M)")
+END
+
+ShowHelpBlack
+   $XX = 1
+   $OKLoc>0 
+   FORALL($N,1,$OKLoc,  FORSOME($P,1,12,MoveBlack) AND ($XX=$XX+1) )
+END
+
+ShowHelpWhite
+   $OKCol>0 
+   FORALL($N,1,$OKCol,  FORSOME($PP,1,18, MoveWhite) AND ($XX=$XX+1) )
+END
+
+
+CheckMove
+    $X = $M - 1
+    NOT EMPTY("main(1,$X)")
+    NOT EMPTY("main(2,$X)")
+    NOT EMPTY("main(3,$X)")
+END
+
+FullRow($R)
+  NOT  EMPTY("main(1,$R)")
+  NOT  EMPTY("main(2,$R)")
+  NOT  EMPTY("main(3,$R)")
+END
+
+EvaluateCode
+  //code; correct states of result
+  $EL1 = 1 
+  $EL2 = 5
+  $EL3 = 2
+  
+  $OKLoc = 0
+  $OKCol = 0
+  
+  FullRow($M)
+  
+  $SET1 = (STATE(CONTENT("main(1,$M)")))
+  $SET2 = (STATE(CONTENT("main(2,$M)")))    
+  $SET3 = (STATE(CONTENT("main(3,$M)"))) 
+  
+  IF($SET1 == $EL1, $OKLoc = $OKLoc+1, true)
+  IF($SET2 == $EL2, $OKLoc = $OKLoc+1, true)
+  IF($SET3 == $EL3, $OKLoc = $OKLoc+1, true)
+  
+  IF(($EL1 == $SET1) OR ($EL1 == $SET2) OR ($EL1 == $SET3),$OKCol=$OKCol+1,true)
+  IF(($EL2 == $SET1) OR ($EL2 == $SET2) OR ($EL2 == $SET3),$OKCol=$OKCol+1,true)
+  IF(($EL3 == $SET1) OR ($EL3 == $SET2) OR ($EL3 == $SET3),$OKCol=$OKCol+1,true)
+  
+  $OKCol = $OKCol - $OKLoc
+  
+  ShowHelpBlack OR TRUE
+  ShowHelpWhite
+END
 
 [SCORINGS]
+situation=FullRow($M)
+player=1
+score=$OKCol+($OKLoc*2)-SCORE(1)
 
 [END OF GAME]
-
+situation=$OKLoc == 3
+winner=PLAYER
 
 [GAME RULES]
 name=colorstep
 element=c($J)
 from=stack($K)
 to=main($L,$M)
-//condition=CheckMove
-//followup= Ohodnot
+condition= FillFromLeft AND (($M==1) OR CheckMove)
+followup=EvaluateCode
 
-name=helpstepW
-element=w($J)
-from=stackAnsW($K)
-to=help($L,$M)
+//name=helpstepW
+//element=w($J)
+//from=stackAnsW($K)
+//to=help($L,$M)
 
-name=helpstepB
-element=b($J)
-from=stackAnsB($K)
-to=help($L,$M)
+//name=helpstepB
+//element=b($J)
+//from=stackAnsB($K)
+//to=help($L,$M)
 
 
 
