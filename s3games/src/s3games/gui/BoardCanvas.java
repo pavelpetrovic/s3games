@@ -28,7 +28,7 @@ public class BoardCanvas extends Canvas {
     private BufferedImage buffImg;
     
     /** remembers the element that was selected by a mouse click */
-    String selectedElementName = null;
+    String selectedElementName;
     
     /** controller sends the game specification to here */
     public void setGame(GameSpecification gs) 
@@ -36,6 +36,7 @@ public class BoardCanvas extends Canvas {
         bgImage = Toolkit.getDefaultToolkit().getImage(gs.boardBackgroundFileName);
         gState = null;
         buffImg = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        selectedElementName=null;
         gameSpec = gs;
     }
         

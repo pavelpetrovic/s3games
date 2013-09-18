@@ -37,7 +37,7 @@ public class GameWindow extends javax.swing.JFrame
     
     /** determines if any element has been selected for a move */
     boolean isSelectedElement;
-    /** which element has been selected */
+    /** which element has been last selected */
     String selectedElementName;
     
     /** the move that was performed for the mouse player */
@@ -227,6 +227,8 @@ public class GameWindow extends javax.swing.JFrame
     {
         this.game = g;
         winner = "";
+        isSelectedElement = false;
+        
         GameSpecification gs = game.gameSpecification;
         try {
             //resize the window + canvas according to image
