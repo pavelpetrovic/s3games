@@ -31,16 +31,20 @@ public class Move
         LocationType toType = specs.locationTypes.get(specs.locations.get(to).type);
         String fromHash = from;
         String toHash = to;
-        String elementType = specs.elements.get(element).type;        
+        String elementType = specs.elements.get(element).type;   
+        String elementState = Integer.toString(specs.elements.get(element).initialState);
         if (!fromType.relevant) fromHash = fromType.name;
         if (!toType.relevant) toHash = toType.name;        
-        StringBuilder s = new StringBuilder(fromHash.length() + toHash.length() + elementType.length() + 4);
+       // StringBuilder s = new StringBuilder(fromHash.length() + toHash.length() + elementType.length() + 4);
+        StringBuilder s = new StringBuilder(fromHash.length() + toHash.length() + elementType.length() + elementState.length()+ 6);
         
         s.append(fromHash);
         s.append('*');
         s.append(toHash);
         s.append('*');
         s.append(elementType);
+        s.append('*');
+        s.append(elementState);
         return s.toString();
     }
     
